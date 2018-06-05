@@ -60,8 +60,8 @@ Shape.calculateArea(Circle(5))(circleArea)
 
 // If the interface to a type class is exactly the methods defined
 // on the type class, then we can alternatively avoid the
-// indirection of having the `area` method call the calculator's
-// `calculate` method.
+// indirection of having the `calculateArea` method call the 
+// calculator's `calculate` method.
 //
 // This commonly done by defining a "summoner" method in the
 // companion object of the type class which is just a 0-argument
