@@ -1,0 +1,36 @@
+# Created by https://www.gitignore.io/api/sbt,scala,intellij
+
+
+### Intellij ###
+
+## File-based project format:
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+.idea
+
+*.iml
+*.ipr
+
+
+### SBT ###
+# Simple Build Tool
+# http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
+
+dist/*
+target/
+project/boot/
+project/target/
+project/plugins/project/
+.history
+.cache
+.lib/
+
+### Scala ###
+*.class
+*.log
+
+
+# End of https://www.gitignore.io/api/sbt,scala,intellij
