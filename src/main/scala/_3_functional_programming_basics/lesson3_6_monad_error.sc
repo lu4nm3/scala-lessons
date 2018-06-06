@@ -3,7 +3,6 @@
 // ****************************************************************
 import cats.{Monad, MonadError}
 import monix.eval.Task
-
 import scala.language.higherKinds
 
 
@@ -39,12 +38,12 @@ val monadError = MonadError[Task, Throwable]
 val success = monadError.pure(3)
 // success: Task[Int] = Task(3)
 
-val failure = monadError.raiseError(new NullPointerException())
-// failure: Task[Nothing] = Task(NullPointerException)
+val failure = monadError.raiseError[Int](new NullPointerException())
+// failure: Task[Int] = Task(NullPointerException)
 
 monadError.handleError(failure) {
-  case _: NullPointerException => monadError.pure(0)
-  case _ => monadError.raiseError(new InterruptedException())
+  case _: NullPointerException => 0
+  case _ => 1
 }
 // res2: Task[Int] = Task(0)
 
