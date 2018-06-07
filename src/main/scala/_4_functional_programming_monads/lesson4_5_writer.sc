@@ -68,15 +68,37 @@ w.written
 // res1: Vector[String] = Vector("step 1", "step 2")
 
 w.run
-// res2: (Vector[String], Int) = (42, Vector("step 1", "step 2"))
+// res2: (Vector[String], Int) = (Vector("step 1", "step 2"), 42)
 
 
 
 
-// ****************************************************************
+// The log in a Writer is preserved when we `map` or `flatMap` over
+// the result value:
+
+val w2 = for {
+  _ <- Vector("computing a...").tell
+  a <- 3.pure[Logged]
+  _ <- Vector("computed a!").tell
+
+  _ <- Vector("preparing to compute b...").tell
+  b <- 2.writer(Vector("computing b..."))
+  _ <- Vector("computed b!").tell
+} yield a * b
+
+w2.run
+// res2: (Vector[String], Int) = (Vector(computing a..., computed a!, preparing to compute b..., computing b..., computed b!),6)
 
 
 
+val w2 = for {
+  _ <- Vector("computing a...").tell
+  a <- 3.pure[Logged]
+  _ <- Vector("computed a!").tell
 
+  _ <- Vector("preparing to compute b...").tell
+  b <- 2.writer(Vector("computing b..."))
+  _ <- Vector("computed b!").tell
+} yield a * b
 
 
