@@ -91,14 +91,4 @@ w2.run
 
 
 
-val w2 = for {
-  _ <- Vector("computing a...").tell
-  a <- 3.pure[Logged]
-  _ <- Vector("computed a!").tell
-
-  _ <- Vector("preparing to compute b...").tell
-  b <- 2.writer(Vector("computing b..."))
-  _ <- Vector("computed b!").tell
-} yield a * b
-
 
