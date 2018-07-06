@@ -1,67 +1,102 @@
-import java.util.concurrent.TimeUnit
+import cats.effect.IO
+import cats.effect.concurrent.Ref
+import cats.implicits._
+import cats.{Monad, Monoid}
 
-import cats.Monad
-import monix.eval.Task
-
-import scala.concurrent.duration.Duration
-import scala.language.higherKinds
+import scala.language.{higherKinds, implicitConversions}
 
 object Test extends App {
-  import scala.language.implicitConversions
 
-  case class Foo() {
-    def foo: String = "foo"
-  }
-  case class Bar() {
-    def bar: String = "bar"
-  }
-  case class Baz() {
-    def baz: String = "baz"
-  }
+  trait MonadState[F[_], S] {
+    def monad: Monad[F]
 
-  implicit def fooToBar[F](foo: F)(implicit f: F => Foo): Bar = {
-    println(implicitly[F => Foo](f))
-    Bar()
-  }
-  implicit def barToBaz[B](bar: B)(implicit f: B => Bar): Baz = Baz()
-
-
-  trait MonadState[F[_], S] extends Monad[F] { self =>
     def get: F[S]
 
-    def put(s: S): F[Unit]
+    def set(s: S): F[Unit]
   }
 
-  case class AppState(values: List[Int])
-import cats.implicits._
-  def program[F[_]](implicit S: MonadState[F, AppState]): F[Unit] = {
+  trait MonadWriter[F[_], L] {
+    def monad: Monad[F]
+
+    def tell(l: L): F[Unit]
+
+    def logs: F[L]
+  }
+
+  def createState[S](initial: S): IO[MonadState[IO, S]] = {
     for {
-      appState <- S.get
-      _ <- S.put(appState)
-//      x = s.values
-//      _ <- S.put(state.copy)
-    } yield ()
+      state <- Ref.of[IO, S](initial)
+    } yield new MonadState[IO, S] {
+      def monad: Monad[IO] = Monad[IO]
+
+      def get: IO[S] = state.get
+
+      def set(s: S): IO[Unit] = state.set(s)
+    }
   }
 
-  implicit val mapTaskMonadState: MonadState[Task, AppState] = new MonadState[Task, AppState] {
-    var state = AppState(List.empty[Int])
+  def createWriter[L](implicit monoid: Monoid[L]): IO[MonadWriter[IO, L]] = {
+    for {
+      writer <- Ref.of[IO, L](monoid.empty)
+    } yield new MonadWriter[IO, L] {
+      def monad: Monad[IO] = Monad[IO]
 
-    def get: Task[AppState] = Task.now(state)
+      def tell(l: L): IO[Unit] = writer.update(_.combine(l))
 
-    def put(s: AppState): Task[Unit] = Task.now { state = s }
-
-    def flatMap[A, B](fa: Task[A])(f: A => Task[B]) = fa.flatMap(f)
-
-    def tailRecM[A, B](a: A)(f: A => Task[Either[A, B]]) = Task.tailRecM(a)(f)
-
-    def pure[A](x: A) = Task.pure(x)
+      def logs: IO[L] = writer.get
+    }
   }
 
+  case class AppState(value: Int)
 
-  import monix.execution.Scheduler.Implicits.global
+  def program[F[_]](implicit S: MonadState[F, AppState],
+                       W: MonadWriter[F, Vector[String]]): F[(Vector[String], AppState)] = {
+    implicit val monad: Monad[F] = S.monad
 
-  val x = program[Task].runSyncUnsafe(Duration(3, TimeUnit.SECONDS))//()
+    for {
+      state <- S.get
 
-  fooToBar(Foo())
-  println(Foo().baz)
+      _ <- W.tell(Vector(s"Initial state value: ${state.value}"))
+
+      _ <- S.set(state.copy(state.value * 3))
+
+      _ <- W.tell(Vector(s"Program complete"))
+
+      logs <- W.logs
+      finalState <- S.get
+    } yield (logs, finalState)
+  }
+
+  def main() = {
+    for {
+      monadState <- createState(AppState(3))
+      monadWriter <- createWriter[Vector[String]]
+      result <- program(monadState, monadWriter)
+    } yield result
+  }
+
+  val op = main()
+
+  val runtime = Runtime.getRuntime()
+  runtime.gc()
+
+  val bytesBefore = runtime.totalMemory() - runtime.freeMemory()
+  val megaBytesBefore = bytesBefore / (1024L * 1024L)
+
+  for (i <- 1 to 10000) {
+    op.unsafeRunSync()
+  }
+
+  val res = op.unsafeRunSync()
+
+  val bytesAfter = runtime.totalMemory() - runtime.freeMemory()
+  val megaBytesAfter = bytesAfter / (1024L * 1024L)
+
+  val result = main().unsafeRunSync()
+  println("hi" + res)
+
+  while (true){
+    op.unsafeRunSync()
+//    Thread.sleep(100)
+  }
 }

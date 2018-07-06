@@ -2,13 +2,24 @@ lazy val scalaLessons = (project in file("."))
   .settings(
     name := "scala-lessons",
     scalacOptions := Seq("-feature", "-Ypartial-unification"),
+    scalacOptions += "-Ypartial-unification",
     scalaVersion := "2.12.6"
+  )
+  .settings(resolvers ++=
+    Seq(
+      Resolver.sonatypeRepo("releases")
+    )
   )
   .settings(libraryDependencies ++=
     Seq(
       "com.typesafe.play" %% "play" % "2.6.13" withSources() withJavadoc(),
       "io.monix" % "monix_2.12" % "3.0.0-RC1",
       "org.typelevel" %% "cats-core" % "1.1.0" withSources() withJavadoc(),
-      "org.typelevel" %% "cats-effect" % "1.0.0-RC" withSources() withJavadoc()
+      "org.typelevel" %% "cats-effect" % "1.0.0-RC2" withSources() withJavadoc(),
+      "org.typelevel" %% "cats-mtl-core" % "0.2.1" withSources() withJavadoc()
     )
+  )
+  .settings(
+    addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.7"),
+//    addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
   )

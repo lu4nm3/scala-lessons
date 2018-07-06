@@ -1,9 +1,9 @@
 // ****************************************************************
 //                        Monad Transformers
 // ****************************************************************
-import cats.data.EitherT
-import cats.{Applicative, Functor, Monad}
+import cats.data.{EitherT, OptionT}
 import monix.eval.Task
+
 import scala.language.higherKinds
 
 
@@ -33,6 +33,9 @@ import scala.language.higherKinds
 type ErrorOr[A] = Either[String, A]
 type ErrorOrOption[A] = OptionT[ErrorOr, A]
 
+// Here, `ErrorOrOption[A]` is equivalent to `ErrorOr[Option[A]]`
+// which is the same as `Either[String, Option[A]]`.
+
 // We can use `pure`, `map`, and `flatMap` as usual to create and
 // compose instances:
 
@@ -55,12 +58,12 @@ for {
 
 
 // Things start to become even more confusing when we stack 3 or
-// more monads. As an example, let's say we wanted to create a
-// Task of an Either of Option:
+// more monads together. As an example, let's say we wanted to
+// create a `Task` of an `Either` of `Option`:
 
-type TaskEither[A] = EitherT[Task, String, A]
+type TaskEither[A] = EitherT[Task, String, A] // equivalent to `Task[Either[String, A]]`
 
-type TaskEitherOption[A] = OptionT[TaskEither, A]
+type TaskEitherOption[A] = OptionT[TaskEither, A] // equivalent to `Task[Either[String, Option[A]]]`
 
 for {
   a <- 3.pure[TaskEitherOption]
@@ -72,8 +75,9 @@ for {
 
 
 // Using monad transformers can be difficult because they combine
-// monads together in predefined ways. We can approach this in
-// multiple ways:
+// monads together in predefined ways. It can also be difficult to
+// reason about how the monads they represent are composed. We can
+// approach this in multiple ways:
 
 // One approach involves creating a single "super stack" and using
 // it throughout a code base. This works if the code is simple and
@@ -83,7 +87,7 @@ sealed trait HttpError
 case class NotFound(s: String) extends HttpError
 case class BadRequest(s: String) extends HttpError
 
-type HttpTaskEither[A] = EitherT[Task, HttpError, A]
+type HttpTaskEither[A] = EitherT[Task, HttpError, A] // equivalent to Task[Either[HttpError, A]]
 
 // The "super stack" approach starts to fail in larger, more
 // heterogeneous code bases where different stacks make sense in
@@ -92,8 +96,8 @@ type HttpTaskEither[A] = EitherT[Task, HttpError, A]
 // A different design pattern that makes more sense in these
 // situations uses monad transformers as local "glue code". We
 // expose untransformed stacks at module boundaries, transform them
-// to operate on them locally, and untransform them before passing
-// them on:
+// to operate on them locally, and unwrap them before passing them
+// on:
 
 case class User(age: Int)
 
@@ -112,56 +116,3 @@ def processUser(user1: String, user2: String, user3: String): Task[Option[Int]] 
 
 
 
-// Credit to this next part and the next lesson goes to John A De
-// Goes for his blog post about monad transformers and MTL:
-//
-// http://degoes.net/articles/effects-without-transformers
-
-// Despite the composition benefits that monad transformers offer,
-// they impose tremendous performance overhead that rapidly leads
-// to CPU-bound, memory-hogging applications.
-
-// Monad transformers rely on vertical composition to layer new
-// effects onto other effects. The following is a short snippet of
-// the OptionT's `pure`, `map`, and `flatMap` operations:
-
-final case class OptionT[F[_], A](value: F[Option[A]]) {
-  def map[B](f: A => B)(implicit F: Functor[F]): OptionT[F, B] = {
-    OptionT(F.map(value)(_.map(f)))
-  }
-
-  def flatMap[B](f: A => OptionT[F, B])(implicit F: Monad[F]): OptionT[F, B] = {
-    flatMapF(a => f(a).value)
-  }
-
-  def flatMapF[B](f: A => F[Option[B]])(implicit F: Monad[F]): OptionT[F, B] = {
-    OptionT(F.flatMap(value)(_.fold(F.pure[Option[B]](None))(f)))
-  }
-}
-
-object OptionT {
-  def pure[F[_], A](value: A)(implicit F: Applicative[F]): OptionT[F, A] =
-    OptionT(F.pure(Some(value)))
-}
-
-// From the code above, one can see that the transformer imposes
-// additional indirection and heap usage for every usage of `pure`,
-// `map` and `flatMap`.
-
-// The definition of the class introduces a wrapper OptionT.
-// Compared to the original effect F[_], use of this wrapper will
-// involve 2 additional allocations: 1 for Option and 1 for OptionT
-// which will triple the memory consumption of the application:
-
-val option = Some(3)        // 1st allocation
-val task = Task.now(option) // 2nd allocation
-val optionT = OptionT(task) // 3rd allocation
-
-// In the `map` function of OptionT, there are 3 additional method
-// calls (`OptionT.apply`, `map`, `map`) and an additional 2
-// allocations (OptionT, _), one for the OptionT wrapper and one
-// for the anonymous function. The story for the `flatMap`
-// operation is similar.
-
-
-// ****************************************************************
