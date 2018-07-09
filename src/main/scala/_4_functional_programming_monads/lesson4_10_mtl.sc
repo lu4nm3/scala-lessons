@@ -21,7 +21,7 @@ import scala.language.higherKinds
 
 // Monad transformers rely on vertical composition to layer new
 // effects onto other effects. The following is a short snippet of
-// the OptionT's `pure`, `map`, and `flatMap` operations:
+// OptionT's `pure`, `map`, and `flatMap` operations:
 
 final case class OptionT[F[_], A](value: F[Option[A]]) {
   def map[B](f: A => B)(implicit F: Functor[F]): OptionT[F, B] = {
@@ -52,7 +52,7 @@ object OptionT {
 // involve 2 additional allocations when lifting pure values into
 // the monad transformer context: 1 for `Option` and 1 for
 // `OptionT` which will triple the memory consumption of the
-// application:
+// application. In the following example:
 
 for {
   _ <- OptionT[IO, Int](IO(Some(5)))
@@ -63,7 +63,7 @@ for {
 // context, we're tripling the memory usage by having 2 additional
 // allocations:
 
-val alloc1 = Some(3) // additional allocation
+val alloc1 = Some(3)                  // additional allocation
 val alloc2 = IO.pure(alloc1)
 val alloc3 = OptionT[IO, Int](alloc2) // additional allocation
 
@@ -78,8 +78,8 @@ val alloc3 = OptionT[IO, Int](alloc2) // additional allocation
 
 // `OptionT` was a simple example that demonstrates the issues with
 // monad transformers. In a program, however, you often times need
-// to combine several behaviors together in an application which
-// means composing 2 or more monad transformers together.
+// to combine several behaviors together which means composing 2 or
+// more monad transformers together.
 
 // As another example, let's say that we want to use the State
 // monad to keep track of the state of our program along with the
@@ -87,7 +87,7 @@ val alloc3 = OptionT[IO, Int](alloc2) // additional allocation
 // was in. Out of the box, Cats provides a monad transformer called
 // `IndexedReaderWriterStateT` which combines the Reader, Writer,
 // and State monads together. Below is a simplified version of this
-// monad transformer that only accounts for the Writer and State
+// monad transformer that only provides the Writer and State
 // functionality that we need:
 
 final class WriterStateT[F[_], L, SA, SB, A](val runF: F[SA => F[(L, SB, A)]]) {
@@ -170,34 +170,6 @@ object WriterStateT {
   }
 }
 
-// We can then write a "simple" program that makes use of this
-// monad transformer:
-
-case class AppState(value: Int)
-
-def program[F[_]](implicit M: Monad[F]): WriterStateT[F, Vector[AppState], AppState, AppState, AppState] = {
-  for {
-    state <- WriterStateT.get[F, Vector[AppState], AppState]
-
-    _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(state))
-
-    x <- M.pure(AppState(state.value * 3)) // some "computation" in the program
-    _ <- WriterStateT.set[F, Vector[AppState], AppState](x)
-    _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(x))
-
-    state2 <- WriterStateT.get[F, Vector[AppState], AppState]
-
-    y <- M.pure(AppState(state2.value + 2))
-    _ <- WriterStateT.set[F, Vector[AppState], AppState](y)
-    _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(y))
-
-    finalState <- WriterStateT.get[F, Vector[AppState], AppState]
-  } yield finalState
-}
-
-program[IO].run(AppState(3))
-// res0: (Vector[AppState], AppState) = (Vector(AppState(3), AppState(9), AppState(11)), AppState(11))
-
 // Immediately, you will be able to see the amount of complexity in
 // the `map` and `flatMap` methods of the monad transformer both in
 // terms of the number of nested function calls and new object
@@ -208,7 +180,7 @@ program[IO].run(AppState(3))
 // monad this means be able to "thread" a starting state value `S`
 // through multiple "functions" of type `S => (S, A)` as it gets
 // repeatedly updated throughout the program's execution. Similarly
-// for the writer monad, this means be able to append to the
+// for the writer monad, this means being able to append to the
 // current log `L` while threading the log through the program's
 // execution without losing any values that were previously there.
 // Coming up with this combined logic can be very complex and is
@@ -223,6 +195,37 @@ program[IO].run(AppState(3))
 // collection pauses in the JVM which is something to keep in mind
 // if your application requires a high level of performance.
 
+// Using this monad transformer, we can write a "simple" program
+// that makes use of it:
+
+case class AppState(value: Int) // The "state" of our application
+
+def program[F[_]](implicit M: Monad[F]): WriterStateT[F, Vector[AppState], AppState, AppState, AppState] = {
+  for {
+    state <- WriterStateT.get[F, Vector[AppState], AppState]
+
+    _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(state))
+
+    x <- M.pure(AppState(state.value * 3))                  // some "computation" that uses the program's state
+    _ <- WriterStateT.set[F, Vector[AppState], AppState](x)
+    _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(x))
+
+    state2 <- WriterStateT.get[F, Vector[AppState], AppState]
+
+    y <- M.pure(AppState(state2.value + 2))
+    _ <- WriterStateT.set[F, Vector[AppState], AppState](y)
+    _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(y))
+
+    finalState <- WriterStateT.get[F, Vector[AppState], AppState]
+  } yield finalState
+}
+
+// We can then execute the program using the `run` method and
+// supply it with an initial state:
+
+program[IO].run(AppState(3))
+// res0: (Vector[AppState], AppState) = (Vector(AppState(3), AppState(9), AppState(11)), AppState(11))
+
 
 
 
@@ -230,9 +233,9 @@ program[IO].run(AppState(3))
 // library introduced type classes for abstracting over data types
 // that support the same effects.
 
-// What is known to as MTL-style does not refer to the use of monad
+// What is known as MTL-style does not refer to the use of monad
 // transformers, per se, but to the use of the type classes that
-// allow abstracting over the effects modeled by data structures.
+// allow abstracting over the effects modeled by transformers.
 
 // For example, the type class `MonadState` could abstract over all
 // data types that are capable of supporting getting and setting
@@ -252,11 +255,12 @@ trait MonadState[F[_], S] {
   def set(s: S): F[Unit]
 }
 
-// In addition, let's say that in our application, we want some way
-// to keep track of the history of the different values that our
-// state was in. For this we're going to create another type class
-// called `MonadWriter` that provides writer-like functionality to
-// keep a log of all the previous values the state was in:
+// Just like before, we also want some way to keep track of the
+// history of the different values that our state was in. Instead
+// of using the `Writer` monad, we're going to create another type
+// class called `MonadWriter` that provides writer-like
+// functionality needed to log all the previous values the state
+// was in:
 
 trait MonadWriter[F[_], L] {
   def monad: Monad[F]
@@ -274,9 +278,11 @@ trait MonadWriter[F[_], L] {
 // will be parameterized on our own class `AppState` to represent
 // the state of the program and on `Vector[AppState]` to keep track
 // of the history of our state. The program will then return both
-// the log of  and the final value of the state:
+// the log of values the state was in as well as the final value of
+// the state:
 
-def program[F[_]](S: MonadState[F, AppState], W: MonadWriter[F, Vector[AppState]]): F[(Vector[AppState], AppState)] = {
+def program[F[_]](S: MonadState[F, AppState],
+                  W: MonadWriter[F, Vector[AppState]]): F[(Vector[AppState], AppState)] = {
   implicit val monad: Monad[F] = S.monad
 
   for {
@@ -303,8 +309,8 @@ def program[F[_]](S: MonadState[F, AppState], W: MonadWriter[F, Vector[AppState]
 // following method that parameterizes `MonadState` on cats-effect
 // `IO`. It's possible to use the `StateT` monad transformer
 // internally to manage the state of our `MonadState` type class
-// but instead, we will opt for using `Ref`, also from cats-effect,
-// to keep track of our state for simplicity:
+// but instead, we will opt for using `Ref` (also from cats-effect)
+// for simplicity, to keep track of our state:
 
 def createState[S](initial: S): IO[MonadState[IO, S]] = {
   for {
@@ -319,10 +325,10 @@ def createState[S](initial: S): IO[MonadState[IO, S]] = {
 }
 
 // We will also define a method to create instances of
-// `MonadWriter` that is parameterized on `IO` and that uses `Ref`
-// from cats-effect. This method will need an instance of
-// `Monoid[L]` which will be used to create empty instances of our
-// log `L` as well as to combine multiple values of `L` together:
+// `MonadWriter` that is parameterized on `IO` and uses `Ref`.
+// This method will need a `Monoid[L]` which will be used to create
+// empty instances of our log `L` as well as to combine multiple
+// values of `L` together:
 
 def createWriter[L](implicit monoid: Monoid[L]): IO[MonadWriter[IO, L]] = {
   for {
@@ -351,7 +357,57 @@ main().unsafeRunSync()
 // res0: (Vector[AppState], AppState) = (Vector(AppState(3), AppState(9), AppState(11)),AppState(11))
 
 
-// Now let's try to do the same thing above
-// ****************************************************************
+
+
+// Here we can see some big differences between the MTL-style of
+// composing effects and the monad transformer approach.
+
+// The most notable difference is the reduced complexity in the
+// MTL-style over monad transformers.
+//
+// With MTL, we can specify type classes for the
+// behaviors that we're interested in separately, and then compose
+// them together within our program. This is because with MTL, the context that the different operations
+// of our program run within is the `F` monad which already provides the
+// `map` and `flatMap` methods needed to compose
+// things together.
+//
+// With monad transformers, on the other hand, we are forced to combine the
+// behaviors of different monads together within a new, custom monad transformer "wrapper".
+// In this wrapper, we define custom `map` and `flatMap` methods that we use for composing
+// multiple instances of our wrapper together. These methods must then ensure that the original behaviors
+// of the monads that are being composed remain the same as when they are used separately which is
+// no easy task.
+//
+// Another benefit of the MTL-style is the added re-usability that it provides.
+// By defining small and focused type classes for the behaviors we're looking for,
+// it becomes easy to re-use them. If some part of an application only
+// needs state management, for example, then it doesn't make sense to
+// also include writer-related functionality. Unfortunately, with monad transformers,
+// you're forced to combine behaviors together which means that you
+// have to bring along the entire functionality of the transformer even if you only use a small
+// part of it.
+//
+//
+// Furthermore, with MTL-style, we are able to customize the type classes by making them
+// as simple or as complex as we need them to be by
+// including only the behavior that we're interested. This helps us
+// avoid bloating our programs with functionality we dont need.
+// In addition, we get the opportunity to re-define behaviors in
+// more efficient ways from how they're normally defined.
+//
+// Using the above example, let's consider
+// the state monad `State[S,A]` which is commonly represented as a function
+// of type S => (S, A) where `S` is the type of the state and `A` is the type
+// of the result such that an input state is transformed to an output state
+// along with a result. If we only care about the "state" portion of the `State`
+// monad, we can define an MTL
+// type class, `MonadState[F[_], S]`, like we did above that only captures the state behavior
+// and does away with anything related to the result.
+
+
+
+
+
 
 
