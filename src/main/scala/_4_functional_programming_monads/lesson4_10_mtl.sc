@@ -56,7 +56,7 @@ object OptionT {
 
 for {
   _ <- OptionT[IO, Int](IO(Some(5)))
-  _ <- OptionT.pure(3)
+  _ <- OptionT.pure[IO, Int](3)
 } yield ()
 
 // When we call `pure` above to lift the value 3 into the OptionT
@@ -77,9 +77,9 @@ val alloc3 = OptionT[IO, Int](alloc2) // additional allocation
 
 
 // `OptionT` was a simple example that demonstrates the issues with
-// monad transformers. In a program, however, you often times need
+// monad transformers. In practice, however, you often times need
 // to combine several behaviors together which means composing 2 or
-// more monad transformers together.
+// more monad transformers.
 
 // As another example, let's say that we want to use the State
 // monad to keep track of the state of our program along with the
@@ -148,6 +148,10 @@ object WriterStateT {
     new WriterStateT[F, L, SA, SB, A](runF)
   }
 
+  def pure[F[_], L, S, A](a: A)(implicit F: Applicative[F], L: Monoid[L]): WriterStateT[F, L, S, S, A] = {
+    WriterStateT(s => F.pure((L.empty, s, a)))
+  }
+
   /**
     * Return the input state without modifying it.
     */
@@ -174,18 +178,18 @@ object WriterStateT {
 // the `map` and `flatMap` methods of the monad transformer both in
 // terms of the number of nested function calls and new object
 // allocations. The reason for this complexity is that the monad
-// transformer has to combine the behaviors of both the state and
-// the writer monads together in order to ensure that their
-// behavior remains the same even in combination. For the state
+// transformer has to combine the behaviors of both the State and
+// the Writer monads together in order to ensure that their
+// behavior remains the same even in combination. For the State
 // monad this means be able to "thread" a starting state value `S`
-// through multiple "functions" of type `S => (S, A)` as it gets
-// repeatedly updated throughout the program's execution. Similarly
-// for the writer monad, this means being able to append to the
-// current log `L` while threading the log through the program's
-// execution without losing any values that were previously there.
-// Coming up with this combined logic can be very complex and is
-// hard to reason about as seen above in the `map` and `flatMap`
-// methods.
+// through what you can think of as multiple functions of type
+// `S => (S, A)` as it gets repeatedly updated throughout the
+// program's execution. Similarly for the Writer monad, this means
+// being able to append to the current log `L` while threading the
+// log through the program's execution without losing any values
+// that were previously there. Coming up with this combined logic
+// can be very complex and is hard to reason about as seen above in
+// the `map` and `flatMap` methods.
 
 // This complexity doesn't even begin to account for the amount of
 // heap memory an application will require when using this monad
@@ -196,7 +200,11 @@ object WriterStateT {
 // if your application requires a high level of performance.
 
 // Using this monad transformer, we can write a "simple" program
-// that makes use of it:
+// that makes use of it. Here, we will use our own case class
+// `AppState` to represent our state and we're going to
+// parameterize our custom `WriterStateT` monad transformer on
+// `Vector[AppState]` for our log, which will keep track of the
+// different values that our state was in:
 
 case class AppState(value: Int) // The "state" of our application
 
@@ -206,13 +214,13 @@ def program[F[_]](implicit M: Monad[F]): WriterStateT[F, Vector[AppState], AppSt
 
     _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(state))
 
-    x <- M.pure(AppState(state.value * 3))                  // some "computation" that uses the program's state
-    _ <- WriterStateT.set[F, Vector[AppState], AppState](x)
-    _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(x))
+    x <- WriterStateT.pure[F, Vector[AppState], AppState, AppState](AppState(state.value * 3))  // some "computation" that uses the program's state
+    _ <- WriterStateT.set[F, Vector[AppState], AppState](x)                                     // update the state with a new value
+    _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(x))                            // log the value of the new state
 
     state2 <- WriterStateT.get[F, Vector[AppState], AppState]
 
-    y <- M.pure(AppState(state2.value + 2))
+    y <- WriterStateT.pure[F, Vector[AppState], AppState, AppState](AppState(state2.value + 2))
     _ <- WriterStateT.set[F, Vector[AppState], AppState](y)
     _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(y))
 
@@ -220,10 +228,10 @@ def program[F[_]](implicit M: Monad[F]): WriterStateT[F, Vector[AppState], AppSt
   } yield finalState
 }
 
-// We can then execute the program using the `run` method and
-// supply it with an initial state:
+// Then we execute the program using the `run` method and supply it
+// with an initial state:
 
-program[IO].run(AppState(3))
+program[IO].run(AppState(3)).unsafeRunSync()
 // res0: (Vector[AppState], AppState) = (Vector(AppState(3), AppState(9), AppState(11)), AppState(11))
 
 
@@ -235,12 +243,13 @@ program[IO].run(AppState(3))
 
 // What is known as MTL-style does not refer to the use of monad
 // transformers, per se, but to the use of the type classes that
-// allow abstracting over the effects modeled by transformers.
+// allow abstracting over the effects modeled by these monad
+// transformers.
 
 // For example, the type class `MonadState` could abstract over all
 // data types that are capable of supporting getting and setting
-// state including the `State` type and even the monad transformer
-// `StateT`.
+// state including the `State` monad and even the `StateT` monad
+// transformer.
 
 // Rather than using `StateT[F, S, A]`, which is a monad
 // transformer that adds state management to some base monad F[_],
@@ -258,7 +267,7 @@ trait MonadState[F[_], S] {
 // Just like before, we also want some way to keep track of the
 // history of the different values that our state was in. Instead
 // of using the `Writer` monad, we're going to create another type
-// class called `MonadWriter` that provides writer-like
+// class called `MonadWriter` that provides the Writer-like
 // functionality needed to log all the previous values the state
 // was in:
 

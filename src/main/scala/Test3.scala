@@ -64,6 +64,10 @@ object Test3 extends App {
       new WriterStateT[F, L, SA, SB, A](runF)
     }
 
+    def pure[F[_], L, S, A](a: A)(implicit F: Applicative[F], L: Monoid[L]): WriterStateT[F, L, S, S, A] = {
+      WriterStateT(s => F.pure((L.empty, s, a)))
+    }
+
     /**
       * Return the input state without modifying it.
       */
@@ -136,17 +140,23 @@ object Test3 extends App {
     )
   }
 
-  def program[F[_]](implicit M: Monad[F]): WriterStateT[F, Vector[String], AppState, AppState, AppState] = {
+  def program[F[_]](implicit M: Monad[F]): WriterStateT[F, Vector[AppState], AppState, AppState, AppState] = {
     for {
-      state <- WriterStateT.get[F, Vector[String], AppState]
+      state <- WriterStateT.get[F, Vector[AppState], AppState]
 
-      _ <- WriterStateT.tell[F, Vector[String], AppState](Vector(s"Initial state value: ${state.value}"))
+      _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(state))
 
-      _ <- WriterStateT.set[F, Vector[String], AppState](state.copy(state.value * 3))
+      x <- WriterStateT.pure[F, Vector[AppState], AppState, AppState](AppState(state.value * 3))  // some "computation" that uses the program's state
+      _ <- WriterStateT.set[F, Vector[AppState], AppState](x)                                     // update the state with a new value
+      _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(x))                            // log the value of the new state
 
-      _ <- WriterStateT.tell[F, Vector[String], AppState](Vector(s"Program complete"))
+      state2 <- WriterStateT.get[F, Vector[AppState], AppState]
 
-      finalState <- WriterStateT.get[F, Vector[String], AppState]
+      y <- WriterStateT.pure[F, Vector[AppState], AppState, AppState](AppState(state2.value + 2))
+      _ <- WriterStateT.set[F, Vector[AppState], AppState](y)
+      _ <- WriterStateT.tell[F, Vector[AppState], AppState](Vector(y))
+
+      finalState <- WriterStateT.get[F, Vector[AppState], AppState]
     } yield finalState
   }
 
