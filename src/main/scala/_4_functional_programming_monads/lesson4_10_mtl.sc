@@ -88,7 +88,7 @@ val alloc3 = OptionT[IO, Int](alloc2) // additional allocation
 // `IndexedReaderWriterStateT` which combines the Reader, Writer,
 // and State monads together. Below is a simplified version of this
 // monad transformer that only provides the Writer and State
-// functionality that we need:
+// functionality that we're looking for:
 
 final class WriterStateT[F[_], L, SA, SB, A](val runF: F[SA => F[(L, SB, A)]]) {
   def flatMap[SC, B](f: A => WriterStateT[F, L, SB, SC, B])
@@ -237,14 +237,28 @@ program[IO].run(AppState(3)).unsafeRunSync()
 
 
 
-// Monad transformers aren't all bad, however. In Haskell, the MTL
-// library introduced type classes for abstracting over data types
-// that support the same effects.
+// In Haskell, the Monad Transformer Library (MTL) package, as its
+// name suggests, used to provide monad transformer types. For some
+// time now, however, these monad transformers have resided in the
+// `transformers` package. And so it is partly by historical
+// accident and partly by an interesting choice of vocabulary that
+// the name "MTL" is now used to refer to a library of type
+// classes. These type classes abstract over many design patterns
+// that involve different types of "effects".
 
-// What is known as MTL-style does not refer to the use of monad
-// transformers, per se, but to the use of the type classes that
-// allow abstracting over the effects modeled by these monad
-// transformers.
+// MTL was inspired by the 1995 paper "Functional Programming with
+// Overloading and Higher-Order Polymorphism" by Mark P. Jones
+// (http://web.cecs.pdx.edu/~mpj/pubs/springschool.html). In it,
+// he explores the practical applications of the Hindley/Milner
+// type system as well as a range of extensions that provide the
+// system with more flexibility while still retaining the
+// characteristics that made it so popular. In particular, Jones
+// examines the use of higher-order polymorphism along with type
+// and constructor class overloading in order to promote modularity
+// and reusability.
+
+// In Scala, these MTL type classes are encoded using what is known
+// as a final tagless style.
 
 // For example, the type class `MonadState` could abstract over all
 // data types that are capable of supporting getting and setting
@@ -299,7 +313,7 @@ def program[F[_]](S: MonadState[F, AppState],
 
     _ <- W.tell(Vector(state))
 
-    x <- monad.pure(AppState(state.value * 3)) // some "computation" in the program
+    x <- monad.pure(AppState(state.value * 3)) // some "computation" that uses the program's state
     _ <- S.set(x)
     _ <- W.tell(Vector(x))
 
@@ -319,7 +333,7 @@ def program[F[_]](S: MonadState[F, AppState],
 // `IO`. It's possible to use the `StateT` monad transformer
 // internally to manage the state of our `MonadState` type class
 // but instead, we will opt for using `Ref` (also from cats-effect)
-// for simplicity, to keep track of our state:
+// for simplicity:
 
 def createState[S](initial: S): IO[MonadState[IO, S]] = {
   for {
@@ -356,7 +370,7 @@ def createWriter[L](implicit monoid: Monoid[L]): IO[MonadWriter[IO, L]] = {
 
 def main(): IO[(Vector[AppState], AppState)] = {
   for {
-    monadState <- createState(AppState(3))
+    monadState <- createState(AppState(3))        // initial state
     monadWriter <- createWriter[Vector[AppState]]
     result <- program(monadState, monadWriter)
   } yield result
@@ -369,50 +383,59 @@ main().unsafeRunSync()
 
 
 // Here we can see some big differences between the MTL-style of
-// composing effects and the monad transformer approach.
-
-// The most notable difference is the reduced complexity in the
+// composing effects and the monad transformer approach. Perhaps
+// the most notable distinction is the reduced complexity in the
 // MTL-style over monad transformers.
-//
-// With MTL, we can specify type classes for the
-// behaviors that we're interested in separately, and then compose
-// them together within our program. This is because with MTL, the context that the different operations
-// of our program run within is the `F` monad which already provides the
-// `map` and `flatMap` methods needed to compose
-// things together.
-//
-// With monad transformers, on the other hand, we are forced to combine the
-// behaviors of different monads together within a new, custom monad transformer "wrapper".
-// In this wrapper, we define custom `map` and `flatMap` methods that we use for composing
-// multiple instances of our wrapper together. These methods must then ensure that the original behaviors
-// of the monads that are being composed remain the same as when they are used separately which is
-// no easy task.
-//
-// Another benefit of the MTL-style is the added re-usability that it provides.
-// By defining small and focused type classes for the behaviors we're looking for,
-// it becomes easy to re-use them. If some part of an application only
-// needs state management, for example, then it doesn't make sense to
-// also include writer-related functionality. Unfortunately, with monad transformers,
-// you're forced to combine behaviors together which means that you
-// have to bring along the entire functionality of the transformer even if you only use a small
+
+// With MTL, we can specify type classes for the behaviors that we
+// are interested in separately, and then compose them together
+// within our program. This is because with MTL, the context that
+// the different operations of our program run within is the `F`
+// monad which already provides the `map` and `flatMap` methods
+// needed to compose things together.
+
+// With monad transformers, on the other hand, we are forced to
+// combine the behaviors of different monads together within a new,
+// custom monad transformer "wrapper". In this wrapper, we define
+// custom `map` and `flatMap` methods that we use for composing
+// multiple instances of our wrapper together. These methods must
+// then ensure that the original behaviors of the monads that are
+// being composed remain the same as when they are used separately
+// which is no easy task.
+
+// Another benefit of the MTL-style is the added re-usability that
+// it provides. By defining small and focused type classes for the
+// behaviors we're looking for, it becomes easy to re-use them. If
+// some part of an application only needs state management, for
+// example, then it doesn't make sense to also include Writer
+// related functionality. Unfortunately, with monad transformers,
+// you're forced to combine behaviors together in a tightly coupled
+// way which means that you have to bring along the entire
+// functionality of the transformer even if you only use a small
 // part of it.
-//
-//
-// Furthermore, with MTL-style, we are able to customize the type classes by making them
-// as simple or as complex as we need them to be by
-// including only the behavior that we're interested. This helps us
-// avoid bloating our programs with functionality we dont need.
-// In addition, we get the opportunity to re-define behaviors in
-// more efficient ways from how they're normally defined.
-//
-// Using the above example, let's consider
-// the state monad `State[S,A]` which is commonly represented as a function
-// of type S => (S, A) where `S` is the type of the state and `A` is the type
-// of the result such that an input state is transformed to an output state
-// along with a result. If we only care about the "state" portion of the `State`
-// monad, we can define an MTL
-// type class, `MonadState[F[_], S]`, like we did above that only captures the state behavior
-// and does away with anything related to the result.
+
+// Furthermore, with MTL-style, we are able to customize the type
+// classes by making them as simple or as complex as we need them
+// to be. And we do this by including only the behavior that we're
+// interested. This helps us avoid bloating our program with
+// functionality we don't need. In addition, we get the opportunity
+// to re-define behaviors in more efficient ways from how they're
+// normally defined.
+
+// Using the above example, let's consider the State monad
+// `State[S, A]` which is commonly represented as a function of
+// type `S => (S, A)` where `S` is the type of the state and `A` is
+// the type of the result such that an input state is transformed
+// to an output state along with a result. If we only care about
+// the "state" portion of the `State` monad, we can define an MTL
+// type class, `MonadState[F[_], S]`, like we did above that only
+// captures the state behavior and does away with anything related
+// to the result.
+
+// Defining our behaviors this way helps to narrow the scope of the
+// type classes that model them. This opens the door for better
+// implementations that might not have been otherwise possible if
+// we needed to support the complete functionality of the monad.
 
 
 
