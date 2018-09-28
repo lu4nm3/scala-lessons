@@ -86,8 +86,8 @@ for {
 
 def lookUpUserAge2(id: String): Task[Option[Int]] = {
   val result: OptionT[Task, Int] = for {
-    optUser <- OptionT(getUser(id))
-  } yield optUser.age
+    user <- OptionT(getUser(id))
+  } yield user.age
 
   result.value // use `.value` to retrieved the wrapped monad
 }

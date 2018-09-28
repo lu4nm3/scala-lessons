@@ -6,18 +6,20 @@
 // about monad transformers and MTL:
 //
 // http://degoes.net/articles/effects-without-transformers
+import cats.data.{IndexedReaderWriterStateT, Kleisli, ReaderT}
 import cats.effect.IO
 import cats.effect.concurrent.Ref
 import cats.implicits._
 import cats.{Applicative, FlatMap, Functor, Monad, Monoid, Semigroup}
+
 import scala.language.higherKinds
 
 
 
 
 // Despite the composition benefits that monad transformers offer,
-// they impose tremendous performance overhead that rapidly leads
-// to CPU-bound, memory-hogging applications.
+// they impose a big performance overhead that rapidly leads to
+// CPU-bound, memory-hogging applications.
 
 // Monad transformers rely on vertical composition to layer new
 // effects onto other effects. The following is a short snippet of
@@ -182,7 +184,7 @@ object WriterStateT {
 // the Writer monads together in order to ensure that their
 // behavior remains the same even in combination. For the State
 // monad this means be able to "thread" a starting state value `S`
-// through what you can think of as multiple functions of type
+// through what we can think of as multiple functions of type
 // `S => (S, A)` as it gets repeatedly updated throughout the
 // program's execution. Similarly for the Writer monad, this means
 // being able to append to the current log `L` while threading the
@@ -237,7 +239,7 @@ program[IO].run(AppState(3)).unsafeRunSync()
 
 
 
-// In Haskell, the Monad Transformer Library (MTL) package, as its
+// In Haskell the Monad Transformer Library (MTL) package, as its
 // name suggests, used to provide monad transformer types. For some
 // time now, however, these monad transformers have resided in the
 // `transformers` package. And so it is partly by historical
@@ -260,7 +262,7 @@ program[IO].run(AppState(3)).unsafeRunSync()
 // In Scala, these MTL type classes are encoded using what is known
 // as a final tagless style.
 
-// For example, the type class `MonadState` could abstract over all
+// As an example, the type class `MonadState` abstracts over all
 // data types that are capable of supporting getting and setting
 // state including the `State` monad and even the `StateT` monad
 // transformer.
@@ -271,7 +273,7 @@ program[IO].run(AppState(3)).unsafeRunSync()
 // the state management functionality we need:
 
 trait MonadState[F[_], S] {
-  def monad: Monad[F]
+  val monad: Monad[F]
 
   def get: F[S]
 
@@ -286,7 +288,7 @@ trait MonadState[F[_], S] {
 // was in:
 
 trait MonadWriter[F[_], L] {
-  def monad: Monad[F]
+  val monad: Monad[F]
 
   def tell(l: L): F[Unit]
 
@@ -335,11 +337,11 @@ def program[F[_]](S: MonadState[F, AppState],
 // but instead, we will opt for using `Ref` (also from cats-effect)
 // for simplicity:
 
-def createState[S](initial: S): IO[MonadState[IO, S]] = {
+def createMonadState[S](initial: S): IO[MonadState[IO, S]] = {
   for {
     state <- Ref.of[IO, S](initial)
   } yield new MonadState[IO, S] {
-    def monad: Monad[IO] = Monad[IO]
+    val monad: Monad[IO] = Monad[IO]
 
     def get: IO[S] = state.get
 
@@ -353,11 +355,11 @@ def createState[S](initial: S): IO[MonadState[IO, S]] = {
 // empty instances of our log `L` as well as to combine multiple
 // values of `L` together:
 
-def createWriter[L](implicit monoid: Monoid[L]): IO[MonadWriter[IO, L]] = {
+def createMonadWriter[L](implicit M: Monoid[L]): IO[MonadWriter[IO, L]] = {
   for {
-    writer <- Ref.of[IO, L](monoid.empty)
+    writer <- Ref.of[IO, L](M.empty)
   } yield new MonadWriter[IO, L] {
-    def monad: Monad[IO] = Monad[IO]
+    val monad: Monad[IO] = Monad[IO]
 
     def tell(l: L): IO[Unit] = writer.update(_.combine(l))
 
@@ -370,8 +372,8 @@ def createWriter[L](implicit monoid: Monoid[L]): IO[MonadWriter[IO, L]] = {
 
 def main(): IO[(Vector[AppState], AppState)] = {
   for {
-    monadState <- createState(AppState(3))        // initial state
-    monadWriter <- createWriter[Vector[AppState]]
+    monadState <- createMonadState(AppState(3))        // initial state
+    monadWriter <- createMonadWriter[Vector[AppState]]
     result <- program(monadState, monadWriter)
   } yield result
 }
@@ -442,4 +444,134 @@ main().unsafeRunSync()
 
 
 
+
+
+trait MonadReader[F[_], E] {
+  val monad: Monad[F]
+
+  def ask: F[E]
+
+  def reader[A](f: E => F[A]): F[A]
+}
+
+def createMonadReader[E](value: E): IO[MonadReader[IO, E]] = {
+  for {
+    input <- Ref.of[IO, E](value)
+  } yield new MonadReader[IO, E] {
+    val monad = Monad[IO]
+
+    def ask: IO[E] = input.get
+
+    def reader[A](f: E => IO[A]): IO[A] = ask.flatMap(f)
+  }
+}
+
+case class Config(serverId: String)
+case class User(id: String)
+sealed trait Status
+case object Success extends Status
+case object Failure extends Status
+
+val getJobStatus: Config => IO[Status] = c => IO(Success)
+val getUser: Config => IO[User] = c => IO(User("as"))
+def sendEmail(status: Status, user: User): Config => IO[Unit] = _ => IO(())
+
+val getJobStatusR: ReaderT[IO, Config, Status] = Kleisli(getJobStatus)
+val getUserR: ReaderT[IO, Config, User] = Kleisli(getUser)
+def sendEmailR(status: Status, user: User): ReaderT[IO, Config, Unit] = Kleisli(sendEmail(status, user))
+
+
+val program1: ReaderT[IO, Config, Unit] = for {
+  status <- getJobStatusR
+  user <- getUserR
+  _ <- sendEmailR(status, user)
+} yield ()
+
+val result = program1.run(Config("sdfs"))
+
+
+def program2(R: MonadReader[IO, Config]): IO[Unit] = {
+  for {
+    status <- R.reader(getJobStatus)
+    user <- R.reader(getUser)
+    _ <- R.reader(sendEmail(status, user))
+  } yield ()
+}
+
+val result2 = createMonadReader(Config("localhost:8080")).flatMap(readerMonad => program2(readerMonad))
+
+case class Env(serverUrl: String)
+case class SystemState(value: Map[Env, Status])
+
+def getServerStatus[F[_]: Monad](): Env => F[Status] = _ => Monad[F].pure(Failure)
+def alertAdmin[F[_]: Monad](status: Status): Env => F[Unit] = _ => Monad[F].pure(println(s"Alert! Server status is $status"))
+
+def program[F[_]](R: MonadReader[F, Env],
+                  W: MonadWriter[F, Vector[SystemState]],
+                  S: MonadState[F, SystemState]): F[(Vector[SystemState], SystemState)] = {
+  implicit val M: Monad[F] = R.monad
+
+  for {
+    status <- R.reader(getServerStatus[F]())
+
+    state <- S.get
+
+    env <- R.ask
+    updatedState = SystemState(state.value + (env -> status))
+    _ <- S.set(updatedState)
+
+    _ <- W.tell(Vector(updatedState))
+
+    _ <- status match {
+      case Failure => R.reader(alertAdmin[F](status))
+      case _ => M.unit
+    }
+
+    logs <- W.logs
+    finalState <- S.get
+  } yield (logs, finalState)
+}
+
+def main2(): IO[(Vector[SystemState], SystemState)] = {
+  for {
+    monadReader <- createMonadReader(Env("1.2.3.4"))
+    monadWriter <- createMonadWriter[Vector[SystemState]]
+    monadState <- createMonadState(SystemState(Map.empty[Env, Status]))
+    result <- program(monadReader, monadWriter, monadState)
+  } yield result
+}
+
+val result3 = main2().unsafeRunSync()
+
+
+
+
+
+def programM[F[_]](implicit M: Monad[F]): IndexedReaderWriterStateT[F, Env, Vector[SystemState], SystemState, SystemState, SystemState] = {
+
+  for {
+    env <- IndexedReaderWriterStateT.ask[F, Env, Vector[SystemState], SystemState]
+    statusF = getServerStatus[F]().apply(env)
+    status <- IndexedReaderWriterStateT.liftF[F, Env, Vector[SystemState], SystemState, Status](statusF)
+
+    state <- IndexedReaderWriterStateT.get[F, Env, Vector[SystemState], SystemState]
+
+    updatedState = SystemState(state.value + (env -> status))
+    _ <- IndexedReaderWriterStateT.set[F, Env, Vector[SystemState], SystemState](updatedState)
+
+    _ <- IndexedReaderWriterStateT.tell[F, Env, Vector[SystemState], SystemState](Vector(updatedState))
+
+    _ <- status match {
+      case Failure =>
+        val alertAdminF = alertAdmin[F](status).apply(env)
+        IndexedReaderWriterStateT.liftF[F, Env, Vector[SystemState], SystemState, Unit](alertAdminF)
+      case _ =>
+        IndexedReaderWriterStateT.liftF[F, Env, Vector[SystemState], SystemState, Unit](M.unit)
+    }
+
+    finalState <- IndexedReaderWriterStateT.get[F, Env, Vector[SystemState], SystemState]
+  } yield finalState
+}
+
+programM[IO].run(Env("1.2.3.4"), SystemState(Map.empty[Env, Status])).unsafeRunSync()
 
