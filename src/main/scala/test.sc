@@ -18,3 +18,5 @@ val s2 = for {
 
 s2.run(0).run.unsafeRunSync()
 //s.flatMap()
+
+List(1,2,3).foldRight(List.empty[Int])((a, i) => a :: i)
