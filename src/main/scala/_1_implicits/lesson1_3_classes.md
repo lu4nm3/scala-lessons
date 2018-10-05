@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson1_2_conversions.md">← Previous</a> |
+    <a href="lesson1.md">Menu</a> |
+    <a href="lesson1_4_nested_conversions.md">Next →</a>
+</h4>
+
 <h1>Implicit Classes</h1>
 
 Implicit classes are a Scala language feature that allows us to define extra functionality on existing data types 
@@ -30,3 +36,9 @@ And used the same way.
 scala> "bob".hello
 res0: String = hello bob!
 ```
+
+<h4 align="right">
+    <a href="lesson1_2_conversions.md">← Previous</a> |
+    <a href="lesson1.md">Menu</a> |
+    <a href="lesson1_4_nested_conversions.md">Next →</a>
+</h4>

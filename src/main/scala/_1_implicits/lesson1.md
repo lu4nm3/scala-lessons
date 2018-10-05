@@ -7,4 +7,6 @@
   2. [Implicit Classes](lesson1_3_classes.md)
   3. [Nested Conversions](lesson1_4_nested_conversions.md)
 
-<h4><a href="lesson1_1_params.md">1. test</a></h4>
+<ol>
+    <li><a href="lesson1_1_params.md">Implicit Parameters</a></li>
+</ol>

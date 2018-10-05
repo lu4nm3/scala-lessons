@@ -1,3 +1,8 @@
+<h4 align="right">
+    <a href="lesson1.md">Menu</a> |
+    <a href="lesson1_2_conversions.md">Next →</a>
+</h4>
+
 <h1>Implicit Values & Parameters</h1>
 
 You can use the `implicit` keyword inside a parameter list to make specifying the parameters optional:
@@ -109,3 +114,8 @@ scala> useInt
        useInt
        ^
 ```
+
+<h4 align="right">
+    <a href="lesson1.md">Menu</a> |
+    <a href="lesson1_2_conversions.md">Next →</a>
+</h4>

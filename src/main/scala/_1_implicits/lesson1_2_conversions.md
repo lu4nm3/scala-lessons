@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson1_1_params.md">← Previous</a> |
+    <a href="lesson1.md">Menu</a> |
+    <a href="lesson1_3_classes.md">Next →</a>
+</h4>
+
 <h1>Implicit Conversions</h1>
 
 You can tag any single-arg method with `implicit` keyword to allow compiler to automatically convert the input type to 
@@ -46,3 +52,9 @@ res4: String = yes
 
 Even though the following is a contrived example, it demonstrates what can happen if you're not careful when using
 implicit conversions.
+
+<h4 align="right">
+    <a href="lesson1_1_params.md">← Previous</a> |
+    <a href="lesson1.md">Menu</a> |
+    <a href="lesson1_3_classes.md">Next →</a>
+</h4>

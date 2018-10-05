@@ -1,3 +1,8 @@
+<h4 align="right">
+    <a href="lesson1_3_classes.md">← Previous</a> |
+    <a href="lesson1.md">Menu</a>
+</h4>
+
 <h1>Nested Implicit Conversions</h1>
 
 We have seen implicit conversions from one type to another:
@@ -95,3 +100,8 @@ implicit class Baz[F, B](bar: B)(implicit f: B => Bar[F]) {
 scala> Foo().baz
 res0: String = baz
 ```
+
+<h4 align="right">
+    <a href="lesson1_3_classes.md">← Previous</a> |
+    <a href="lesson1.md">Menu</a>
+</h4>
