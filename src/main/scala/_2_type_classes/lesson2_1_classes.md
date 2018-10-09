@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson2.md">Menu</a> |
-    <a href="lesson2_1_classes.md">Next →</a>
+    <a href="lesson2_2_instances.md">Next →</a>
 </h4>
 
 <h1>The Type Class</h1>
@@ -26,5 +26,5 @@ trait Area[S] {
 
 <h4 align="right">
     <a href="lesson2.md">Menu</a> |
-    <a href="lesson2_1_classes.md">Next →</a>
+    <a href="lesson2_2_instances.md">Next →</a>
 </h4>

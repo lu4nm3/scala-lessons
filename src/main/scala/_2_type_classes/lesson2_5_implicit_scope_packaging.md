@@ -33,7 +33,7 @@ def foo(circle: Circle)(implicit area: Area[Circle]): Double = {
 
 <h4>Define instances in an object</h4>
 
-With option 1, we bring instances into scope by importing them:
+With option 1, we bring instances into scope by importing them like we have been doing so far:
 
 ```scala
 object ShapeAreas {
@@ -84,6 +84,7 @@ res0: Double = 78.53981633974483
 With options 3 and 4, instances are always in implicit scope:
 
 ```scala
+// You can define type class instances in the companion object of the type class itself
 object Area {
   implicit val circleArea: Area[Circle] = new Area[Circle] {
     def calculate(circle: Circle): Double = {
@@ -92,6 +93,8 @@ object Area {
   }
 }
 
+// Or alternatively, you can define type class instances in the companion object of the
+// particular type that you want to provide a type class instance for
 object Circle {
   implicit val circleArea: Area[Circle] = new Area[Circle] {
     def calculate(circle: Circle): Double = {
@@ -109,9 +112,13 @@ res0: Double = 78.53981633974483
 
 <h3>Default instances</h3>
 
-When packaging type class instances, if there is only a single instance for a type or a single good default for a type, 
+When packaging type class instances, if: 
+  
+  1. there is only a single instance for a type or 
+  2. a single good default for a type
+  
 then put it in the companion object of the type if possible. This allows users to override the instance by defining one 
-in the local scope whilst still providing sensible default behavior.
+in the local scope while still providing sensible default behavior.
 
 ```scala
 object Circle {

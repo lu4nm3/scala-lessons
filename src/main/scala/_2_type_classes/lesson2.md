@@ -1,4 +1,4 @@
-<h1>Implicits</h1>
+<h1>Type Classes</h1>
 
 <h3>Table of Contents</h3>
 

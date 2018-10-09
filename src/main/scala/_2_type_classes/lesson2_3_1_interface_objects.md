@@ -29,8 +29,8 @@ scala> Shape.calculateArea(Circle(5))
 res0: Double = 78.53981633974483
 ```
 
-Here the compiler notices that we called the `calculate` method without providing an implicit parameter. So it tries to 
-fix this by searching for the type class instance of the relevant type and inserting it at the call site:
+Here the compiler notices that we called the `calculateArea` method without providing an implicit parameter. So it tries 
+to fix this by searching for the type class instance of the relevant type and inserting it at the call site:
 
 ```scala
 Shape.calculateArea(Circle(5))(circleArea)
@@ -38,11 +38,12 @@ Shape.calculateArea(Circle(5))(circleArea)
 
 <h3>Summoner method</h3>
 
-If you're creating individual object methods for **all** the functionality of a type class, then we can alternatively 
-avoid the indirection of having the object methods call the type class methods.
+If you're creating individual object methods for **ALL** the functionality of a type class, then we can alternatively 
+avoid the indirection of having the object methods call the type class methods and just expose the type class
+directly.
 
-This commonly done by defining a "summoner" method in the companion object of the type class itself. This summoner is 
-just a 0-argument `apply` method:
+This commonly done by defining what is known as a "summoner" method in the companion object of the type class itself. 
+This summoner is just a 0-argument `apply` method:
 
 ```scala
 object Area {

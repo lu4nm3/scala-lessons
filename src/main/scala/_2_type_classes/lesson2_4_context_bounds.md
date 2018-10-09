@@ -21,9 +21,11 @@ We can do:
 ```scala
 object Area {
   def apply[S: Area]: Area[S] = {
-    // Since we no longer have an explicit name for the implicit parameter, we can't use 
-    // it in our method definition. To get around this, we make use of the `implicitly` 
-    // summoner in order to obtain the instance of the type class.
+    // Since we no longer have an explicit name to reference the implicit parameter, we 
+    // can't use it directly in our method definition. To get around this, we use the 
+    // `implicitly` summoner from the Scala standard library. This summoner will look
+    // for an implicit instance of the type class from the nearest scope, which in this
+    // case is the implicit method parameter of our `apply` method.
     implicitly[Area[S]]
   }
 }
@@ -44,8 +46,8 @@ Similarly, you can use context bounds to define implicit parameters in classes.
 Without context bounds:
 
 ```scala
-implicit class AreaOps[S](shape: S) {
-  def area(implicit calculator: Area[S]): Double = {
+class AreaOps[S](shape: S)(implicit calculator: Area[S]) {
+  def area: Double = {
     calculator.calculate(shape)
   }
 }
@@ -54,12 +56,13 @@ implicit class AreaOps[S](shape: S) {
 With context bounds:
 
 ```scala
-implicit class AreaOps[S: Area](shape: S) {
+class AreaOps[S: Area](shape: S) {
   def area: Double = {
     implicitly[Area[S]].calculate(shape) // we need to use implicitly here too!
   }
 }
 ```
+
 You can also specify multiple context bounds:
 
 ```scala

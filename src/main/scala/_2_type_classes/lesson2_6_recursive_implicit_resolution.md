@@ -18,8 +18,7 @@ implicit val circleArea: Area[Circle] = new Area[Circle] {
 }
 ```
 
-But we can also define instances as implicit methods that can be used to construct instances from other type class 
-instances.
+But we can also define them as implicit methods that can be used to construct instances from other type class instances.
 
 As an example, consider defining an instance of `Area` for a `List` of shapes that adds the areas of all the shapes in 
 the list. We would need an `Area[List[S]]` for every type of Shape `S` that we care about.
@@ -36,9 +35,9 @@ implicit val listTriangleArea: Area[List[Triangle]] = new Area[List[Triangle]] {
 ```
 
 However, this approach doesn't scale as now we end up requiring 2 `val`s for every type `S` (one val for the type itself 
-and one `val` for `List[S]`). We would also be duplicating the logic for calculating the area of different shapes.
+and one `val` for `List[S]`). We would also be duplicating logic.
 
-What we can do instead is to abstract the code for handling `List[S]` into a common method based on the instance of `S`. 
+What we can do instead is to abstract the code for handling `List[S]` into a common method based on an instance for `S`. 
 This method constructs an `Area` instance for `List[S]` by relying on an implicit parameter to fill in the S-specific 
 functionality.
 
@@ -55,9 +54,7 @@ Given our previous interface object:
 
 ```scala
 object Area {
-  def apply[S](implicit calculator: Area[S]): Area[S] = {
-    calculator
-  }
+  def apply[S](implicit calculator: Area[S]): Area[S] = calculator
 }
 ```
 
