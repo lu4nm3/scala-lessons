@@ -4,7 +4,7 @@
     <a href="lesson2_3_1_interface_objects.md">Next →</a>
 </h4>
 
-<h2>Type Class Instances</h2>
+<h1>Type Class Instances</h1>
 
 The instances of a type class provide implementations for the types that we care about. These types can include not only 
 your own custom types but also types from the Scala standard library as well as types defined in 3rd-party libraries.
