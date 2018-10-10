@@ -56,7 +56,7 @@ Then we can create a summoner method for our `Functor` type class:
 
 ```scala
 object Functor {
-  def apply[F[_]](implicit f: Functor[F]): Functor[F] = f
+  def apply[F[_]](implicit functor: Functor[F]): Functor[F] = functor
 }
 ```
 
@@ -65,6 +65,9 @@ And finally, we can use it to map the value of an `Option`:
 ```scala
 scala> Functor[Option].map(Some(2))(_ * 2)
 res0: Option[Int] = Some(4)
+
+scala> Functor[Option].map(None)(_ * 2)
+res1: Option[Int] = None
 ```
 
 <h4 align="right">

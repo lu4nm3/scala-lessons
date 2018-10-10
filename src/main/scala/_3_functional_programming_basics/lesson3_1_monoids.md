@@ -22,24 +22,24 @@ trait Monoid[A] {
 In addition, a monoid's `combine` must be associative and `empty` must be an identity element (ie. when a value is 
 combined with `empty` the result must be the original value).
 
-Let's look at a few real world examples of the Monoid.
+Let's look at a few real-world examples of the Monoid.
 
 <h3>Integer addition</h3>
 
 Let's look at integer addition:
 
 ```
-// `+` is the associative combine operation
+// + is the associative combine operation
 
 (1 + 2) + 3
 
 1 + (2 + 3)
 
-// `0` is the identity element
+// 0 is the identity element
 
-2 + 0 == 2
+3 + 0 == 3
 
-0 + 2 == 2
+0 + 3 == 3
 ```
 
 We can create a type class instance of `Monoid` for integer addition:
@@ -57,33 +57,33 @@ implicit val intAdd: Monoid[Int] = new Monoid[Int] {
 And we can test out these properties:
 
 ```scala
-scala> intAdd.combine(1, 2)
-res0: Int = 3
+scala> intAdd.combine(intAdd.combine(1, 2), 3)
+res0: Int = 6
 
-scala> intAdd.combine(2, 1)
-res1: Int = 3
+scala> intAdd.combine(1, intAdd.combine(2, 3))
+res1: Int = 6
 
-scala> intAdd.combine(2, intAdd.empty)
-res2: Int = 2
+scala> intAdd.combine(3, intAdd.empty)
+res2: Int = 3
 
-scala> intAdd.combine(intAdd.empty, 2)
-res3: Int = 2
+scala> intAdd.combine(intAdd.empty, 3)
+res3: Int = 3
 ```
 
 <h3>Integer multiplication</h3>
 
 ```
-// `*` is the associative combine operation
+// * is the associative combine operation
 
-(1 * 2) * 3
+(2 * 3) * 4
 
-1 * (2 * 3)
+2 * (3 * 4)
 
-// `1` is the identity element
+// 1 is the identity element
 
-2 * 1 == 2
+3 * 1 == 3
 
-1 * 2 == 2
+1 * 3 == 3
 ```
 
 We can also create a type class instance of `Monoid` for integer multiplication:
@@ -99,31 +99,33 @@ implicit val intMult: Monoid[Int] = new Monoid[Int] {
 And we will see that the associative and identity properties for integer multiplication hold:
 
 ```
-scala> intMult.combine(1, 2)
-res4: Int = 2
+scala> intMult.combine(intMult.combine(2, 3), 4)
+res4: Int = 24
 
-scala> intMult.combine(2, 1)
-res5: Int = 2
+scala> intMult.combine(2, intMult.combine(3, 4))
+res5: Int = 24
 
-scala> intMult.combine(2, intAdd.empty)
-res6: Int = 0
+scala> intMult.combine(3, intMult.empty)
+res6: Int = 3
 
-scala> intMult.combine(intAdd.empty, 2)
-res7: Int = 0
+scala> intMult.combine(intMult.empty, 3)
+res7: Int = 3
 ```
 
 <h3>String concatenation</h3>
 
 ```
-// `++` is the associative combine operation
+// ++ is the associative combine operation
 
-"one" ++ "two"
+("one" ++ "two") ++ "three"
 
-// `""` (ie. empty string) is the identity element
+"one" ++ ("two" ++ "three")
 
-"" ++ "one" == "one"
+// "" (ie. empty string) is the identity element
 
-"one" ++ "" == "one"
+"" ++ "three" == "three"
+
+"three" ++ "" == "three"
 ```
 
 Just like we've done for integers, we can create a `Monoid` for String concatenation:
@@ -140,14 +142,17 @@ And we can observe that once again, the properties for a Monoid's combine and id
 concatenation:
 
 ```scala
-scala> strConcat.combine("one", "two")
-res8: String = onetwo
+scala> strConcat.combine(strConcat.combine("one", "two"), "three")
+res8: String = onetwothree
 
-scala> strConcat.combine("one", strConcat.empty)
-res9: String = one
+scala> strConcat.combine("one", strConcat.combine("two", "three"))
+res9: String = onetwothree
 
-scala> strConcat.combine(strConcat.empty, "one")
-res10: String = one
+scala> strConcat.combine("three", strConcat.empty)
+res10: String = three
+
+scala> strConcat.combine(strConcat.empty, "three")
+res11: String = three
 ```
 
 <h4 align="right">

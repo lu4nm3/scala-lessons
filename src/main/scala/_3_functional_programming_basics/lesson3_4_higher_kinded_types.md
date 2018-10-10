@@ -27,7 +27,7 @@ res3: List[Int] = List(1, 2, 3)
 
 Nothing new here.
 
-<h3>Proper Types</h3>
+<h3>Proper Types (aka. 0-order types)</h3>
 
 Proper types are types that you can make a value out of (eg. `String`, `Int`, `(Int, Int, Int)`, `List[Int]`). They are 
 at a higher level of abstraction than values.
@@ -50,15 +50,15 @@ First-order types are types that have "holes" we can fill with other types to pr
 Just like value constructors (ie. functions) produce values:
 
 ```scala
-val f = (i: Int) => i * 2 // value constructor, takes one parameter
-f(1)                      // value, produced using a value parameter
+val f = (i: Int) => i * 2 // value constructor, takes one value parameter
+f(1)                      // produces value
 ```
 
 Type constructors produce proper types:
 
 ```scala
-List[_]   // type constructor, takes one parameter
-List[Int] // proper type, produced using type parameter
+List[_]   // type constructor, takes one type parameter
+List[Int] // produces proper type
 ```
 
 <h3>2nd-order Types</h3>
@@ -76,7 +76,7 @@ List[_]             // 1st-order type (takes a proper type to produce another pr
 trait Foo[F[_]] {}  // 2nd-order type (takes a 1st-order type to produce a proper type)
 ```
 
-<h3>The `*` notation</h3>
+<h3>The * notation</h3>
 
 You will sometimes see the `*` notation to describe the order of types.
 
@@ -84,13 +84,13 @@ You will sometimes see the `*` notation to describe the order of types.
 String              // is of kind * and is Order-0
 
 List[_]             // is of kind * -> * (takes 1 Order-0 type and produces 
-                    // a proper type) and is Order-1
+                    // an Order-0 type) and is Order-1
 
 Map[_, _]           // is of kind * -> * -> * (takes 2 Order-0 types and
-                    // produces a proper type) and is Order-1
+                    // produces an Order-0 type) and is Order-1
 
-trait Foo[F[_]] {}  // is of kind (* -> *) -> * (takes 1 Order-1
-                    // type and produces a proper type) and is Order-2
+trait Foo[F[_]] {}  // is of kind (* -> *) -> * (takes 1 Order-1 type
+                    // and produces an Order-0 type) and is Order-2
 ```
 
 <h4 align="right">
