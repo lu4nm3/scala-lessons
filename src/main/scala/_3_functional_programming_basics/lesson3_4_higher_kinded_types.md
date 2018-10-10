@@ -1,3 +1,8 @@
+<h4 align="right">
+    <a href="lesson3_3_functors.md">← Previous</a> |
+    <a href="lesson3.md">Menu</a> |
+</h4>
+
 <h1>Higher-Kinded Types</h1>
 
 Before jumping straight to higher-kinded types, let's give a bit of background first.
@@ -37,7 +42,7 @@ val tuple: (Int, Int, Int) = (1, 2, 3)
 val list: List[Int] = List(1, 2, 3)
 ```
 
-<h3>First-Order Types</h3>
+<h3>1st-order Types</h3>
 
 First-order types are types that have "holes" we can fill with other types to produce new types. They are also known as 
 **type constructors** or **higher-kinded types** and they sit at an abstraction level higher than proper types.
@@ -56,80 +61,39 @@ List[_]   // type constructor, takes one parameter
 List[Int] // proper type, produced using type parameter
 ```
 
-<h3>Second-Order Types</h3>
+<h3>2nd-order Types</h3>
 
 Second-order types are types that abstract over first-order types. They represent types that take type constructors as 
 parameters.
-
-```scala
-List("hello")         // value
-```
-
-```scala
-List[String]          // proper type (used to instatiate values)
-```
-
-```scala
-List[_]               // first-order type (takes one type to produce a proper type)
-```
-
-```scala
-// second-order type (takes one first order type to produce a proper type)
-trait WithList[F[_]] {
-
-}
-```
 
 ```scala
 List("hello")       // value
 
 List[String]        // proper type (used to create values)
 
-List[_]             // 1st-order type (takes a  proper type to produce another proper type)
+List[_]             // 1st-order type (takes a proper type to produce another proper type)
 
-trait Foo[F[_]] {   // 2nd-order type (takes a 1st-order type to produce a proper type)
-
-} 
+trait Foo[F[_]] {}  // 2nd-order type (takes a 1st-order type to produce a proper type)
 ```
 
+<h3>The `*` notation</h3>
 
+You will sometimes see the `*` notation to describe the order of types.
 
-// Higher Kinded Types
+```scala
+String              // is of kind * and is Order-0
 
-import scala.language.higherKinds
+List[_]             // is of kind * -> * (takes 1 Order-0 type and produces 
+                    // a proper type) and is Order-1
 
+Map[_, _]           // is of kind * -> * -> * (takes 2 Order-0 types and
+                    // produces a proper type) and is Order-1
 
-// As mentioned previously, a type with a type constructor (ie. a
-// type with [_]) is called a higher kinded type.
+trait Foo[F[_]] {}  // is of kind (* -> *) -> * (takes 1 Order-1
+                    // type and produces a proper type) and is Order-2
+```
 
-// A type constructor is just like a function that works at the
-// type level instead of the value level. Given a proper type, it
-// will return another proper type:
-
-// T => F[T]
-
-// We can also have a function that, given a type level function
-// (ie. a type constructor), returns another type level function:
-
-// F[_] => G[F[_]]
-
-// These types of function are known as higher order functions.
-
-
-
-
-// The * notation
-
-// We can use * as a notation to describe what order things are.
-
-String    // is of kind * and is Order 0
-
-List[_]   // is of kind * -> * (takes 1 Order-0 type and produces a
-          // proper type) and is Order-1
-
-Map[_, _] // is of kind * -> * -> * (takes 2 Order-0 types and
-          // produces a proper type) and is Order-1
-
-trait HasList[F[_]] // is of kind (* -> *) -> * (takes 1 Order-1
-                    // type and produces a proper type) and is
-                    // Order-2
+<h4 align="right">
+    <a href="lesson3_3_functors.md">← Previous</a> |
+    <a href="lesson3.md">Menu</a> |
+</h4>

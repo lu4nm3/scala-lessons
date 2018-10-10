@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson3_2_semigroups.md">← Previous</a> |
+    <a href="lesson3.md">Menu</a> |
+    <a href="lesson3_4_higher_kinded_types.md">Next →</a>
+</h4>
+
 <h1>Functors</h1>
 
 Functors are an abstraction that allow us to represent sequences of operations within a context. Informally, a functor 
@@ -60,3 +66,9 @@ And finally, we can use it to map the value of an `Option`:
 scala> Functor[Option].map(Some(2))(_ * 2)
 res0: Option[Int] = Some(4)
 ```
+
+<h4 align="right">
+    <a href="lesson3_2_semigroups.md">← Previous</a> |
+    <a href="lesson3.md">Menu</a> |
+    <a href="lesson3_4_higher_kinded_types.md">Next →</a>
+</h4>

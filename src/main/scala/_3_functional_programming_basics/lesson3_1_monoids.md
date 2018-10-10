@@ -1,3 +1,8 @@
+<h4 align="right">
+    <a href="lesson3.md">Menu</a> |
+    <a href="lesson3_2_semigroups.md">Next →</a>
+</h4>
+
 <h1>Monoids</h1>
 
 Formally, a monoid for type `A` is:
@@ -144,3 +149,8 @@ res9: String = one
 scala> strConcat.combine(strConcat.empty, "one")
 res10: String = one
 ```
+
+<h4 align="right">
+    <a href="lesson3.md">Menu</a> |
+    <a href="lesson3_2_semigroups.md">Next →</a>
+</h4>
