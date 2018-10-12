@@ -117,15 +117,15 @@ res7: Int = 3
 ```
 // ++ is the associative combine operation
 
-("one" ++ "two") ++ "three"
+("one" + "two") + "three"
 
-"one" ++ ("two" ++ "three")
+"one" + ("two" + "three")
 
 // "" (ie. empty string) is the identity element
 
-"" ++ "three" == "three"
+"" + "three" == "three"
 
-"three" ++ "" == "three"
+"three" + "" == "three"
 ```
 
 Just like we've done for integers, we can create a `Monoid` for String concatenation:

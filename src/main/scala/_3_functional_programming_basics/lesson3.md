@@ -1,4 +1,4 @@
-<h1>Functional Programming Basics</h1>
+<h1>Functional Programming - Basics</h1>
 
 <h3>Table of Contents</h3>
 

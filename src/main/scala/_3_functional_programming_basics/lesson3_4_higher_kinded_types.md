@@ -76,7 +76,7 @@ List[_]             // 1st-order type (takes a proper type to produce another pr
 trait Foo[F[_]] {}  // 2nd-order type (takes a 1st-order type to produce a proper type)
 ```
 
-<h3>The * notation</h3>
+<h3>The <code>*</code> notation</h3>
 
 You will sometimes see the `*` notation to describe the order of types.
 
