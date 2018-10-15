@@ -75,11 +75,11 @@ res5: Int = 3
 
 Cats' `Eval` data type has 3 subtypes: `Now`, `Later`, and `Always`.
 
-| Scala      | Cats     | Properties         |
-| ---------- | -------- | ------------------ |
-| `val`      | `Now`    | eager, memoized    |
-| `lazy val` | `Later`  | lazy, memoized     |
-| `def`      | `Always` | lazy, not memoized |
+| Scala      | Cats Eval | Properties         |
+| ---------- | --------- | ------------------ |
+| `val`      | `Now`     | eager, memoized    |
+| `lazy val` | `Later`   | lazy, memoized     |
+| `def`      | `Always`  | lazy, not memoized |
 
 <h3><code>Now</code></h3>
 

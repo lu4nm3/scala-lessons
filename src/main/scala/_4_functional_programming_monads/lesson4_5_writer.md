@@ -1,9 +1,5 @@
 <h1>Writer</h1>
 
-
-import scala.language.higherKinds
-
-
 Writer is a monad that lets us carry a "log" along with a computation. We can use it to record messages, errors, or
 additional data about a computation, and extract the log along with the final result.
 
@@ -79,6 +75,7 @@ val result = for {
 ```
 
 And if we run it, you will see that besides the final result, we also get back everything that was written to the log:
+
 ```scala
 scala> result.run
 res0: cats.Id[(scala.collection.immutable.Vector[String], Int)] = (Vector(computing a..., computed a!, preparing to compute b..., computing b..., computed b!),6)
