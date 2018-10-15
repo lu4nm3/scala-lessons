@@ -1,143 +1,152 @@
-// ****************************************************************
-//                             Kleisli
-// ****************************************************************
-import cats.Id
-import cats.data.Kleisli
-import monix.eval.Task
-import scala.language.higherKinds
-
-
 <h1>Kleisli</h1>
 
-// The Scala standard library already allows us to compose
-// functions of type `A => B` together using the `compose` and
-// `andThen` operators so long as the output type of one function
-// matches the input type of the next function:
+The Scala standard library already allows us to compose functions of type `A => B` together using the `compose` and
+`andThen` operators ***ONLY IF*** the output type of one function matches the input type of the next function:
 
-val getValueFromDb: Unit => Int = _ => 3
-val processValue: Int => Int = value => value * 2
-val writeValueToDb: Int => Boolean = _ => true
+```scala
+val foo: String => Int = s => s.toInt
+val bar: Int => Int = i => i * 2
+val baz: Int => Boolean = i => i % 2 == 0
 
-val combo1: Unit => Boolean = writeValueToDb compose processValue compose getValueFromDb
+scala> baz compose bar compose foo    // baz(bar(foo(...)))
+res0: String => Boolean
 
-val combo2: Unit => Boolean = getValueFromDb andThen processValue andThen writeValueToDb
+scala> foo andThen bar andThen baz    // foo(...) -> bar(foo(...)) -> baz(bar(foo(...)))
+res1: String => Boolean
+```
 
+Often times, however, we have to deal with functions that produce effects (ie. Option, Future, Task, etc) especially 
+when dealing with things like uncertainty or asynchronous calls.
 
+For example, if we modify our functions by wrapping the return type with Monix `Task`:
 
+```scala
+import monix.eval.Task
 
-// Often times, we have to deal with functions that produce effects
-// (ie. Option, Future, Task, etc) especially when dealing with
-// things like uncertainty or asynchronous calls:
+val foo: String => Task[Int] = s => Task.now(s.toInt)
+val bar: Int => Task[Int] = i => Task.now(i * 2)
+val baz: Int => Task[Boolean] = i => Task.now(i % 2 == 0)
+```
 
-val getValueFromDbIO: Unit => Task[Int] = _ => Task.now(3)
-val processValueIO: Int => Task[Int] = value => Task.now(value * 2)
-val writeValueToDbIO: Int => Task[Boolean] = _ => Task.now(true)
+We will not be able to compose them together like before since the output type of one function doesn't match the input 
+type of the next:
 
-// Now, the output type of one function no longer matches the input
-// type of the next function so we can't compose things like we did
-// before:
+```scala
+scala> foo andThen bar andThen baz
+<console>:16: error: type mismatch;
+ found   : Int => monix.eval.Task[Int]
+ required: monix.eval.Task[Int] => ?
+       foo andThen bar andThen baz
+                   ^
+```
 
-//val combo1IO: Unit => Task[Boolean] = writeValueToDbIO compose processValueIO compose getValueFromDbIO // type mismatch
-//
-//val combo2IO: Unit => Task[Boolean] = getValueFromDbIO andThen processValueIO andThen writeValueToDbIO // type mismatch
+There are a few things we can do here. First, we can try using the `flatMap` operation from `Task` to compose the 
+functions:
 
+```scala
+scala> (s: String) => foo(s) flatMap { v1 =>
+     |   bar(v1) flatMap { v2 =>
+     |     baz(v2)
+     |   }
+     | }
+res9: String => monix.eval.Task[Boolean] = $$Lambda$3816/2142304919@19b0d133
+```
 
+We can also use a for-comprehension to re-write the above:
 
-
-// There are a few things we can do here. First, we can try using
-// the `flatMap` operation of the effects to compose the functions:
-
-val combo3IO: Unit => Task[Boolean] = { _ =>
-  getValueFromDbIO() flatMap { value =>
-    processValueIO(value) flatMap { processed =>
-      writeValueToDbIO(processed)
-    }
-  }
+```scala
+(s: String) => {
+  for {
+    v1 <- foo(s)
+    v2 <- bar(v1)
+    result <- baz(v2)
+  } yield result
 }
+```
 
-// We can also use a for-comprehension to re-write the above:
+<h3>Kleisli</h3>
 
-val combo4IO: Unit => Task[Boolean] = _ => for {
-  value <- getValueFromDbIO()
-  processed <- processValueIO(value)
-  result <- writeValueToDbIO(processed)
-} yield result
+The Kleisli monad is yet another way to compose these functions together in a much cleaner and succinct manner. 
+`Kleisli[F[_], A, B]` can be thought of as a wrapper  for functions of type `A => F[B]` where `F[_]` is a type 
+constructor.
 
+Using our previous IO example, we can rewrite it using `Kleisli` as follows:
 
+```scala
+import cats.data.Kleisli
 
+//val foo: String => Task[Int] = s => Task.now(s.toInt)
+val foo: Kleisli[Task, String, Int] = Kleisli(s => Task.now(s.toInt))
 
-// This leads us to the Kleisli monad which we can use as yet
-// another way to compose these functions together in a much
-// cleaner and succinct manner. Kleisli[F[_], A, B] can be thought
-// of as a wrapper  for functions of type `A => F[B]` where `F[_]`
-// is a type constructor.
+//val bar: Int => Task[Int] = i => Task.now(i * 2)
+val bar: Kleisli[Task, Int, Int] =  Kleisli(i => Task.now(i * 2))
 
-val f: Int => Task[String] = ???
-val fk: Kleisli[Task, Int, String] = ???
+// val baz: Int => Task[Boolean] = i => Task.now(i % 2 == 0)
+val baz: Kleisli[Task, Int, Boolean] = Kleisli(i => Task.now(i % 2 == 0))
+```
 
+Now, thanks to `Kleisli`, we are able to combine them together just as if though they were regular functions using the
+`andThen` keyword (which in this case is provided by `Kleisli`):
 
+```scala
+scala> val combo = foo andThen bar andThen baz
+combo: cats.data.Kleisli[monix.eval.Task,String,Boolean] = Kleisli(cats.data.Kleisli$$$Lambda$3729/1961003967@23d1dcb8)
+```
 
+We can call `run` to extract the function being wrapped by `Kleisli`:
 
-// Using our previous IO example, we can rewrite it using Kleisli
-// as follows:
+```scala
+scala> combo.run
+res11: String => monix.eval.Task[Boolean] = cats.data.Kleisli$$$Lambda$3729/1961003967@23d1dcb8
+```
 
-// val getValueFromDbIO: Unit => Task[Int] = _ => Task.now(3)
-// val processValueIO: Int => Task[Int] = value => Task.now(value * 2)
-// val writeValueToDbIO: Int => Task[Boolean] = _ => Task.now(true)
+For even cleaner syntax, you can inline the lifting of the first function in the chain and then simply compose the rest 
+of the `A => F[B]` functions directly without lifting them to a Kleisli by using Kleisli's `andThen` operator:
 
-val getValueFromDbK: Kleisli[Task, Unit, Int] = Kleisli(getValueFromDbIO)
-val processValueK: Kleisli[Task, Int, Int] = Kleisli(processValueIO)
-val writeValueToDbK: Kleisli[Task, Int, Boolean] = Kleisli(writeValueToDbIO)
+```scala
+val foo: String => Task[Int] = s => Task.now(s.toInt)
+val bar: Int => Task[Int] = i => Task.now(i * 2)
+val baz: Int => Task[Boolean] = i => Task.now(i % 2 == 0)
 
-val combineK1: Kleisli[Task, Unit, Boolean] = getValueFromDbK andThen processValueK andThen writeValueToDbK
+scala> Kleisli(foo) andThen bar andThen baz
+res12: cats.data.Kleisli[monix.eval.Task,String,Boolean] = Kleisli(cats.data.Kleisli$$$Lambda$3729/1961003967@544d96de)
+```
 
-combineK1.run // Unit => Task[Boolean]
+<h3>A Kleisli in disguise</h3>
 
+One important thing to note is that a `Reader` is simply a more specialized form of `Kleisli` that abstracts the type 
+constructor of the result type. In fact, `Reader` is actually defined as a type alias of `Kleisli` that uses `Id` for 
+the effect type:
 
-
-
-// For even cleaner syntax, you can inline the lifting of the first
-// function in the chain and then simply compose the rest of the
-// `A => F[B]` functions directly without lifting them to a Kleisli
-// by using Kleisli's `andThen` operator:
-
-val combineK2: Kleisli[Task, Unit, Boolean] = Kleisli(getValueFromDbIO) andThen processValueIO andThen writeValueToDbIO
-
-combineK2.run // Unit => Task[Boolean]
-
-
-
-
-// One important thing to note is that a Reader is simply a more
-// specialized form of Kleisli that abstracts the type constructor
-// of the result type. In fact, Reader is actually defined as a
-// type alias of Kleisli that uses `Id` for the effect type:
-
+```scala
 type Reader[I, O] = Kleisli[Id, I, O]
+```
 
+This means that we can use Kleisli to sequence operations that rely on some common input the same way we did with 
+`Reader`:
 
-
-
-// This means that we can use Kleisli to sequence operations that
-// rely on some common input the same way we did with `Reader`:
-
+```scala
 case class Dog(name: String, favoriteFood: String)
 
 val greetDog: Dog => Task[String] = dog => Task.now(s"Hello ${dog.name}")
 val feedDog: Dog => Task[String] = dog => Task.now(s"Have a nice bowl of ${dog.favoriteFood}")
 
 val greetAndFeed = for {
-  greet <- Kleisli[Task, Dog, String](greetDog)
-  feed <- Kleisli[Task, Dog, String](feedDog)
+  greet <- Kleisli(greetDog)
+  feed <- Kleisli(feedDog)
 } yield s"$greet. $feed."
+```
 
-greetAndFeed.run // Dog => Task[String]
+Just like before, we can use the `run` method to get back the function wrapped by `Kleisli`:
 
+```scala
+scala> greetAndFeed.run
+res13: Dog => monix.eval.Task[String] = cats.data.Kleisli$$$Lambda$3729/1961003967@6ab4b791
+```
 
+And to execute, we simply pass an input to the resulting function:
 
-
-
-
-
-
-
+```scala
+scala> greetAndFeed.run(Dog("Comet", "chicken"))
+res14: monix.eval.Task[String] = Task.FlatMap$1931862900
+```
