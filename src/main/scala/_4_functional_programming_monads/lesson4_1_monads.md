@@ -1,12 +1,5 @@
 <h1>Monads</h1>
 
-import cats.Monad
-import cats.instances.option._
-import scala.language.higherKinds
-
-
-
-
 Informally, a monad is anything with a constructor and a `flatMap` operation. We can say that a monad is a mechanism for
 sequencing computations.
 
