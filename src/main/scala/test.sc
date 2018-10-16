@@ -1,25 +1,39 @@
+import cats.data.OptionT
+import cats.effect.IO
 import monix.eval.Task
 
-val foo: String => Task[Int] = s => Task.now(s.toInt)
-val bar: Int => Task[Int] = i => Task.now(i * 2)
-val baz: Int => Task[Boolean] = i => Task.now(i % 2 == 0)
+case class User(id: String, age: Int)
 
-(s: String) => foo(s) flatMap { v1 =>
-  bar(v1) flatMap { v2 =>
-    baz(v2)
+def getUser(id: String): IO[Option[User]] = IO.pure(None)
+
+
+def lookUpUserAge2(id: String): IO[Option[Int]] = {
+  OptionT(getUser(id))
+    .map(user => user.age)
+    .value
+}
+
+OptionT(getUser("sdf"))
+
+def lookUpUserAge(id: String): IO[Option[Int]] = {
+  for {
+    optUser <- getUser(id)
+  } yield {
+    for {
+      user <- optUser
+    } yield user.age
   }
 }
 
-(s: String) => {
-  for {
-    v1 <- foo(s)
-    v2 <- bar(v1)
-    result <- baz(v2)
-  } yield result
-}
 
-(s: String) => for {
-  v1 <- foo(s)
-  v2 <- bar(v1)
-  result <- baz(v2)
-} yield result
+//def getUser(id: String): IO[Option[User]] = ???
+
+def avgAge(userId1: String, userId2: String, userId3: String): IO[Option[Int]] = {
+  val result = for {
+    usr1 <- OptionT(getUser(userId1))  // use monad transformers locally to simplify composition
+    usr2 <- OptionT(getUser(userId2))
+    usr3 <- OptionT(getUser(userId3))
+  } yield (usr1.age + usr2.age + usr3.age) / 3
+
+  result.value // return untransformed stack
+}
