@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson4_3_monad_error.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_5_writer.md">Next →</a>
+</h4>
+
 <h1>Eval</h1>
 
 Eval is a monad that allows us to abstract over different models of evaluation (ie. eager, lazy) as well as whether or 
@@ -227,8 +233,8 @@ res0: BigInt = 33473205095971448369154760940714864779127732238104548077301003219
 Keep in mind that trampolining is not free. It uses the heap to create a chain of function objects to avoid consuming 
 stack space. In this case, computations are bounded by the size of the heap rather than the stack.
 
-
-
-
-
-
+<h4 align="right">
+    <a href="lesson4_3_monad_error.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_5_writer.md">Next →</a>
+</h4>

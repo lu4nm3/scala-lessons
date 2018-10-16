@@ -1,3 +1,8 @@
+<h4 align="right">
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_2_id.md">Next →</a>
+</h4>
+
 <h1>Monads</h1>
 
 Informally, a monad is anything with a constructor and a `flatMap` operation. We can say that a monad is a mechanism for
@@ -266,3 +271,8 @@ val m = Some(3)
 
 m.flatMap(f).flatMap(g) == m.flatMap(x => f(x).flatMap(g))
 ```
+
+<h4 align="right">
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_2_id.md">Next →</a>
+</h4>

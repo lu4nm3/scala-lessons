@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson4_5_writer.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_7_kleisli.md">Next →</a>
+</h4>
+
 <h1>Reader</h1>
 
 `Reader` is a monad that allows us to sequence operations that depend on some common input. Instances of Reader wrap up
@@ -142,6 +148,8 @@ configuration.
 callers. They are best used when it is informative for the user of the code to know what dependencies can be used down 
 in the call chain.
 
-
-
-
+<h4 align="right">
+    <a href="lesson4_5_writer.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_7_kleisli.md">Next →</a>
+</h4>

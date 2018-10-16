@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson4_7_kleisli.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_9_monad_transformers.md">Next →</a>
+</h4>
+
 <h1>State</h1>
 
 The State monad allows us to pass state around as part of a computation. We define state instances representing atomic 
@@ -70,3 +76,9 @@ After running it, we get back our final state value along with our result which 
 scala> program.run(3).value
 res4: (Int, (Int, Int, Int)) = (5,(3,4,5000))
 ```
+
+<h4 align="right">
+    <a href="lesson4_7_kleisli.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_9_monad_transformers.md">Next →</a>
+</h4>

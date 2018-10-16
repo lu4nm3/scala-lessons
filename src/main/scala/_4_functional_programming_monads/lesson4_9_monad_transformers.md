@@ -1,3 +1,8 @@
+<h4 align="right">
+    <a href="lesson4_8_state.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+</h4>
+
 <h1>Monad Transformers</h1>
 
 Often times you will run into situations where you need to work with multiple monads in combination. Monad transformers
@@ -149,3 +154,8 @@ def avgAge(userId1: String, userId2: String, userId3: String): IO[Option[Int]] =
   result.value // return untransformed stack
 }
 ```
+
+<h4 align="right">
+    <a href="lesson4_8_state.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+</h4>

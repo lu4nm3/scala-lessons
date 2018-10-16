@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson4_1_monads.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_3_monad_error.md">Next →</a>
+</h4>
+
 <h1>Id</h1>
 
 The identity monad is a type alias that turns a regular type into a single parameter type constructor:
@@ -67,3 +73,9 @@ val syncService = new Service[Id] {
   def findUser: Id[String] = "..."
 }
 ```
+
+<h4 align="right">
+    <a href="lesson4_1_monads.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_3_monad_error.md">Next →</a>
+</h4>

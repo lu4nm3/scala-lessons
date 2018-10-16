@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson4_4_eval.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_6_reader.md">Next →</a>
+</h4>
+
 <h1>Writer</h1>
 
 Writer is a monad that lets us carry a "log" along with a computation. We can use it to record messages, errors, or
@@ -80,3 +86,9 @@ And if we run it, you will see that besides the final result, we also get back e
 scala> result.run
 res0: cats.Id[(scala.collection.immutable.Vector[String], Int)] = (Vector(computing a..., computed a!, preparing to compute b..., computing b..., computed b!),6)
 ```
+
+<h4 align="right">
+    <a href="lesson4_4_eval.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_6_reader.md">Next →</a>
+</h4>
