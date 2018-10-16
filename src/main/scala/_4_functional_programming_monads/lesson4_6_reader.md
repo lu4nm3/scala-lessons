@@ -72,7 +72,10 @@ scala> greetAndFeed.run(Dog("Comet", "chicken"))
 res3: cats.Id[String] = Hello Comet. Have a nice bowl of chicken.
 ```
 
-<h3>Where are `Reader`s useful?</h3>
+Notice also how we only had to pass our input value once when we call `run`. `Reader` takes care of providing this input 
+to the rest of the reader functions. 
+
+<h3>Where are <code>Reader</code>s useful?</h3>
 
 Readers are useful in situations where:
 

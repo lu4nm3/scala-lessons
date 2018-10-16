@@ -11,7 +11,7 @@ are one approach to tackling this problem.
 <h2>Use case</h2>
 
 For example, say we're working with a database to retrieve user information. In this case since we don't want to block 
-our program while interacting with the database, we use `Task` to do things asynchronously. In addition, the `User` 
+our program while interacting with the database, we use `IO` to do things asynchronously. In addition, the `User` 
 value that we're looking for may or may not exist so we'll use `Option` to represent this:
 
 ```scala
@@ -29,8 +29,8 @@ def lookUpUserAge(id: String): IO[Option[Int]] = {
 ```
 
 You will notice that in order to retrieve the age of a user, we have to nest calls to `map`. This is because first we 
-need to access the optional `User` value from within the `Task` before we can get to the `age` field of the `User` 
-itself. The more complex your data structures, the more tedious this gets.
+need to access the optional `User` value from within the `IO` before we can get to the `age` field of the `User` itself.
+The more complex your data structures, the more tedious this gets.
 
 <h2>Monad Transformers</h2>
 
@@ -95,7 +95,7 @@ def lookUpUserAge(id: String): IO[Option[Int]] = {
 }
 ```
 
-<h3>Beyond small monad stacks</h3>
+<h3>What about big monad stacks?</h3>
 
 Things start to become even more confusing when we stack 3 or more monads together. For example, say we wanted to create
 an `IO` of an `Either` of `Option`:

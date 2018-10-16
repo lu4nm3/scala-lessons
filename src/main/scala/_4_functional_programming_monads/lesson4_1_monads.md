@@ -142,8 +142,9 @@ allow us to keep chaining calls to `flatMap` like we saw in the previous section
 
 In the case of "failure", the monadic computation will short-circuit and not go any further. Now, when we say "failure",
 we don't necessarily mean that an exception was thrown or that the program now has to terminate. We simply mean that the
-monadic computation did not follow the successful path of operation and must now return a type to represent this failure
-. This type is typically a sub-class from the Monad in question (eg. `None` for `Option`, `Left` for `Either`, etc).
+monadic computation did not follow the successful path of operation and must now return a type to represent this 
+failure. This type is typically a sub-class from the Monad in question (eg. `None` for `Option`, `Left` for `Either`,
+etc).
 
 Using the example from the previous section, let's suppose that parsing our second integer fails:
 

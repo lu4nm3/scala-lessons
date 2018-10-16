@@ -72,7 +72,7 @@ We can also use a for-comprehension to re-write the above:
 
 <h3>Kleisli</h3>
 
-The Kleisli monad is yet another way to compose these functions together in a much cleaner and succinct manner. 
+The Kleisli monad is another way to compose these functions together in a much cleaner and succinct manner. 
 `Kleisli[F[_], A, B]` can be thought of as a wrapper  for functions of type `A => F[B]` where `F[_]` is a type 
 constructor.
 
