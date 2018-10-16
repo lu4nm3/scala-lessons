@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson4_2_id.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_4_eval.md">Next →</a>
+</h4>
+
 <h1>MonadError</h1>
 
 Cats provides a monad-like type class called `MonadError` that abstracts over data types that are used for error 
@@ -60,3 +66,9 @@ they don't:
 monadError.ensure(success)(new IllegalArgumentException("Number is too low!"))(_ > 5)
 // res3: Task[Int] = Task(new IllegalArgumentException("Number is too low!"))
 ```
+
+<h4 align="right">
+    <a href="lesson4_2_id.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_4_eval.md">Next →</a>
+</h4>

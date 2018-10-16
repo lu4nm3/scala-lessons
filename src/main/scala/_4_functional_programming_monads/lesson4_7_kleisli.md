@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson4_6_reader.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_8_state.md">Next →</a>
+</h4>
+
 <h1>Kleisli</h1>
 
 The Scala standard library already allows us to compose functions of type `A => B` together using the `compose` and
@@ -150,3 +156,9 @@ And to execute, we simply pass an input to the resulting function:
 scala> greetAndFeed.run(Dog("Comet", "chicken"))
 res14: monix.eval.Task[String] = Task.FlatMap$1931862900
 ```
+
+<h4 align="right">
+    <a href="lesson4_6_reader.md">← Previous</a> |
+    <a href="lesson4.md">Menu</a> |
+    <a href="lesson4_8_state.md">Next →</a>
+</h4>
