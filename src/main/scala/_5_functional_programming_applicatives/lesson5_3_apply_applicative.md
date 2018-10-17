@@ -46,7 +46,7 @@ trait Applicative[F[_]] extends Apply[F] {
 The main point here is that there is a tight relationship between `product`, `ap`, and `map` that allows any one of them
 to be defined in terms of the other 2. This extends further to the hierarchy of `Applicative`s and `Monad`s:
 
-![fp_hierarchy_diagram](fp_hierarchy_diagram.png)
+<img src="fp_hierarchy_diagram.png" width="450"/>
 
 In this sense you could say that:
 
