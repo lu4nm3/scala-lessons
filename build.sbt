@@ -12,6 +12,7 @@ lazy val scalaLessons = (project in file("."))
   )
   .settings(libraryDependencies ++=
     Seq(
+      "com.lihaoyi" % "ammonite" % "1.2.1" % "test" cross CrossVersion.full,
       "com.typesafe.play" %% "play" % "2.6.13" withSources() withJavadoc(),
       "io.monix" % "monix_2.12" % "3.0.0-RC1",
       "org.typelevel" %% "cats-core" % "1.1.0" withSources() withJavadoc(),
@@ -22,4 +23,11 @@ lazy val scalaLessons = (project in file("."))
   .settings(
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.7"),
 //    addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.7" cross CrossVersion.binary)
+  )
+  .settings(
+    sourceGenerators in Test += Def.task {
+      val file = (sourceManaged in Test).value / "amm.scala"
+      IO.write(file, """object amm extends App { ammonite.Main.main(args) }""")
+      Seq(file)
+    }.taskValue
   )
