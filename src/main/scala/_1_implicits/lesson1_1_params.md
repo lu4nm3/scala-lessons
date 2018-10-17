@@ -106,7 +106,7 @@ def useInt(implicit i: Int): Int = i
 If we call `useInt` we get a compilation error:
 
 ```scala
-scala> useInt
+@ useInt
 <console>:16: error: ambiguous implicit values:
  both value x of type => Int
  and value y of type => Int

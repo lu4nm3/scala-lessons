@@ -22,10 +22,10 @@ object Shape {
 To use this object, we import any type class instances we care about and call the relevant method:
 
 ```scala
-scala> import ShapeAreas._
+@ import ShapeAreas._
 import ShapeAreas._
 
-scala> Shape.calculateArea(Circle(5))
+@ Shape.calculateArea(Circle(5))
 res0: Double = 78.53981633974483
 ```
 
@@ -55,10 +55,10 @@ And then we can call this method by simply passing in the type that we're intere
 class instance for that type also has to be in scope:
 
 ```scala
-scala> import ShapeAreas._
+@ import ShapeAreas._
 import ShapeAreas._
 
-scala> Area[Circle].calculate(Circle(5))
+@ Area[Circle].calculate(Circle(5))
 res0: Double = 78.53981633974483
 ```
 
@@ -69,7 +69,7 @@ def implicitly[T](implicit e: T): T = e
 ```
 
 ```scala
-scala> implicitly[Area[Circle]].calculate(Circle(5))
+@ implicitly[Area[Circle]].calculate(Circle(5))
 res1: Double = 78.53981633974483
 ```
 

@@ -18,17 +18,17 @@ not a result is memoized. First let's look at how Scala natively supports these 
 Notice how the following print statement is only executed once regardless of how many times `x` is accessed:
 
 ```scala
-scala> val x = {
+@ val x = {
      |   println("computing x...")
      |   3
      | }
 computing x...
 x: Int = 3
 
-scala> x
+@ x
 res0: Int = 3
 
-scala> x
+@ x
 res1: Int = 3
 ```
 
@@ -40,17 +40,17 @@ Notice how the print statement is re-run on every access of
 `y`:
 
 ```scala
-scala> def y = {
+@ def y = {
      |   println("computing y...")
      |   3
      | }
 y: Int
 
-scala> y
+@ y
 computing y...
 res2: Int = 3
 
-scala> y
+@ y
 computing y...
 res3: Int = 3
 ```
@@ -63,17 +63,17 @@ Notice that nothing gets printed when `z` is defined and that once it is accesse
 the print and memoize the resulting value:
 
 ```scala
-scala> lazy val z = {
+@ lazy val z = {
      |   println("computing z...")
      |   3
      | }
 z: Int = <lazy>
 
-scala> z
+@ z
 computing z...
 res4: Int = 3
 
-scala> z
+@ z
 res5: Int = 3
 ```
 
@@ -92,20 +92,20 @@ Cats' `Eval` data type has 3 subtypes: `Now`, `Later`, and `Always`.
 `Now` captures a value "right now", similar to a `val`:
 
 ```scala
-scala> import cats.Eval
+@ import cats.Eval
 import cats.Eval
 
-scala> val x = Eval.now {
+@ val x = Eval.now {
      |   println("computing x...")
      |   3
      | }
 computing x...
 x: cats.Eval[Int] = Now(3)
 
-scala> x.value
+@ x.value
 res0: Int = 3
 
-scala> x.value
+@ x.value
 res1: Int = 3
 ```
 
@@ -114,17 +114,17 @@ res1: Int = 3
 `Always` captures a lazy computation similar to a `def`:
 
 ```scala
-scala> val y = Eval.always {
+@ val y = Eval.always {
      |   println("computing y...")
      |   3
      | }
 y: cats.Eval[Int] = cats.Always@59eae87c
 
-scala> y.value
+@ y.value
 computing y...
 res2: Int = 3
 
-scala> y.value
+@ y.value
 computing y...
 res3: Int = 3
 ```
@@ -134,17 +134,17 @@ res3: Int = 3
 `Later` captures a lazy, memoized computation similar to a `lazy val`:
 
 ```scala
-scala> val z = Eval.later {
+@ val z = Eval.later {
      |   println("computing y...")
      |   3
      | }
 z: cats.Eval[cats.Eval[Int]] = cats.Later@292f4ca9
 
-scala> z.value
+@ z.value
 computing y...
 res4: cats.Eval[Int] = Now(3)
 
-scala> z.value
+@ z.value
 res5: cats.Eval[Int] = Now(3)
 ```
 
@@ -155,7 +155,7 @@ the different Eval instances. Mapping functions (ie. the `yield` block), however
 demand:
 
 ```scala
-scala> val result = for {
+@ val result = for {
      |   a <- Eval.now { println("calculating a..."); 3 }
      |   b <- Eval.always { println("calculating b..."); 2 }
      | } yield {
@@ -165,12 +165,12 @@ scala> val result = for {
 calculating a...
 result: cats.Eval[Int] = cats.Eval$$anon$9@6413cd8d
 
-scala> result.value
+@ result.value
 calculating b...
 multiplying a and b...
 res0: Int = 6
 
-scala> result.value
+@ result.value
 calculating b...
 multiplying a and b...
 res1: Int = 6
@@ -196,7 +196,7 @@ def factorial(n: BigInt): BigInt = {
 Due to its recursive nature, executing the method with a large value will result in a `StackOverflowException`:
 
 ```scala
-scala> factorial(50000)
+@ factorial(50000)
 java.lang.StackOverflowError
   at scala.math.BigInt$.apply(BigInt.scala:49)
   at scala.math.BigInt$.long2bigInt(BigInt.scala:101)
@@ -218,7 +218,7 @@ Now if we try executing it with the same large value, we will see that it no lon
 `StackOverflowException`:
 
 ```scala
-scala> factorial(50000).value
+@ factorial(50000).value
 res0: BigInt = 334732050959714483691547609407148647791277322381045480773010032199016802214436564169738123107191693087984
 804381902082998936163847430666937426305728453637840383257562821233599872682440782359723560408538544413733837535685655363
 711683274051660761551659214061560754612942017905674796654986292422200225415535107181598016154764518106166749702179965374

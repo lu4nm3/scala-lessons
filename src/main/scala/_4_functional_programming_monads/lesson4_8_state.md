@@ -23,13 +23,13 @@ val s = State[Int, String] { state => (state, s"The state is $state") }
 execute our state monad by providing an initial state value to one of several `run` methods:
 
 ```scala
-scala> s.run(3).value
+@ s.run(3).value
 res0: (Int, String) = (3,The state is 3)
 
-scala> s.runS(3).value
+@ s.runS(3).value
 res1: Int = 3
 
-scala> s.runA(3).value
+@ s.runA(3).value
 res2: String = The state is 3
 ```
 
@@ -53,7 +53,7 @@ When we run this composed `State` transformation, we get back the final state va
 values:
 
 ```scala
-scala> combined.run(3).value
+@ combined.run(3).value
 res3: (Int, (String, String)) = (8,(Result of step 1 is 3,Result of step 2 is 4))
 ```
 
@@ -73,7 +73,7 @@ val program: State[Int, (Int, Int, Int)] = for {
 After running it, we get back our final state value along with our result which is a tuple in this case:
 
 ```scala
-scala> program.run(3).value
+@ program.run(3).value
 res4: (Int, (Int, Int, Int)) = (5,(3,4,5000))
 ```
 

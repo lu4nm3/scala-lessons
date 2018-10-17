@@ -13,7 +13,7 @@ and `Stream`s. With `Foldable` we can write generic folds that work with a varie
 the result becomes the accumulator value for the next call:
 
 ```scala
-scala> List(1, 2, 3, 4, 5).foldLeft(0)((accum, num) => accum + (num + 1))
+@ List(1, 2, 3, 4, 5).foldLeft(0)((accum, num) => accum + (num + 1))
 res0: Int = 20
 ```
 
@@ -23,7 +23,7 @@ res0: Int = 20
 binary operation is commutative:
 
 ```scala
-scala> List(1, 2, 3).foldLeft(0)(_ + _)
+@ List(1, 2, 3).foldLeft(0)(_ + _)
 res1: Int = 6
 ```
 
@@ -34,7 +34,7 @@ res1: Int = 6
 | 3     | 3     | 3 + 3     |
 
 ```scala
-scala> List(1, 2, 3).foldRight(0)(_ + _)
+@ List(1, 2, 3).foldRight(0)(_ + _)
 res2: Int = 6
 ```
 
@@ -47,7 +47,7 @@ res2: Int = 6
 If we provided a non-commutative operation, then the order of evaluation makes a difference:
 
 ```scala
-scala> List(1, 2, 3).foldLeft(0)(_ - _)
+@ List(1, 2, 3).foldLeft(0)(_ - _)
 res3: Int = -6
 ```
 
@@ -58,7 +58,7 @@ res3: Int = -6
 | -3    | 3     | -3 - 3    |
 
 ```scala
-scala> List(1, 2, 3).foldRight(0)(_ - _)
+@ List(1, 2, 3).foldRight(0)(_ - _)
 res4: Int = 2
 ```
 
@@ -77,10 +77,10 @@ handful of Scala data types (`List`, `Vector`, `Stream`, `Option`):
 import cats.{Eval, Foldable}
 import cats.implicits._
 
-scala> Foldable[List].foldLeft(List(1, 2, 3), 0)(_ - _)
+@ Foldable[List].foldLeft(List(1, 2, 3), 0)(_ - _)
 res5: Int = -6
 
-scala> Foldable[List].foldRight(List(1, 2, 3), Eval.now(0))((num, eval) => eval.map(num - _)).value
+@ Foldable[List].foldRight(List(1, 2, 3), Eval.now(0))((num, eval) => eval.map(num - _)).value
 res6: Int = 2
 ```
 
@@ -88,7 +88,7 @@ res6: Int = 2
 such as: `find`, `exists`, `forall`, `toList`, `isEmpty`, `nonEmpty`, etc.
 
 ```scala
-scala> Foldable[List].find(List(1, 2, 3))(_ % 2 == 0)
+@ Foldable[List].find(List(1, 2, 3))(_ % 2 == 0)
 res7: Option[Int] = Some(2)
 ```
 
@@ -99,7 +99,7 @@ In addition, `Foldable` provides 2 methods that make use of `Monoid`s:
     ```scala
     import cats.implicits._
 
-    scala> Foldable[List].combineAll(List(1, 2, 3))
+    @ Foldable[List].combineAll(List(1, 2, 3))
     res3: Int = 6
     ```
 
@@ -108,7 +108,7 @@ In addition, `Foldable` provides 2 methods that make use of `Monoid`s:
     ```scala
     import cats.implicits._
 
-    scala> Foldable[List].foldMap(List(1, 2, 3))(_ + 1)
+    @ Foldable[List].foldMap(List(1, 2, 3))(_ + 1)
     res4: Int = 9
     ```
 
@@ -117,7 +117,7 @@ You can also compose Foldables to support deep traversal of nested sequences:
 ```scala
 val ints = List(Vector(1, 2, 3), Vector(4, 5, 6))
 
-scala> (Foldable[List] compose Foldable[Vector]).combineAll(ints)
+@ (Foldable[List] compose Foldable[Vector]).combineAll(ints)
 res5: Int = 21
 ```
 

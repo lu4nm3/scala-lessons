@@ -51,13 +51,13 @@ Here are some examples where we use an instance of `Semigroupal[Option]` to comb
 import cats.Semigroupal
 import cats.implicits._
 
-scala> Semigroupal[Option].product(Some(123), Some("abc"))
+@ Semigroupal[Option].product(Some(123), Some("abc"))
 res0: Option[(Int, String)] = Some((123,abc))
 
-scala> Semigroupal[Option].product(None, Some("abc"))
+@ Semigroupal[Option].product(None, Some("abc"))
 res1: Option[(Nothing, String)] = None
 
-scala> Semigroupal[Option].product(Some(123), None)
+@ Semigroupal[Option].product(Some(123), None)
 res2: Option[(Int, Nothing)] = None
 ```
 
@@ -65,7 +65,7 @@ The `product` method of `Semigroupal` only supports combining 2 contexts togethe
 contexts, we can use the `tupleX` method:
 
 ```scala
-scala> Semigroupal.tuple3(Option(1), Option(2), Option(3))
+@ Semigroupal.tuple3(Option(1), Option(2), Option(3))
 res3: Option[(Int, Int, Int)] = Some((1,2,3))
 ```
 
@@ -73,7 +73,7 @@ We can also specify the result of combining contexts together using one of sever
 us:
 
 ```scala
-scala> Semigroupal.map3(Option(1), Option(2), Option(3))((n1, n2, n3) => n1 + n2 + n3)
+@ Semigroupal.map3(Option(1), Option(2), Option(3))((n1, n2, n3) => n1 + n2 + n3)
 res4: Option[Int] = Some(6)
 ```
 
@@ -82,10 +82,10 @@ You can also use the `tupled` and `mapN` syntax methods that are implicitly avai
 ```scala
 import cats.implicits._
 
-scala> (Option(1), Option(2), Option(3)).tupled
+@ (Option(1), Option(2), Option(3)).tupled
 res5: Option[(Int, Int, Int)] = Some((1,2,3))
 
-scala> (Option(1), Option(2), Option(3)).mapN((n1, n2, n3) => n1 + n2 + n3)
+@ (Option(1), Option(2), Option(3)).mapN((n1, n2, n3) => n1 + n2 + n3)
 res6: Option[Int] = Some(6)
 ```
 

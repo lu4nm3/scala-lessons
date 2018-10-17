@@ -22,7 +22,7 @@ implicit def stringToGreet(s: String): Greet = new Greet(s)
 Then we can try calling the `hello` method on a string:
 
 ```scala
-scala> "bob".hello
+@ "bob".hello
 res1: String = hello bob!
 ```
 Here the `String` type doesn't have a method called `hello`. So the compiler will search the implicit scope to see if 
@@ -43,10 +43,10 @@ implicit def intToBoolean(i: Int): Boolean = i == 0
 Now let's use an `Int` somewhere that a `Boolean` is expected:
 
 ```scala
-scala> if (1) "yes" else "no"
+@ if (1) "yes" else "no"
 res3: String = no
 
-scala> if (0) "yes" else "no"
+@ if (0) "yes" else "no"
 res4: String = yes
 ```
 

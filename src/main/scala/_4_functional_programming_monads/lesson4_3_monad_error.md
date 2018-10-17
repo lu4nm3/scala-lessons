@@ -36,14 +36,14 @@ We can lift values that we consider to be "successful" up to a `MonadError` usin
 import cats.MonadError
 import cats.effect.IO
 
-scala> MonadError[IO, Throwable].pure(3)
+@ MonadError[IO, Throwable].pure(3)
 res0: cats.effect.IO[Int] = IO(3)
 ```
 
 We can also lift "errors" up to a `MonadError` using `raiseError`:
 
 ```scala
-scala> val error = MonadError[IO, Throwable].raiseError[Int](new NullPointerException())
+@ val error = MonadError[IO, Throwable].raiseError[Int](new NullPointerException())
 error: cats.effect.IO[Int] = IO(throw java.lang.NullPointerException)
 ```
 
@@ -55,7 +55,7 @@ val recover = MonadError[IO, Throwable].handleError(error) {
   case _ => 1
 }
 
-scala> recover.unsafeRunSync()
+@ recover.unsafeRunSync()
 res1: Int = 0
 ```
 

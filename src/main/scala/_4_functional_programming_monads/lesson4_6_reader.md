@@ -18,7 +18,7 @@ val dogName: Reader[Dog, String] = Reader(dog => dog.name)
 ```
 
 ```scala
-scala> dogName.run(Dog("Comet", "chicken"))
+@ dogName.run(Dog("Comet", "chicken"))
 res0: cats.Id[String] = Comet
 ```
 
@@ -34,7 +34,7 @@ val feedDog: Dog => String = dog => s"Have a nice bowl of ${dog.favoriteFood}"
 We can't compose functions together because they don't have `map` or `flatMap`:
 
 ```scala
-scala> for {
+@ for {
      |   greet <- greetDog
      |   feed <- feedDog
      | } yield s"$greet. $feed."
@@ -68,7 +68,7 @@ val greetAndFeed = for {
 And we can execute the composition using `Reader`'s `run` method:
 
 ```scala
-scala> greetAndFeed.run(Dog("Comet", "chicken"))
+@ greetAndFeed.run(Dog("Comet", "chicken"))
 res3: cats.Id[String] = Hello Comet. Have a nice bowl of chicken.
 ```
 

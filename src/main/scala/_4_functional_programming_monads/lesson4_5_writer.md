@@ -32,29 +32,29 @@ import cats.implicits._ // for Monoid[Vector] and ".pure" syntax and
 
 type Logged[A] = Writer[Vector[String], A]
 
-scala> 42.pure[Logged]
+@ 42.pure[Logged]
 res0: Logged[Int] = WriterT((Vector(),42))
 ```
 
 If we have a log and no result, we can create a `Writer` using the `tell` operation:
 
 ```scala
-scala> Vector("step 1", "step 2").tell
+@ Vector("step 1", "step 2").tell
 res1: cats.data.Writer[scala.collection.immutable.Vector[String],Unit] = WriterT((Vector(step 1, step 2),()))
 ```
 
 We can extract the result and log from a Writer using the following operations:
 
 ```scala
-scala> val w = Writer(Vector("step 1", "step 2"), 42)
+@ val w = Writer(Vector("step 1", "step 2"), 42)
 
-scala> w.value
+@ w.value
 res0: cats.Id[Int] = 42
 
-scala> w.written
+@ w.written
 res1: cats.Id[scala.collection.immutable.Vector[String]] = Vector(step 1, step 2)
 
-scala> w.run
+@ w.run
 res2: cats.Id[(scala.collection.immutable.Vector[String], Int)] = (Vector(step 1, step 2),42)
 ```
 
@@ -83,7 +83,7 @@ val result = for {
 And if we run it, you will see that besides the final result, we also get back everything that was written to the log:
 
 ```scala
-scala> result.run
+@ result.run
 res0: cats.Id[(scala.collection.immutable.Vector[String], Int)] = (Vector(computing a..., computed a!, preparing to compute b..., computing b..., computed b!),6)
 ```
 

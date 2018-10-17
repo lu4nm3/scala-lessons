@@ -27,10 +27,10 @@ implicit def barToBaz(bar: Bar): Baz = Baz()
 ```
 
 ```scala
-scala> Foo().bar
+@ Foo().bar
 res0: String = bar
 
-scala> Bar().baz
+@ Bar().baz
 res1: String = baz
 ```
 
@@ -38,7 +38,7 @@ However, just because we have one conversion from `Foo` to `Bar` and another fro
 can convert an instance of `Foo` directly to an instance of `Baz`:
 
 ```scala
-scala> Foo().baz
+@ Foo().baz
 <console>:17: error: value baz is not a member of Foo
        Foo().baz
              ^
@@ -52,7 +52,7 @@ implicit def barToBaz[B](bar: B)(implicit f: B => Bar): Baz = Baz()
 ```
 
 ```scala
-scala> Foo().baz
+@ Foo().baz
 res3: String = baz
 ```
 
@@ -97,7 +97,7 @@ implicit class Baz[F, B](bar: B)(implicit f: B => Bar[F]) {
 ```
 
 ```scala
-scala> Foo().baz
+@ Foo().baz
 res0: String = baz
 ```
 

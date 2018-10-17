@@ -28,13 +28,13 @@ We then use the interface syntax by importing the implicit class along with the 
 need:
 
 ```scala
-scala> import ShapeAreas._
+@ import ShapeAreas._
 import ShapeAreas._
 
-scala> import ShapeSyntax._
+@ import ShapeSyntax._
 import ShapeSyntax._
 
-scala> Circle(5).area
+@ Circle(5).area
 res0: Double = 78.53981633974483
 ```
 

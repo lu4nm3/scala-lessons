@@ -46,10 +46,10 @@ object ShapeAreas {
 ```
 
 ```scala
-scala> import ShapeAreas._
+@ import ShapeAreas._
 import ShapeAreas._
 
-scala> foo(Circle(5))
+@ foo(Circle(5))
 res0: Double = 78.53981633974483
 ```
 
@@ -68,14 +68,14 @@ trait CircleArea {
 ```
 
 ```scala
-scala> object Service extends CircleArea {
+@ object Service extends CircleArea {
      |   def bar: Double = {
      |     foo(Circle(5))
      |   }
      | }
 defined object Service
 
-scala> Service.bar
+@ Service.bar
 res0: Double = 78.53981633974483
 ```
 
@@ -106,7 +106,7 @@ object Circle {
 
 No explicit imports required:
 ```scala
-scala> foo(Circle(5))
+@ foo(Circle(5))
 res0: Double = 78.53981633974483
 ```
 
@@ -153,18 +153,18 @@ object HalfCircleArea {
 ```
 
 ```scala
-scala> import DoubleCircleArea._
+@ import DoubleCircleArea._
 import DoubleCircleArea._
 
-scala> Area[Circle].calculate(Circle(5))
+@ Area[Circle].calculate(Circle(5))
 res0: Double = 157.07963267948966
 ```
 
 ```scala
-scala> import HalfCircleArea._
+@ import HalfCircleArea._
 import HalfCircleArea._
 
-scala> Area[Circle].calculate(Circle(5))
+@ Area[Circle].calculate(Circle(5))
 res1: Double = 39.269908169872416
 ```
 

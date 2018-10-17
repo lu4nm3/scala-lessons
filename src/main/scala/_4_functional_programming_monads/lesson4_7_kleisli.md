@@ -14,10 +14,10 @@ val foo: String => Int = s => s.toInt
 val bar: Int => Int = i => i * 2
 val baz: Int => Boolean = i => i % 2 == 0
 
-scala> baz compose bar compose foo    // baz(bar(foo(...)))
+@ baz compose bar compose foo    // baz(bar(foo(...)))
 res0: String => Boolean
 
-scala> foo andThen bar andThen baz    // foo(...) -> bar(foo(...)) -> baz(bar(foo(...)))
+@ foo andThen bar andThen baz    // foo(...) -> bar(foo(...)) -> baz(bar(foo(...)))
 res1: String => Boolean
 ```
 
@@ -38,7 +38,7 @@ We will not be able to compose them together like before since the output type o
 type of the next:
 
 ```scala
-scala> foo andThen bar andThen baz
+@ foo andThen bar andThen baz
 <console>:16: error: type mismatch;
  found   : Int => monix.eval.Task[Int]
  required: monix.eval.Task[Int] => ?
@@ -50,7 +50,7 @@ There are a few things we can do here. First, we can try using the `flatMap` ope
 functions:
 
 ```scala
-scala> (s: String) => foo(s) flatMap { v1 =>
+@ (s: String) => foo(s) flatMap { v1 =>
      |   bar(v1) flatMap { v2 =>
      |     baz(v2)
      |   }
@@ -95,14 +95,14 @@ Now, thanks to `Kleisli`, we are able to combine them together just as if though
 `andThen` keyword (which in this case is provided by `Kleisli`):
 
 ```scala
-scala> val combo = foo andThen bar andThen baz
+@ val combo = foo andThen bar andThen baz
 combo: cats.data.Kleisli[monix.eval.Task,String,Boolean] = Kleisli(cats.data.Kleisli$$$Lambda$3729/1961003967@23d1dcb8)
 ```
 
 We can call `run` to extract the function being wrapped by `Kleisli`:
 
 ```scala
-scala> combo.run
+@ combo.run
 res11: String => monix.eval.Task[Boolean] = cats.data.Kleisli$$$Lambda$3729/1961003967@23d1dcb8
 ```
 
@@ -114,7 +114,7 @@ val foo: String => Task[Int] = s => Task.now(s.toInt)
 val bar: Int => Task[Int] = i => Task.now(i * 2)
 val baz: Int => Task[Boolean] = i => Task.now(i % 2 == 0)
 
-scala> Kleisli(foo) andThen bar andThen baz
+@ Kleisli(foo) andThen bar andThen baz
 res12: cats.data.Kleisli[monix.eval.Task,String,Boolean] = Kleisli(cats.data.Kleisli$$$Lambda$3729/1961003967@544d96de)
 ```
 
@@ -146,14 +146,14 @@ val greetAndFeed = for {
 Just like before, we can use the `run` method to get back the function wrapped by `Kleisli`:
 
 ```scala
-scala> greetAndFeed.run
+@ greetAndFeed.run
 res13: Dog => monix.eval.Task[String] = cats.data.Kleisli$$$Lambda$3729/1961003967@6ab4b791
 ```
 
 And to execute, we simply pass an input to the resulting function:
 
 ```scala
-scala> greetAndFeed.run(Dog("Comet", "chicken"))
+@ greetAndFeed.run(Dog("Comet", "chicken"))
 res14: monix.eval.Task[String] = Task.FlatMap$1931862900
 ```
 

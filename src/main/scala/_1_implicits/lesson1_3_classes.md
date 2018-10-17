@@ -33,7 +33,7 @@ implicit class Greet(name: String) {
 And used the same way.
 
 ```scala
-scala> "bob".hello
+@ "bob".hello
 res0: String = hello bob!
 ```
 

@@ -34,10 +34,10 @@ object Area {
 And then use it just like before:
 
 ```scala
-scala> import ShapeAreas._
+@ import ShapeAreas._
 import ShapeAreas._
 
-scala> Area[Circle].calculate(Circle(5))
+@ Area[Circle].calculate(Circle(5))
 res0: Double = 78.53981633974483
 ```
 

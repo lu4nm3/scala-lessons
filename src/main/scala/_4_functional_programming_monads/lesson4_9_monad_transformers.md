@@ -65,22 +65,22 @@ import cats.effect.IO
 import cats.data.OptionT
 import cats.implicits._
 
-scala> val aa = 3.pure[OptionT[IO, ?]]
+@ val aa = 3.pure[OptionT[IO, ?]]
 aa: cats.data.OptionT[cats.effect.IO,Int] = OptionT(IO(Some(3)))
 
-scala> val bb = 2.pure[OptionT[IO, ?]]
+@ val bb = 2.pure[OptionT[IO, ?]]
 bb: cats.data.OptionT[cats.effect.IO,Int] = OptionT(IO(Some(2)))
 
-scala> val result = for {
+@ val result = for {
      |   a <- aa
      |   b <- bb
      | } yield a * b
 result: cats.data.OptionT[cats.effect.IO,Int] = OptionT(IO$815725629)
 
-scala> result.value
+@ result.value
 res0: cats.effect.IO[Option[Int]] = IO$815725629
 
-scala> result.value.unsafeRunSync
+@ result.value.unsafeRunSync
 res0: Option[Int] = Some(6)
 ```
 
@@ -101,7 +101,7 @@ Things start to become even more confusing when we stack 3 or more monads togeth
 an `IO` of an `Either` of `Option`:
 
 ```scala
-scala> 3.pure[OptionT[EitherT[IO, String, ?], ?]]
+@ 3.pure[OptionT[EitherT[IO, String, ?], ?]]
 res18: cats.data.OptionT[[γ$1$]cats.data.EitherT[cats.effect.IO,String,γ$1$],Int] = OptionT(EitherT(<function1>))
 ```
 
@@ -112,7 +112,7 @@ type IOEither[A] = EitherT[IO, String, A]       // equivalent to `IO[Either[Stri
 
 type IOEitherOption[A] = OptionT[IOEither, A]   // equivalent to `IO[Either[String, Option[A]]]`
 
-scala> 3.pure[IOEitherOption]
+@ 3.pure[IOEitherOption]
 res19: IOEitherOption[Int] = OptionT(EitherT(<function1>))
 ```
 

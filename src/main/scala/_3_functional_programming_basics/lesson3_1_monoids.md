@@ -57,16 +57,16 @@ implicit val intAdd: Monoid[Int] = new Monoid[Int] {
 And we can test out these properties:
 
 ```scala
-scala> intAdd.combine(intAdd.combine(1, 2), 3)
+@ intAdd.combine(intAdd.combine(1, 2), 3)
 res0: Int = 6
 
-scala> intAdd.combine(1, intAdd.combine(2, 3))
+@ intAdd.combine(1, intAdd.combine(2, 3))
 res1: Int = 6
 
-scala> intAdd.combine(3, intAdd.empty)
+@ intAdd.combine(3, intAdd.empty)
 res2: Int = 3
 
-scala> intAdd.combine(intAdd.empty, 3)
+@ intAdd.combine(intAdd.empty, 3)
 res3: Int = 3
 ```
 
@@ -99,16 +99,16 @@ implicit val intMult: Monoid[Int] = new Monoid[Int] {
 And we will see that the associative and identity properties for integer multiplication hold:
 
 ```
-scala> intMult.combine(intMult.combine(2, 3), 4)
+@ intMult.combine(intMult.combine(2, 3), 4)
 res4: Int = 24
 
-scala> intMult.combine(2, intMult.combine(3, 4))
+@ intMult.combine(2, intMult.combine(3, 4))
 res5: Int = 24
 
-scala> intMult.combine(3, intMult.empty)
+@ intMult.combine(3, intMult.empty)
 res6: Int = 3
 
-scala> intMult.combine(intMult.empty, 3)
+@ intMult.combine(intMult.empty, 3)
 res7: Int = 3
 ```
 
@@ -142,16 +142,16 @@ And we can observe that once again, the properties for a Monoid's combine and id
 concatenation:
 
 ```scala
-scala> strConcat.combine(strConcat.combine("one", "two"), "three")
+@ strConcat.combine(strConcat.combine("one", "two"), "three")
 res8: String = onetwothree
 
-scala> strConcat.combine("one", strConcat.combine("two", "three"))
+@ strConcat.combine("one", strConcat.combine("two", "three"))
 res9: String = onetwothree
 
-scala> strConcat.combine("three", strConcat.empty)
+@ strConcat.combine("three", strConcat.empty)
 res10: String = three
 
-scala> strConcat.combine(strConcat.empty, "three")
+@ strConcat.combine(strConcat.empty, "three")
 res11: String = three
 ```
 

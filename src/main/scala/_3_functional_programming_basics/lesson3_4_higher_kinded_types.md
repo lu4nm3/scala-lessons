@@ -12,16 +12,16 @@ Before jumping straight to higher-kinded types, let's give a bit of background f
 As we know by now, values represent raw data and they are at the lowest level of abstraction:
 
 ```scala
-scala> "Daniel"
+@ "Daniel"
 res0: String = Daniel
 
-scala> 1
+@ 1
 res1: Int = 1
 
-scala> (1, 2, 3)
+@ (1, 2, 3)
 res2: (Int, Int, Int) = (1,2,3)
 
-scala> List(1, 2, 3)
+@ List(1, 2, 3)
 res3: List[Int] = List(1, 2, 3)
 ```
 

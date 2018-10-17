@@ -35,13 +35,13 @@ def divide(a: Int, b: Int): Option[Int] = {
 Say we wanted to use these methods to parse 2 integers and then divide them by each other.
 
 ```scala
-scala> val num1 = parseInt("6")
+@ val num1 = parseInt("6")
 num0: Option[Int] = Some(6)
 
-scala> val num2 = parseInt("2")
+@ val num2 = parseInt("2")
 num1: Option[Int] = Some(2)
 
-scala> val div = divide(num1, num2)
+@ val div = divide(num1, num2)
 <console>:21: error: type mismatch;
  found   : Option[Int]
  required: Int
@@ -61,7 +61,7 @@ Earlier we learned about `Functor`s and how they let you `map` values that exist
 use `map` to solve our issue:
 
 ```scala
-scala> parseInt("6").map { num1 =>      
+@ parseInt("6").map { num1 =>      
      |   parseInt("2").map { num2 =>    
      |     divide(num1, num2)           
      |   }
@@ -84,7 +84,7 @@ Instead of `Option[Option[Option[Int]]]` we would like to get an `Option[Int]`. 
 Here, we can use the `flatten` method from `Option` after every call to `map` in order to flatten our contexts:
 
 ```scala
-scala> parseInt("6").map { num1 =>
+@ parseInt("6").map { num1 =>
      |   parseInt("2").map { num2 =>
      |     divide(num1, num2)
      |   }.flatten
@@ -108,7 +108,7 @@ parseInt("6").map { num1 =>       // 4. Simliarly, the second call to map produc
 The use of `map` and `flatten` one after the other can be replaced with the `flatMap` operation:
 
 ```scala
-scala> parseInt("6").flatMap { num1 =>
+@ parseInt("6").flatMap { num1 =>
      |   parseInt("2").flatMap { num2 =>
      |     divide(num1, num2)
      |   }
@@ -149,7 +149,7 @@ etc).
 Using the example from the previous section, let's suppose that parsing our second integer fails:
 
 ```scala
-scala> for {
+@ for {
      |   num1 <- parseInt("6")
      |   num2 <- parseInt("a") // a is not an integer!!!
      |   result <- divide(num1, num2)
