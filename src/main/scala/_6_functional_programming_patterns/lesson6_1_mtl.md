@@ -3,7 +3,7 @@
     <a href="../../../../README.md">Menu</a>
 </h4>
 
-<h1>Monad Transformer Library (MTL)</h1>
+<h1>MTL</h1>
 
 <h2>Monad Transformers</h2>
 
