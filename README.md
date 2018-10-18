@@ -6,7 +6,7 @@ additional material and examples. They are by no means meant to provide a compre
 of Scala but rather on what I felt were some of the more practical aspects of the language and of functional programming
 that you might use your real-world, day-to-day work.
 
-### Setup
+## Setup
 
 You can jump right in and start going through the lessons starting at the beginning or jumping around to the topics that
 interest you. I recommend doing this directly from GitHub as it offers pretty good support for markdown and the lessons
@@ -15,12 +15,12 @@ themselves have navigation links that let you move around pretty easily.
 In addition, you can also run all of the code snippets on the REPL. I encourage you to do this and to play around with
 the examples as it really helps to learn the concepts.
 
-#### SBT
+### SBT
 
 If you want to interact with the examples presented in this project using the REPL, you will need to install SBT. Follow
 the instructions listed here based on your local environment: https://www.scala-sbt.org/download.html
 
-#### Ammonite
+### Ammonite
 
 The REPL that I used in the examples throughout the lesson was [Ammonite](http://ammonite.io/#Ammonite-REPL) (denoted by
 the `@`) due to the many improvements that it brings over the standard REPL. It works pretty well for the most part but
@@ -48,7 +48,7 @@ $ sbt test:run
 @
 ```
 
-#### Default REPL
+### Default REPL
 
 Alternatively, you can use the default Scala REPL by running `sbt console` from within the root directory of the project
 which will start a new shell session:
