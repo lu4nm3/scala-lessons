@@ -1,7 +1,7 @@
 <h4 align="right">
     <a href="lesson5_4_foldable.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="../_6_functional_programming_patterns/lesson6_1_mtl.md">Next →</a>
+    <a href="../_6_functional_programming_patterns/lesson6.md">Next →</a>
 </h4>
 
 <h1>Traverse</h1>
@@ -111,5 +111,5 @@ can turn any `F[G[A]]` into a `G[F[A]]` for any `F` with an instance of `Travers
 <h4 align="right">
     <a href="lesson5_4_foldable.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="../_6_functional_programming_patterns/lesson6_1_mtl.md">Next →</a>
+    <a href="../_6_functional_programming_patterns/lesson6.md">Next →</a>
 </h4>

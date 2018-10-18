@@ -1,5 +1,5 @@
 <h4 align="right">
-    <a href="../_5_functional_programming_applicatives/lesson5_5_traverse.md">← Previous</a> |
+    <a href="../_5_functional_programming_applicatives/lesson5.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a>
 </h4>
 
@@ -457,6 +457,6 @@ For a more comprehensive comparison of monad transformers and MTL, take a look a
 https://kleisli.io/monad-transformers-vs-mtl/
 
 <h4 align="right">
-    <a href="../_5_functional_programming_applicatives/lesson5_5_traverse.md">← Previous</a> |
+    <a href="../_5_functional_programming_applicatives/lesson5.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a>
 </h4>
