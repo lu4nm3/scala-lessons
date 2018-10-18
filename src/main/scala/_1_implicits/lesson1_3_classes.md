@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson1_2_conversions.md">← Previous</a> |
-    <a href="lesson1.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson1_4_nested_conversions.md">Next →</a>
 </h4>
 
@@ -39,6 +39,6 @@ res0: String = hello bob!
 
 <h4 align="right">
     <a href="lesson1_2_conversions.md">← Previous</a> |
-    <a href="lesson1.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson1_4_nested_conversions.md">Next →</a>
 </h4>

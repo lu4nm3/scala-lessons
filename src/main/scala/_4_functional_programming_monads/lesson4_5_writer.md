@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson4_4_eval.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson4_6_reader.md">Next →</a>
 </h4>
 
@@ -89,6 +89,6 @@ res0: cats.Id[(scala.collection.immutable.Vector[String], Int)] = (Vector(comput
 
 <h4 align="right">
     <a href="lesson4_4_eval.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson4_6_reader.md">Next →</a>
 </h4>

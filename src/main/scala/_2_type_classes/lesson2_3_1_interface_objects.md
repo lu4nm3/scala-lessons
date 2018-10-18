@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson2_2_instances.md">← Previous</a> |
-    <a href="lesson2.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson2_3_2_interface_syntax.md">Next →</a>
 </h4>
 
@@ -75,6 +75,6 @@ res1: Double = 78.53981633974483
 
 <h4 align="right">
     <a href="lesson2_2_instances.md">← Previous</a> |
-    <a href="lesson2.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson2_3_2_interface_syntax.md">Next →</a>
 </h4>

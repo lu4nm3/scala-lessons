@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson4_3_monad_error.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson4_5_writer.md">Next →</a>
 </h4>
 
@@ -235,6 +235,6 @@ stack space. In this case, computations are bounded by the size of the heap rath
 
 <h4 align="right">
     <a href="lesson4_3_monad_error.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson4_5_writer.md">Next →</a>
 </h4>

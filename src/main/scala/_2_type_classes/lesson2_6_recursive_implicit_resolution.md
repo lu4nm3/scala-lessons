@@ -1,6 +1,7 @@
 <h4 align="right">
     <a href="lesson2_5_implicit_scope_packaging.md">← Previous</a> |
-    <a href="lesson2.md">Menu</a>
+    <a href="../README.md">Menu</a> |
+    <a href="../_3_functional_programming_basics/lesson3_1_monoids.md">Next →</a>
 </h4>
 
 <h1>Recursive Implicit Resolution</h1>
@@ -80,5 +81,6 @@ Area[List[Circle]].calculate(List(Circle(2), Circle(3)))(listArea[Circle](circle
 
 <h4 align="right">
     <a href="lesson2_5_implicit_scope_packaging.md">← Previous</a> |
-    <a href="lesson2.md">Menu</a>
+    <a href="../README.md">Menu</a> |
+    <a href="../_3_functional_programming_basics/lesson3_1_monoids.md">Next →</a>
 </h4>

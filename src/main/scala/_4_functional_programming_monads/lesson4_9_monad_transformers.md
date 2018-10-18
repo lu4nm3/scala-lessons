@@ -1,6 +1,7 @@
 <h4 align="right">
     <a href="lesson4_8_state.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
+    <a href="../_5_functional_programming_applicatives/lesson5_1_semigroupal.md">Next →</a>
 </h4>
 
 <h1>Monad Transformers</h1>
@@ -157,5 +158,6 @@ def avgAge(userId1: String, userId2: String, userId3: String): IO[Option[Int]] =
 
 <h4 align="right">
     <a href="lesson4_8_state.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
+    <a href="../_5_functional_programming_applicatives/lesson5_1_semigroupal.md">Next →</a>
 </h4>

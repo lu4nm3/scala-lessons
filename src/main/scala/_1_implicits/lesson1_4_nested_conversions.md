@@ -1,6 +1,7 @@
 <h4 align="right">
     <a href="lesson1_3_classes.md">← Previous</a> |
-    <a href="lesson1.md">Menu</a>
+    <a href="../README.md">Menu</a> |
+    <a href="../_2_type_classes/lesson2_1_classes.md">Next →</a>
 </h4>
 
 <h1>Nested Implicit Conversions</h1>
@@ -103,5 +104,6 @@ res0: String = baz
 
 <h4 align="right">
     <a href="lesson1_3_classes.md">← Previous</a> |
-    <a href="lesson1.md">Menu</a>
+    <a href="../README.md">Menu</a> |
+    <a href="../_2_type_classes/lesson2_1_classes.md">Next →</a>
 </h4>

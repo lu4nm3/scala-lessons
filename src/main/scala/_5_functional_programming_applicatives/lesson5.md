@@ -1,4 +1,4 @@
-<h1>Functional Programming - Monads</h1>
+<h1>Functional Programming - Applicatives</h1>
 
 <h3>Table of Contents</h3>
 

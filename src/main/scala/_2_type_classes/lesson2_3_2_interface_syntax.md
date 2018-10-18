@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson2_3_1_interface_objects.md">← Previous</a> |
-    <a href="lesson2.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson2_4_context_bounds.md">Next →</a>
 </h4>
 
@@ -46,6 +46,6 @@ Circle(5).area(circleArea)
 
 <h4 align="right">
     <a href="lesson2_3_1_interface_objects.md">← Previous</a> |
-    <a href="lesson2.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson2_4_context_bounds.md">Next →</a>
 </h4>

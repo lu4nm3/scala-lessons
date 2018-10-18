@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson3_2_semigroups.md">← Previous</a> |
-    <a href="lesson3.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson3_4_higher_kinded_types.md">Next →</a>
 </h4>
 
@@ -72,6 +72,6 @@ res1: Option[Int] = None
 
 <h4 align="right">
     <a href="lesson3_2_semigroups.md">← Previous</a> |
-    <a href="lesson3.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson3_4_higher_kinded_types.md">Next →</a>
 </h4>

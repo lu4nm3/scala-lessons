@@ -1,5 +1,6 @@
 <h4 align="right">
-    <a href="lesson2.md">Menu</a> |
+    <a href="../lesson1_4_nested_conversions.md">← Previous</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson2_2_instances.md">Next →</a>
 </h4>
 
@@ -25,6 +26,7 @@ trait Area[S] {
 ```
 
 <h4 align="right">
-    <a href="lesson2.md">Menu</a> |
+    <a href="../lesson1_4_nested_conversions.md">← Previous</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson2_2_instances.md">Next →</a>
 </h4>

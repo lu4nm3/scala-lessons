@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson4_1_monads.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson4_3_monad_error.md">Next →</a>
 </h4>
 
@@ -76,6 +76,6 @@ val syncService = new Service[Id] {
 
 <h4 align="right">
     <a href="lesson4_1_monads.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson4_3_monad_error.md">Next →</a>
 </h4>

@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson4_6_reader.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson4_8_state.md">Next →</a>
 </h4>
 
@@ -159,6 +159,6 @@ res14: monix.eval.Task[String] = Task.FlatMap$1931862900
 
 <h4 align="right">
     <a href="lesson4_6_reader.md">← Previous</a> |
-    <a href="lesson4.md">Menu</a> |
+    <a href="../README.md">Menu</a> |
     <a href="lesson4_8_state.md">Next →</a>
 </h4>
