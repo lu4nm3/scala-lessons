@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="../_3_functional_programming_basics/lesson3_4_higher_kinded_types.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson4_2_id.md">Next →</a>
 </h4>
 
@@ -276,6 +276,6 @@ m.flatMap(f).flatMap(g) == m.flatMap(x => f(x).flatMap(g))
 
 <h4 align="right">
     <a href="../_3_functional_programming_basics/lesson3_4_higher_kinded_types.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson4_2_id.md">Next →</a>
 </h4>

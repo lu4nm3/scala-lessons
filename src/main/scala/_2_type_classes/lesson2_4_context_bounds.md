@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson2_3_2_interface_syntax.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson2_5_implicit_scope_packaging.md">Next →</a>
 </h4>
 
@@ -88,6 +88,6 @@ def fooBar[A](implicit F: Foo[A], B: Bar[A]): Int = {
 
 <h4 align="right">
     <a href="lesson2_3_2_interface_syntax.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson2_5_implicit_scope_packaging.md">Next →</a>
 </h4>

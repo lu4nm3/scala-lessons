@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson1_1_params.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson1_3_classes.md">Next →</a>
 </h4>
 
@@ -55,6 +55,6 @@ implicit conversions.
 
 <h4 align="right">
     <a href="lesson1_1_params.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson1_3_classes.md">Next →</a>
 </h4>

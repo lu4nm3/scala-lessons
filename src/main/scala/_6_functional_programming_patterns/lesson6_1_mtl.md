@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="../_5_functional_programming_applicatives/lesson5_5_traverse.md">← Previous</a> |
-    <a href="../README.md">Menu</a>
+    <a href="../../../../README.md">Menu</a>
 </h4>
 
 <h1>Monad Transformer Library (MTL)</h1>
@@ -458,5 +458,5 @@ https://kleisli.io/monad-transformers-vs-mtl/
 
 <h4 align="right">
     <a href="../_5_functional_programming_applicatives/lesson5_5_traverse.md">← Previous</a> |
-    <a href="../README.md">Menu</a>
+    <a href="../../../../README.md">Menu</a>
 </h4>

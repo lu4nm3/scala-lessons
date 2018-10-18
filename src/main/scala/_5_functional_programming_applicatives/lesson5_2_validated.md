@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson5_1_semigroupal.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson5_3_apply_applicative.md">Next →</a>
 </h4>
 
@@ -63,6 +63,6 @@ res8: cats.data.Validated[String,Int] = Invalid(error!)
 
 <h4 align="right">
     <a href="lesson5_1_semigroupal.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson5_3_apply_applicative.md">Next →</a>
 </h4>

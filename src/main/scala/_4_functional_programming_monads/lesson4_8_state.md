@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson4_7_kleisli.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson4_9_monad_transformers.md">Next →</a>
 </h4>
 
@@ -79,6 +79,6 @@ res4: (Int, (Int, Int, Int)) = (5,(3,4,5000))
 
 <h4 align="right">
     <a href="lesson4_7_kleisli.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson4_9_monad_transformers.md">Next →</a>
 </h4>

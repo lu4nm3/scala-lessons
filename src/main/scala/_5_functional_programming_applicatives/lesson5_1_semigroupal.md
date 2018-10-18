@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="../_4_functional_programming_monads/lesson4_9_monad_transformers.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson5_2_validated.md">Next →</a>
 </h4>
 
@@ -92,6 +92,6 @@ res6: Option[Int] = Some(6)
 
 <h4 align="right">
     <a href="../_4_functional_programming_monads/lesson4_9_monad_transformers.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson5_2_validated.md">Next →</a>
 </h4>

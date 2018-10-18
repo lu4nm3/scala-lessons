@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson4_5_writer.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson4_7_kleisli.md">Next →</a>
 </h4>
 
@@ -153,6 +153,6 @@ in the call chain.
 
 <h4 align="right">
     <a href="lesson4_5_writer.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson4_7_kleisli.md">Next →</a>
 </h4>

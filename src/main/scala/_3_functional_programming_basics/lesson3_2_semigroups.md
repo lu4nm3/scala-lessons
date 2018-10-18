@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson3_1_monoids.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson3_3_functors.md">Next →</a>
 </h4>
 
@@ -29,6 +29,6 @@ implementation of `Semigroup` but no implementation of `Monoid`.
 
 <h4 align="right">
     <a href="lesson3_1_monoids.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson3_3_functors.md">Next →</a>
 </h4>

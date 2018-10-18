@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson2_1_classes.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson2_3_1_interface_objects.md">Next →</a>
 </h4>
 
@@ -43,6 +43,6 @@ object ShapeAreas {
 
 <h4 align="right">
     <a href="lesson2_1_classes.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson2_3_1_interface_objects.md">Next →</a>
 </h4>

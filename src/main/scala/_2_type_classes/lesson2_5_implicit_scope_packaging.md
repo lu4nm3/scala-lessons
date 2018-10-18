@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson2_4_context_bounds.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson2_6_recursive_implicit_resolution.md">Next →</a>
 </h4>
 
@@ -170,6 +170,6 @@ res1: Double = 39.269908169872416
 
 <h4 align="right">
     <a href="lesson2_4_context_bounds.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson2_6_recursive_implicit_resolution.md">Next →</a>
 </h4>

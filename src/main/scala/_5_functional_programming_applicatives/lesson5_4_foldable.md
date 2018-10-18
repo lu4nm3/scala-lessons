@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson5_3_apply_applicative.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson5_5_traverse.md">Next →</a>
 </h4>
 
@@ -123,6 +123,6 @@ res5: Int = 21
 
 <h4 align="right">
     <a href="lesson5_3_apply_applicative.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson5_5_traverse.md">Next →</a>
 </h4>

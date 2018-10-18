@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson3_3_functors.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="_4_functional_programming_monads/lesson4_1_monads.md">Next →</a>
 </h4>
 
@@ -96,6 +96,6 @@ trait Foo[F[_]] {}  // is of kind (* -> *) -> * (takes 1 Order-1 type
 
 <h4 align="right">
     <a href="lesson3_3_functors.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="_4_functional_programming_monads/lesson4_1_monads.md">Next →</a>
 </h4>

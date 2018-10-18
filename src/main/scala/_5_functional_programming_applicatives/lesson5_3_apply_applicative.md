@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson5_2_validated.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson5_4_foldable.md">Next →</a>
 </h4>
 
@@ -91,6 +91,6 @@ cannot.
 
 <h4 align="right">
     <a href="lesson5_2_validated.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson5_4_foldable.md">Next →</a>
 </h4>

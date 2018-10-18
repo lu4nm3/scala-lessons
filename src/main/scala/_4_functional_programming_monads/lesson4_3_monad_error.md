@@ -1,6 +1,6 @@
 <h4 align="right">
     <a href="lesson4_2_id.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson4_4_eval.md">Next →</a>
 </h4>
 
@@ -69,6 +69,6 @@ monadError.ensure(success)(new IllegalArgumentException("Number is too low!"))(_
 
 <h4 align="right">
     <a href="lesson4_2_id.md">← Previous</a> |
-    <a href="../README.md">Menu</a> |
+    <a href="../../../../README.md">Menu</a> |
     <a href="lesson4_4_eval.md">Next →</a>
 </h4>
