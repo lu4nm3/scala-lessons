@@ -61,15 +61,6 @@ scala>
 
 ## Table of Contents
 
-<h4>Basics</h4>
-
-<ol>
-    <li><a href="lesson1_1_params.md">Implicit Parameters</a></li>
-</ol>
-
-<h4>Type Classes</h4>
-
-
 <ol>
     <li><h3>Basics</h3>
         <ol>
@@ -78,58 +69,58 @@ scala>
     </li>
     <li><h3>Implicits</h3>
         <ol>
-            <li><a href="_1_implicits/lesson1_1_params.md">Parameters</a></li>
-            <li><a href="_1_implicits/lesson1_2_conversions.md">Conversions</a></li>
-            <li><a href="_1_implicits/lesson1_3_classes.md">Classes</a></li>
-            <li><a href="_1_implicits/lesson1_4_nested_conversions.md">Nested Conversions</a></li>
+            <li><a href="src/main/scala/_1_implicits/lesson1_1_params.md">Parameters</a></li>
+            <li><a href="src/main/scala/_1_implicits/lesson1_2_conversions.md">Conversions</a></li>
+            <li><a href="src/main/scala/_1_implicits/lesson1_3_classes.md">Classes</a></li>
+            <li><a href="src/main/scala/_1_implicits/lesson1_4_nested_conversions.md">Nested Conversions</a></li>
         </ol>
     </li>
     <li><h3>Type Classes</h3>
         <ol>
-            <li><a href="_2_type_classes/lesson2_1_classes.md">The Type Class</a></li>
-            <li><a href="_2_type_classes/lesson2_2_instances.md">Instances</a></li>
-            <li><a href="_2_type_classes/lesson2_3_1_interface_objects.md">Interface Objects</a></li>
-            <li><a href="_2_type_classes/lesson2_3_2_interface_syntax.md">Interface Syntax</a></li>
-            <li><a href="_2_type_classes/lesson2_4_context_bounds.md">Context Bounds</a></li>
-            <li><a href="_2_type_classes/lesson2_5_implicit_scope_packaging.md">Packaging</a></li>
-            <li><a href="_2_type_classes/lesson2_6_recursive_implicit_resolution.md">Recursive Implicit Resolution</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_1_classes.md">The Type Class</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_2_instances.md">Instances</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_3_1_interface_objects.md">Interface Objects</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_3_2_interface_syntax.md">Interface Syntax</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_4_context_bounds.md">Context Bounds</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_5_implicit_scope_packaging.md">Packaging</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_6_recursive_implicit_resolution.md">Recursive Implicit Resolution</a></li>
         </ol>
     </li>
     <li><h3>Functional Programming</h3>
         <ol>
             <li><h4>Basics</h4>
                 <ol>
-                    <li><a href="_3_functional_programming_basics/lesson3_1_monoids.md">Monoids</a></li>
-                    <li><a href="_3_functional_programming_basics/lesson3_2_semigroups.md">Semigroups</a></li>
-                    <li><a href="_3_functional_programming_basics/lesson3_3_functors.md">Functors</a></li>
-                    <li><a href="_3_functional_programming_basics/lesson3_4_higher_kinded_types.md">Higher-Kinded Types</a></li>
+                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_1_monoids.md">Monoids</a></li>
+                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_2_semigroups.md">Semigroups</a></li>
+                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_3_functors.md">Functors</a></li>
+                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_4_higher_kinded_types.md">Higher-Kinded Types</a></li>
                 </ol>
             </li>
             <li><h4>Monads</h4>
                 <ol>
-                    <li><a href="_4_functional_programming_monads/lesson4_1_monads.md">Monads</a></li>
-                    <li><a href="_4_functional_programming_monads/lesson4_2_id.md">Id</a></li>
-                    <li><a href="_4_functional_programming_monads/lesson4_3_monad_error.md">MonadError</a></li>
-                    <li><a href="_4_functional_programming_monads/lesson4_4_eval.md">Eval</a></li>
-                    <li><a href="_4_functional_programming_monads/lesson4_5_writer.md">Writer</a></li>
-                    <li><a href="_4_functional_programming_monads/lesson4_6_reader.md">Reader</a></li>
-                    <li><a href="_4_functional_programming_monads/lesson4_7_kleisli.md">Kleisli</a></li>
-                    <li><a href="_4_functional_programming_monads/lesson4_8_state.md">State</a></li>
-                    <li><a href="_4_functional_programming_monads/lesson4_9_monad_transformers.md">Monad Transformers</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_1_monads.md">Monads</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_2_id.md">Id</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_3_monad_error.md">MonadError</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_4_eval.md">Eval</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_5_writer.md">Writer</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_6_reader.md">Reader</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_7_kleisli.md">Kleisli</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_8_state.md">State</a></li>
+                    <li><a href="src/main/scala/_4_functional_programming_monads/lesson4_9_monad_transformers.md">Monad Transformers</a></li>
                 </ol>
             </li>
             <li><h4>Applicatives</h4>
                 <ol>
-                    <li><a href="_5_functional_programming_applicatives/lesson5_1_semigroupal.md">Semigroupal</a></li>
-                    <li><a href="_5_functional_programming_applicatives/lesson5_2_validated.md">Validated</a></li>
-                    <li><a href="_5_functional_programming_applicatives/lesson5_3_apply_applicative.md">Apply & Applicative</a></li>
-                    <li><a href="_5_functional_programming_applicatives/lesson5_4_foldable.md">Foldable</a></li>
-                    <li><a href="_5_functional_programming_applicatives/lesson5_5_traverse.md">Traverse</a></li>
+                    <li><a href="src/main/scala/_5_functional_programming_applicatives/lesson5_1_semigroupal.md">Semigroupal</a></li>
+                    <li><a href="src/main/scala/_5_functional_programming_applicatives/lesson5_2_validated.md">Validated</a></li>
+                    <li><a href="src/main/scala/_5_functional_programming_applicatives/lesson5_3_apply_applicative.md">Apply & Applicative</a></li>
+                    <li><a href="src/main/scala/_5_functional_programming_applicatives/lesson5_4_foldable.md">Foldable</a></li>
+                    <li><a href="src/main/scala/_5_functional_programming_applicatives/lesson5_5_traverse.md">Traverse</a></li>
                 </ol>
             </li>
             <li><h4>Patterns</h4>
                 <ol>
-                    <li><a href="_6_functional_programming_patterns/lesson6_1_mtl.md">MTL</a></li>
+                    <li><a href="src/main/scala/_6_functional_programming_patterns/lesson6_1_mtl.md">MTL</a></li>
                 </ol>
             </li>
         </ol>
