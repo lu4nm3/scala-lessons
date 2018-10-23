@@ -1,8 +1,13 @@
+<h4 align="right">
+    <a href="../../../../README.md">Menu</a> |
+    <a href="lesson0_2_functions.md">Next →</a>
+</h4>
+
 # Super Basics
 
 ### Automatic type inference
 
-Scala automatically infers types:
+Scala automatically infers types (ie. you don't have to explicitly declare them):
 
 ```scala
 @ val str = "abc"
@@ -20,8 +25,7 @@ Normally in other languages like Java, there is a difference between expressions
 // expression
 
 b + 1
- 
- 
+
 // statements
 
 a = b + 1
@@ -66,8 +70,8 @@ m: String = "other"
 result: Int = 1
 ```
 
-A block contains a sequence of expressions and the result is also an expression. The value of the block is the value of
-the last expression:
+A block can contain a sequence of expressions where the result is also an expression. The value of the block is the
+value of the last expression:
 
 ```scala
 @ val foo = {
@@ -94,6 +98,12 @@ val res8 = x = 2
 Compilation Failed
 ```
 
+Which is like using `final` in Java:
+
+```scala
+public final int x = 3;
+```
+
 And those declared with `var`s are mutable:
 
 ```scala
@@ -105,6 +115,8 @@ x: Int = 3
 @ x
 res10: Int = 2
 ```
+
+In general, you should opt for immutability.
 
 ### Operators are methods
 
@@ -118,27 +130,7 @@ is shorthand for:
 a.+(b)
 ```
 
-```java
-class Main {
-  public static void main(String[] args) {
-    System.out.println("Hello world!");
-
-    List<Integer> input = new LinkedList<Integer>();
-    input.add(1);
-    input.add(2);
-    input.add(3);
-
-    System.out.println(multByTwo(input));
-  }
-
-  public static List<Integer> multByTwo(List<Integer> input) {
-    List<Integer> result = new LinkedList<Integer>();
-
-    for (Integer i: input) {
-      result.add(i * 2);
-    }
-
-    return result;
-  }
-}
-```
+<h4 align="right">
+    <a href="../../../../README.md">Menu</a> |
+    <a href="lesson0_2_functions.md">Next →</a>
+</h4>

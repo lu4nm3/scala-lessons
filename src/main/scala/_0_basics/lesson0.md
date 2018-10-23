@@ -2,7 +2,8 @@
 
 <h3>Table of Contents</h3>
 
-  1. [Implicit Parameters](lesson1_1_params.md)
-  2. [Implicit Conversions](lesson1_2_conversions.md)
-  3. [Implicit Classes](lesson1_3_classes.md)
-  4. [Nested Conversions](lesson1_4_nested_conversions.md)
+  1. [Super Basics](lesson0_1_super_basics.md)
+  2. [Functions](lesson0_2_functions.md)
+  3. [Collections](lesson0_3_collections.md)
+  4. [Classes, Traits, & Objects](lesson0_4_classes_traits_objects.md)
+  5. [Pattern Matching](lesson0_5_pattern_matching.md)

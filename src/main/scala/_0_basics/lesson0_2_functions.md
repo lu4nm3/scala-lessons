@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson0_1_super_basics.md">← Previous</a> |
+    <a href="../../../../README.md">Menu</a> |
+    <a href="lesson0_3_collections.md">Next →</a>
+</h4>
+
 # Functions
 
 Scala has first-class support for functions.
@@ -56,7 +62,7 @@ def add(a: Int, b: Int): Int = {
 }
 ```
 
-This means that if we use it in an expression, we could swap it out for the result of the function and evaluating the
+This means that if we use it in an expression, we could swap it out for the result of evaluating the function and the
 expression would remain the same:
 
 ```scala
@@ -89,3 +95,9 @@ res5: Int = 8
 
 Function purity is important because it guarantees deterministic execution of your logic. Without this guarantee,
 reasoning about your code becomes hard, as does testing, refactoring, etc...
+
+<h4 align="right">
+    <a href="lesson0_1_super_basic.md">← Previous</a> |
+    <a href="../../../../README.md">Menu</a> |
+    <a href="lesson0_3_collections.md">Next →</a>
+</h4>

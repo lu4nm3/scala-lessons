@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson0_3_collections.md">← Previous</a> |
+    <a href="../../../../README.md">Menu</a> |
+    <a href="lesson0_5_pattern_matching.md">Next →</a>
+</h4>
+
 # Classes, Traits, & Objects
 
 ## Class
@@ -17,8 +23,6 @@ public class Foo {
     }
     
     public int getValue() { return value; }
-    
-    public void setValue(int value) { this.value = value; }
 }
 ```
 
@@ -118,9 +122,9 @@ public class Account {
 }
 ```
 
-Scala gravitates more towards what is known as an **anemic domain model** where the domain itself is separated from the
-behaviors that operate on it. Modeling data is where case classes shine due to all of their unique properties listed
-above.
+Scala gravitates more towards what is known as an **anemic domain model** where the domain itself (ie. the data objects)
+is separated from the behaviors that operate on it. Modeling data is where case classes shine due to all of their unique
+properties listed above.
 
 With the example above, in Scala we would use case classes to represent just the account information:
 
@@ -184,13 +188,7 @@ operations that can be used on existing numbers to create new numbers:
 This is the algebra of relational databases where tables are the set of existing objects and operations like `select`,
 `update`, etc are the operations that let you create new objects.
 
-#### Algebra in programming
-
-In programming, a class constructor represents an operation that let's you create new types from existing types:
-
-```scala
-case class Coordinate(x: Int, y: Int)
-```
+#### Data type algebra
 
 This is where ADTs come in. ADTs fall into 3 main categories:
 
@@ -212,12 +210,14 @@ case object West extends Direction
 ```
 
 The `sealed` keywords prevents a class/trait from being extended outside of the file they are defined in which means
-that the types listed are the only possible instances of the base type.
+that the types listed are the only possible instances of the base type. In this case you can think of the "operation" of
+the algebra as the act of extending your trait with all of the possible types you want to define.
 
 ##### Product Type
 
 A product type in Scala is represented as a case class whose constructor is used to create all possible concrete
-instances of the type.
+instances of the type. In this case, the constructor is the "operation" that creates new instances of our type using
+other types.
 
 For example:
 
@@ -228,10 +228,10 @@ case class TwoBooleans(b1: Boolean, b2: Boolean)
 All of the possible instances that we can create of this type are:
 
 ```scala
-TwoBooleans(True, True)
-TwoBooleans(True, False)
-TwoBooleans(False, True)
-TwoBooleans(False, False)
+TwoBooleans(true, true)
+TwoBooleans(true, false)
+TwoBooleans(false, true)
+TwoBooleans(false, false)
 ```
 
 Another way to look at this is that the total number of instances that we can create for this type is determined by:
@@ -259,8 +259,8 @@ instances of that type.
 
 ## Object
 
-Unlike classes, you can not create instances out of objects. Instead, objects are used to store what you can think of as
-static fields and methods:
+Unlike classes, you can not create instances out of objects. Instead, objects are used to store what you would think of
+as static fields and methods in Java:
 
 ```scala
 object Util {
@@ -284,18 +284,15 @@ need to belong to an instance of said type.
 For example, if we had a `Shape` trait, we could define a companion object with helpful methods for working on shapes:
 
 ```scala
-trait Shape
-case class Square(length: Int) extends Shape
-case class Circle(radius: Int) extends Shape
+case class Circle(radius: Int)
 
-object Shape {
+object Circle {
   val Pi: Double = 3.14
-
-  def area(shape: Shape): Double = {
-    shape match {
-      case Square(length) => length * length
-      case Circle(radius) => Pi * radius * radius
-    }
-  }
 }
 ```
+
+<h4 align="right">
+    <a href="lesson0_3_collections.md">← Previous</a> |
+    <a href="../../../../README.md">Menu</a> |
+    <a href="lesson0_5_pattern_matching.md">Next →</a>
+</h4>

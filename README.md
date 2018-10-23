@@ -2,9 +2,9 @@
 
 These are a series of short lessons that cover various topics of the Scala programming language, especially as it
 relates to functional programming. The lessons are based in part of the open source books by underscore.io along with
-additional material and examples. They are by no means meant to provide a comprehensive understanding into the entirety
-of Scala but rather on what I felt were some of the more practical aspects of the language and of functional programming
-that you might use your real-world, day-to-day work.
+additional material and examples. They are by no means meant to provide an exhaustive overview the entirety of Scala but
+rather on what I felt were some of the more practical aspects of the language and of functional programming that you
+might use your real-world, day-to-day work.
 
 ## Setup
 
@@ -64,7 +64,11 @@ scala>
 <ol>
     <li><h3>Basics</h3>
         <ol>
-            <li><a href="lesson1_1_params.md">Implicit Parameters</a></li>
+            <li><a href="src/main/scala/_0_basics/lesson0_1_super_basics.md">Super Basics</a></li>
+            <li><a href="src/main/scala/_0_basics/lesson0_2_functions.md">Functions</a></li>
+            <li><a href="src/main/scala/_0_basics/lesson0_3_collections.md">Collections</a></li>
+            <li><a href="src/main/scala/_0_basics/lesson0_4_classes_traits_objects.md">Classes, Traits, & Objects</a></li>
+            <li><a href="src/main/scala/_0_basics/lesson0_5_pattern_matching.md">Pattern Matching</a></li>
         </ol>
     </li>
     <li><h3>Implicits</h3>

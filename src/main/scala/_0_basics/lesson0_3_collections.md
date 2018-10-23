@@ -1,3 +1,9 @@
+<h4 align="right">
+    <a href="lesson0_2_functions.md">← Previous</a> |
+    <a href="../../../../README.md">Menu</a> |
+    <a href="lesson0_4_classes_traits_objects.md">Next →</a>
+</h4>
+
 # Collections
 
 The Scala standard library supports a number of collections out-of-the-box:
@@ -75,8 +81,8 @@ a new list with updated elements:
 res13: List[Int] = List(2, 4, 6)
 ```
 
-Java 8 improved things a bit with the new streams API which has a `map` method, however syntactically, things are not as
-concise as Scala:
+Java 8 improved things a bit with the new streams API which has a `map` method. Syntactically, however, things are not
+as concise as Scala:
 
 ```java
 import java.util.List;
@@ -100,3 +106,9 @@ of a collection without modifying them:
 
 In addition, there are other methods like `flatMap`, `filter`, `foldLeft`, `foldRight`, etc which you can use to
 manipulate collections in different ways.
+
+<h4 align="right">
+    <a href="lesson0_2_functions.md">← Previous</a> |
+    <a href="../../../../README.md">Menu</a> |
+    <a href="lesson0_4_classes_traits_objects.md">Next →</a>
+</h4>
