@@ -20,6 +20,12 @@ the examples as it really helps to learn the concepts.
 If you want to interact with the examples presented in this project using the REPL, you will need to install SBT. Follow
 the instructions listed here based on your local environment: https://www.scala-sbt.org/download.html
 
+If you're running on Mac, you can use [Homebrew](https://brew.sh/) to install SBT:
+
+```bash
+$ brew install sbt@1
+```
+
 ### Ammonite
 
 The REPL that I used in the examples throughout the lesson was [Ammonite](http://ammonite.io/#Ammonite-REPL) (denoted by
