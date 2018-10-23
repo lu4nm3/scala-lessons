@@ -1,5 +1,5 @@
 <h4 align="right">
-    <a href="../_0_basics/lesson0_5_pattern_matching.md">← Previous</a> |
+    <a href="../_0_basics/lesson0.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
     <a href="lesson1_2_conversions.md">Next →</a>
 </h4>
@@ -117,7 +117,7 @@ If we call `useInt` we get a compilation error:
 ```
 
 <h4 align="right">
-    <a href="../_0_basics/lesson0_5_pattern_matching.md">← Previous</a> |
+    <a href="../_0_basics/lesson0.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
     <a href="lesson1_2_conversions.md">Next →</a>
 </h4>
