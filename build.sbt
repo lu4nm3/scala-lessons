@@ -13,8 +13,7 @@ lazy val scalaLessons = (project in file("."))
   .settings(libraryDependencies ++=
     Seq(
       "com.lihaoyi" % "ammonite" % "1.2.1" % "test" cross CrossVersion.full,
-      "com.typesafe.play" %% "play" % "2.6.13" withSources() withJavadoc(),
-      "io.monix" % "monix_2.12" % "3.0.0-RC1",
+      git      "io.monix" % "monix_2.12" % "3.0.0-RC1",
       "org.typelevel" %% "cats-core" % "1.1.0" withSources() withJavadoc(),
       "org.typelevel" %% "cats-effect" % "1.0.0-RC2" withSources() withJavadoc(),
       "org.typelevel" %% "cats-mtl-core" % "0.2.1" withSources() withJavadoc()
