@@ -51,10 +51,10 @@ functions:
 
 ```scala
 @ (s: String) => foo(s) flatMap { v1 =>
-     |   bar(v1) flatMap { v2 =>
-     |     baz(v2)
-     |   }
-     | }
+    bar(v1) flatMap { v2 =>
+      baz(v2)
+    }
+  }
 res9: String => monix.eval.Task[Boolean] = $$Lambda$3816/2142304919@19b0d133
 ```
 
