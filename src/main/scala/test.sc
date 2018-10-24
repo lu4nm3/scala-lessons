@@ -1,5 +1,5 @@
-import scala.collection.mutable.ListBuffer
+def add(a: Int)(b: Int): Int = {
+  a + b
+}
 
-val l = ListBuffer(1,2,3)
-l += 4
-l
+add(3)(_)

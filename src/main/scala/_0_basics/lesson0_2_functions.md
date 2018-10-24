@@ -96,6 +96,96 @@ res5: Int = 8
 Function purity is important because it guarantees deterministic execution of your logic. Without this guarantee,
 reasoning about your code becomes hard, as does testing, refactoring, etc...
 
+### Multiple parameter groups
+
+Functions in Scala can have multiple parameter groups:
+
+```scala
+def add(a: Int)(b: Int): Int = {
+  a + b
+}
+```
+
+They are generally used for ergonomic purposes in order to make the syntax of functions that take a lot of parameters a
+bit easier to read:
+
+```scala
+// parameters feel a little bunched up
+def map[A, B](fa: F[A], f: A => B): F[B]
+
+// vs.
+
+def map[A, B](fa: F[A])(f: A => B): F[B]
+```
+
+And other times to provide a better experience when using them:
+
+```scala
+def schedule(id: String, schedule: Schedule)(action: => Any)
+
+schedule("my-schedule", Schedule("0, 8, *, *, ?")) {
+  val outputFile = "results.csv"
+  val rdd = sc.hadoopFile(...)
+  val newRdd = rdd.map(...)
+  newRdd.saveAsTextFile(outputFile)
+}
+
+//vs.
+
+def schedule(id: String, schedule: Schedule, action: => Any)
+
+schedule("my-schedule", Schedule("0, 8, *, *, ?"), val outputFile = "results.csv"; val rdd = sc.hadoopFile(...); val newRdd = rdd.map(...); newRdd.saveAsTextFile(outputFile))
+
+schedule("my-schedule", Schedule("0, 8, *, *, ?"), {
+  val outputFile = "results.csv"
+  val rdd = sc.hadoopFile(...)
+  val newRdd = rdd.map(...)
+  newRdd.saveAsTextFile(outputFile)
+})
+```
+
+```scala
+def sendEmail(address: String)(message: String): Unit
+
+sendEmail("test@example.com") {
+  """
+    Dear person,
+    
+    Hello world!
+    
+    Sincerely,
+    Your friend
+  """
+}
+```
+
+#### Currying
+
+In addition, we can also curry functions that have multiple parameters. When we say we "curry a function", we simply
+mean that we supply arguments to one or more of its parameter groups in order to transform it into a simpler, partially
+applied function with fewer parameter groups.
+
+Using our function from earlier:
+
+```scala
+def add(a: Int)(b: Int): Int = {
+  a + b
+}
+```
+
+We can curry it by supplying only 1 of the arguments and using the `_` placeholder for the 2nd parameter:
+
+```scala
+@ add(3)(_)
+res4: Int => Int
+
+@ val addThree = add(3)(_)
+addThree: Int => Int
+
+@ addThree(2)
+res6: Int = 5
+```
+
 <h4 align="right">
     <a href="lesson0_1_super_basic.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
