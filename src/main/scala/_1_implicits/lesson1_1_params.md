@@ -62,9 +62,7 @@ def initDb1(conf: Config): Future[Unit] = ???
 def initDb2(conf: Config): Future[Unit] = ???
 def initDb3(conf: Config): Future[Unit] = ???
 
-val conf: Config = Config()
-
-def init: Future[Unit] = {
+def init(conf: Config): Future[Unit] = {
   for {
     _ <- initDb1(conf) // manually pass in Config
     _ <- initDb2(conf)
@@ -85,7 +83,7 @@ def initDb3(implicit conf: Config): Future[Unit] = ???
 
 implicit val conf: Config = Config()
 
-def init: Future[Unit] = {
+def init(implicit conf: Config): Future[Unit] = {
   for {
     _ <- initDb1
     _ <- initDb2
