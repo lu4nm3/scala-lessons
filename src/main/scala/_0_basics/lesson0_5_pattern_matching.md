@@ -71,8 +71,10 @@ num match {
 Pattern matching supports guards which allow you to define additional conditions that a case must meet:
 
 ```scala
+val flag = true
+
 num match {
-  case 1 | 3 if num < 4 => "odd"
+  case 1 | 3 if flag => "odd"
   case 2 | 4 => "even"
   case _ => "unknown"
 }
@@ -84,8 +86,8 @@ If the `case` is followed by a variable name, then the match expression is assig
 
 ```scala
 num match {
-  case 1 | 3 if num < 4 => "odd"
-  case 2 | 4 => "even"
+  case 1 | 3 => "odd"
+  case num if num <= 4 => "even"
   case unknown => s"unknown number: $unknown"
 }
 ```
