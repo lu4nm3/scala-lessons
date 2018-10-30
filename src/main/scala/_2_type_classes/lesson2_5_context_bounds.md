@@ -1,32 +1,32 @@
 <h4 align="right">
-    <a href="lesson2_3_2_interface_syntax.md">← Previous</a> |
+    <a href="lesson2_4_2_interface_syntax.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson2_5_implicit_scope_packaging.md">Next →</a>
+    <a href="lesson2_6_implicit_scope_packaging.md">Next →</a>
 </h4>
 
-<h1>Implicit Context Bounds</h1>
+<h1>Context Bounds</h1>
 
 Context bounds allow us to write implicit parameters more compactly by using a shorthand notation.
 
 Instead of:
 
 ```scala
-object Area {
-  def apply[S](implicit calculator: Area[S]): Area[S] = calculator
+object Cost {
+  def apply[T](implicit calculator: Cost[T]): Cost[T] = calculator
 }
 ```
 
 We can do:
 
 ```scala
-object Area {
-  def apply[S: Area]: Area[S] = {
+object Cost {
+  def apply[T: Cost]: Cost[T] = {
     // Since we no longer have an explicit name to reference the implicit parameter, we 
     // can't use it directly in our method definition. To get around this, we use the 
     // `implicitly` summoner from the Scala standard library. This summoner will look
     // for an implicit instance of the type class from the nearest scope, which in this
     // case is the implicit method parameter of our `apply` method.
-    implicitly[Area[S]]
+    implicitly[Cost[T]]
   }
 }
 ```
@@ -34,11 +34,11 @@ object Area {
 And then use it just like before:
 
 ```scala
-@ import ShapeAreas._
-import ShapeAreas._
+@ import Costs._
+import Costs._
 
-@ Area[Circle].calculate(Circle(5))
-res0: Double = 78.53981633974483
+@ Cost[Truck].calculate(Truck())
+res0: Double = 180000.0
 ```
 
 Similarly, you can use context bounds to define implicit parameters in classes.
@@ -46,9 +46,9 @@ Similarly, you can use context bounds to define implicit parameters in classes.
 Without context bounds:
 
 ```scala
-class AreaOps[S](shape: S)(implicit calculator: Area[S]) {
-  def area: Double = {
-    calculator.calculate(shape)
+class CostOps[T](thing: T)(implicit calculator: Cost[T]) {
+  def cost: Double = {
+    calculator.calculate(thing)
   }
 }
 ```
@@ -56,9 +56,9 @@ class AreaOps[S](shape: S)(implicit calculator: Area[S]) {
 With context bounds:
 
 ```scala
-class AreaOps[S: Area](shape: S) {
-  def area: Double = {
-    implicitly[Area[S]].calculate(shape) // we need to use implicitly here too!
+class CostOps[T: Cost](thing: T) {
+  def cost: Double = {
+    implicitly[Cost[T]].calculate(thing) // we need to use implicitly here too!
   }
 }
 ```
@@ -87,7 +87,7 @@ def fooBar[A](implicit F: Foo[A], B: Bar[A]): Int = {
 ```
 
 <h4 align="right">
-    <a href="lesson2_3_2_interface_syntax.md">← Previous</a> |
+    <a href="lesson2_4_2_interface_syntax.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson2_5_implicit_scope_packaging.md">Next →</a>
+    <a href="lesson2_6_implicit_scope_packaging.md">Next →</a>
 </h4>

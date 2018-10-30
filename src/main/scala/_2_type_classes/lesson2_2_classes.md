@@ -1,7 +1,7 @@
 <h4 align="right">
-    <a href="../_1_implicits/lesson1.md">← Previous</a> |
+    <a href="lesson2_1_polymorphism.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson2_2_instances.md">Next →</a>
+    <a href="lesson2_3_instances.md">Next →</a>
 </h4>
 
 <h1>The Type Class</h1>
@@ -17,16 +17,16 @@ There are 3 main components to the type class pattern:
 
 A type class is an interface that represents some behavior or functionality we want to implement. 
 
-In this example, `Area` will be our type class:
+Continuing from our supermarket example, `Cost` will be our type class:
 
 ```scala
-trait Area[S] {
-  def calculate(shape: S): Double
+trait Cost[T] {
+  def calculate(thing: T): Double
 }
 ```
 
 <h4 align="right">
-    <a href="../_1_implicits/lesson1.md">← Previous</a> |
+    <a href="lesson2_1_polymorphism.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson2_2_instances.md">Next →</a>
+    <a href="lesson2_3_instances.md">Next →</a>
 </h4>

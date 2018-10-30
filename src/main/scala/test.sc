@@ -1,5 +1,3 @@
-def add(a: Int)(b: Int): Int = {
-  a + b
-}
+import cats.effect.IO
 
-add(3)(_)
+IO(3)

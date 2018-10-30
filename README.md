@@ -87,13 +87,14 @@ scala>
     </li>
     <li><h3>Type Classes</h3>
         <ol>
-            <li><a href="src/main/scala/_2_type_classes/lesson2_1_classes.md">The Type Class</a></li>
-            <li><a href="src/main/scala/_2_type_classes/lesson2_2_instances.md">Instances</a></li>
-            <li><a href="src/main/scala/_2_type_classes/lesson2_3_1_interface_objects.md">Interface Objects</a></li>
-            <li><a href="src/main/scala/_2_type_classes/lesson2_3_2_interface_syntax.md">Interface Syntax</a></li>
-            <li><a href="src/main/scala/_2_type_classes/lesson2_4_context_bounds.md">Context Bounds</a></li>
-            <li><a href="src/main/scala/_2_type_classes/lesson2_5_implicit_scope_packaging.md">Packaging</a></li>
-            <li><a href="src/main/scala/_2_type_classes/lesson2_6_recursive_implicit_resolution.md">Recursive Implicit Resolution</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_1_polymorphism.md">Polymorphism</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_2_classes.md">The Type Class</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_3_instances.md">Instances</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_4_1_interface_objects.md">Interface Objects</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_4_2_interface_syntax.md">Interface Syntax</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_5_context_bounds.md">Context Bounds</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_6_implicit_scope_packaging.md">Scope & Packaging</a></li>
+            <li><a href="src/main/scala/_2_type_classes/lesson2_7_recursive_implicit_resolution.md">Recursive Implicit Resolution</a></li>
         </ol>
     </li>
     <li><h3>Functional Programming</h3>

@@ -1,10 +1,10 @@
 <h4 align="right">
-    <a href="lesson2_2_instances.md">← Previous</a> |
+    <a href="lesson2_3_instances.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson2_3_2_interface_syntax.md">Next →</a>
+    <a href="lesson2_4_2_interface_syntax.md">Next →</a>
 </h4>
 
-<h1>Type Class Interface Objects</h1>
+<h1>Interface Objects</h1>
 
 <h3>Object methods</h3>
 
@@ -12,9 +12,9 @@ The simplest way of creating an interface to a type class is to create methods i
 functionality from your type class:
 
 ```scala
-object Shape {
-  def calculateArea[S](shape: S)(implicit calculator: Area[S]): Double = {
-    calculator.calculate(shape)
+object CostCalculator {
+  def calculateCost[T](thing: T)(implicit cost: Cost[S]): Double = {
+    cost.calculate(thing)
   }
 }
 ```
@@ -22,18 +22,18 @@ object Shape {
 To use this object, we import any type class instances we care about and call the relevant method:
 
 ```scala
-@ import ShapeAreas._
-import ShapeAreas._
+@ import Costs._
+import Costs._
 
-@ Shape.calculateArea(Circle(5))
-res0: Double = 78.53981633974483
+@ CostCalculator.calculateCost(Truck())
+res0: Double = 180000.0
 ```
 
-Here the compiler notices that we called the `calculateArea` method without providing an implicit parameter. So it tries 
+Here the compiler notices that we called the `calculateCost` method without providing an implicit parameter. So it tries 
 to fix this by searching for the type class instance of the relevant type and inserting it at the call site:
 
 ```scala
-Shape.calculateArea(Circle(5))(circleArea)
+CostCalculator.calculateCost(Truck())(truckCost)
 ```
 
 <h3>Summoner method</h3>
@@ -46,8 +46,8 @@ This commonly done by defining what is known as a "summoner" method in the compa
 This summoner is just a 0-argument `apply` method:
 
 ```scala
-object Area {
-  def apply[S](implicit calculator: Area[S]): Area[S] = calculator
+object Cost {
+  def apply[T](implicit calculator: Cost[T]): Cost[T] = calculator
 }
 ```
 
@@ -55,11 +55,11 @@ And then we can call this method by simply passing in the type that we're intere
 class instance for that type also has to be in scope:
 
 ```scala
-@ import ShapeAreas._
-import ShapeAreas._
+@ import Costs._
+import Costs._
 
-@ Area[Circle].calculate(Circle(5))
-res0: Double = 78.53981633974483
+@ Cost[Truck].calculate(Truck())
+res0: Double = 180000.0
 ```
 
 This is very similar to how the `implicitly` method from the Scala standard library is defined.
@@ -69,12 +69,12 @@ def implicitly[T](implicit e: T): T = e
 ```
 
 ```scala
-@ implicitly[Area[Circle]].calculate(Circle(5))
-res1: Double = 78.53981633974483
+@ implicitly[Cost[Truck]].calculate(Truck())
+res1: Double = 180000.0
 ```
 
 <h4 align="right">
-    <a href="lesson2_2_instances.md">← Previous</a> |
+    <a href="lesson2_3_instances.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson2_3_2_interface_syntax.md">Next →</a>
+    <a href="lesson2_4_2_interface_syntax.md">Next →</a>
 </h4>
