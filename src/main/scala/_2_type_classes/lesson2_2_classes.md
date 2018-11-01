@@ -17,11 +17,11 @@ There are 3 main components to the type class pattern:
 
 A type class is an interface that represents some behavior or functionality we want to implement. 
 
-Continuing from our supermarket example, `Cost` will be our type class:
+Continuing with our bakery example, `Perishable` will be our type class:
 
 ```scala
-trait Cost[T] {
-  def calculate(thing: T): Double
+trait Perishable[T] {
+  def expired(item: T): Boolean
 }
 ```
 

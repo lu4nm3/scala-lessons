@@ -12,42 +12,43 @@ searching for candidate instances.
 So far, we have been defining implicit instances as `implicit val`s.
 
 ```scala
-implicit val appleCost: Cost[Apple] = new Cost[Apple] {
-  def calculate(apple: Apple): Double = 0.25
+implicit val croissantPerishable: Perishable[Croissant] = new Perishable[Croissant] {
+  def expired(c: Croissant): Boolean = false
 }
 ```
 
 But we can also define them as implicit methods that can be used to construct instances from other type class instances.
 
-As an example, consider defining an instance of `Cost` for a `List` of fruits that adds the costs of all the fruits in 
-the list. We would need a `Cost[List[T]]` for every type of fruit `T` that we care about.
+As an example, consider defining an instance of `Perishable` for a `List` of baked goods that determines whether or not
+all of the items in the list have expired. For this, we would need a `Perishable[List[T]]` for every item `T` that the
+bakery sells.  
 
 ```scala
-sealed trait Fruit
-case class Apple() extends Fruit
-case class Orange() extends Fruit
-
-implicit val listAppleCost: Cost[List[Apple]] = new Cost[List[Apple]] {
-  def calculate(apples: List[Apple]): Double = ???
+implicit val listBaguettePerishable: Perishable[List[Baguette]] = new Perishable[List[Baguette]] {
+  def expired(b: List[Baguette]): Boolean = false // hard coded, in reality would use `b` to figure out if it expired
 }
 
-implicit val listOrangeCost: Cost[List[Orange]] = new Cost[List[Orange]] {
-  def calculate(oranges: List[Orange]): Double = ???
+implicit val listCroissantPerishable: Perishable[List[Croissant]] = new Perishable[List[Croissant]] {
+  def expired(c: List[Croissant]): Boolean = false
+}
+  
+implicit val listIceCreamPerishable: Perishable[List[IceCream]] = new Perishable[List[IceCream]] {
+  def expired(i: List[IceCream]): Boolean = true
 }
 ```
 
 However, this approach doesn't scale as now we end up requiring 2 `val`s for every type `T` (one val for the type itself 
-and one `val` for `List[T]`). We would also be duplicating logic.
+and one `val` for `List[T]`). We would also be duplicating a lot of logic.
 
 What we can do instead is to abstract the code for handling `List[T]` into a common method based on an instance for `T`. 
-This method constructs an `Cost` instance for `List[T]` by relying on an implicit parameter to fill in the T-specific 
-functionality.
+This method constructs an `Perishable` instance for `List[T]` by relying on an implicit parameter to fill in the
+T-specific functionality.
 
 ```scala
-implicit def listCost[T](implicit cost: Cost[T]): Cost[List[T]] = new Cost[List[T]] {
-  def calculate(things: List[T]): Double = {
-    if (things.isEmpty) 0
-    else things.map(cost.calculate).sum
+implicit def listPerishable[T](implicit p: Perishable[T]): Perishable[List[T]] = new Perishable[List[T]] {
+  def expired(items: List[T]): Boolean = {
+    if (items.isEmpty) false
+    else items.map(item => p.expired(item)).forall(item => item)
   }
 }
 ```
@@ -55,29 +56,31 @@ implicit def listCost[T](implicit cost: Cost[T]): Cost[List[T]] = new Cost[List[
 Given our previous interface object:
 
 ```scala
-object Cost {
-  def apply[T](implicit calculator: Cost[T]): Cost[T] = calculator
+object Perishable {
+  def apply[T](implicit perishable: Perishable[T]): Perishable[T] = perishable
 }
 ```
 
 When the compiler sees an expression like:
 
 ```scala
-Cost[List[Apple]].calculate(List(Apple(), Apple()))
+Perishable[List[Baguette]].expired(List(Baguette(), Baguette()))
 ```
 
-it searches for an implicit `Cost[List[Apple]]`. It finds the implicit method for `Cost[List[T]]`:
+it searches for an implicit `Perishable[List[Baguette]]` and finds our implicit method `listPerishable` (which we
+defined for items of type `Perishable[List[T]]`):
 
 ```scala
-Cost[List[Apple]](listCost[Apple]).calculate(List(Apple(), Apple()))
+Perishable[List[Baguette]](listPerishable[Baguette]).expired(List(Baguette(), Baguette()))
 ```
 
-and recursively searches for an `Cost[Apple]` to use as the parameter to `listCost[Apple]`:
+and recursively searches for an instance of `Perishable[Baguette]` from our imported instances to use as the parameter
+for `listPerishable[Baguette]`:
 
 ```scala
-import Costs._
+import Perishables._
 
-Cost[List[Apple]](listCost[Apple](appleCost)).calculate(List(Apple(), Apple()))
+Perishable[List[Baguette]](listPerishable[Baguette](baguettePerishable)).expired(List(Baguette(), Baguette()))
 ```
 
 <h4 align="right">

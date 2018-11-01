@@ -137,101 +137,101 @@ res1: Long = 1
 What if we needed to implement some behavior across different unrelated types (in terms of subtyping) where the
 implementation of the behavior is specific to the type?
 
-For example, let's say that we're designing an accounting application for a chain of supermarkets and we needed to track
-costs. Now you can imagine that the costs for a supermarket come from many different places such as the cost of the food
-it sells, the shipping costs to deliver merchandise, and the costs from operating brick and mortar stores, to name a
-few.
+For example, let's say that we're designing an application for a bakery to help it figure out the shelf life of its
+bread and other pastries. Shelf life for baked goods typically depends on things like the day they were made, the
+ingredients that were used, whether or not things were refrigerated, etc. 
 
-In this case, we need to implement a common behavior (calculating costs) across multiple domains (merchandise, shipping,
-physical locations). Naturally, from the name of this section, ad-hoc polymorphism will be the way to go. But first,
-let's explore some of our other alternatives if ad-hoc polymorphism was not an option.
+In this case we seek to implement a common behavior (calculating the expiration date) across different baked goods so
+that the bakery knows when it needs to make new batches. Naturally, from the name of this section, ad-hoc polymorphism
+will be the way to go. But first, let's explore some of our other alternatives.
 
 <h3>Subtype Polymorphism</h3>
 
-One approach would be to use subtype polymorphism as we saw earlier by defining a top-level `Cost` type that the types
-of our different sub-domains can inherit from:
+One approach would be to use subtype polymorphism as we saw earlier by defining a top-level `Perishable` type that the
+types representing our different baked goods can inherit from:
 
 ```scala
-trait Cost {
-  def calculateCosts: Double
+trait Perishable {
+  def expired: Boolean
 }
 
-// merchandise
-case class Apple() extends Cost {
-  def calculateCosts: Double = ???
+case class Baguette() extends Perishable {
+  def expired: Boolean = ???
 }
 
-// shipping
-case class Truck() extends Cost {
-  def calculateCosts: Double = ???
-}
-
-// physical location
-case class Store() extends Cost {
-  def calculateCosts: Double = ???
+case class Croissant() extends Perishable {
+  def expired: Boolean = ???
 }
 ```
 
-Then in one of the services in our application, we could use this top-level type to calculate all of the costs across
-the company:
+Then in one of the services in our application, we could use this top-level `Perishable` type to find all of the bread
+that has expired so that it can be replaced:
 
 ```scala
-trait AccountingService {
-  def totalCosts(costs: List[Cost]): Double = ???
+trait BakeryService {
+  def needsReplacing(perishables: List[Perishable]): List[Perishable] = {
+    perishables.filter(_.expired)
+  }
 }
 ```
 
-This approach presents a few different problems:
+This approach has a couple of problems:
 
-  - Having a common super type for `Cost` that all of our sub-domain types have to inherit from is a little awkward and
-  does not make a lot of sense from a domain modeling perspective. Normally we use inheritance to denote an **is a**
-  relationship. In this case, however, we are saying that an apple **is a** cost when it's probably more accurate to say
-  that an apple **has a** cost.
-  - With subtype polymorphism we lose type information that might have otherwise been useful. In our example, we need to
-  calculate the costs for the entire company so we parameterize our `totalCosts` method on a type that contains cost
-  information. The only common type across our company's domain model that we can use for this is our top-level `Cost`
-  type. By doing so, however, we lose context about what it is exactly that we are calculating the costs for.
-  - We are closing our API against future extension to types that we don't control. For instance, imagine we decided to
-  use some 3rd party library for managing employees that provided us with an `Employee` class. In this case, we would
-  not be able to calculate costs related to payroll by extending the class with `Cost` since `Employee` belongs to
-  source code we don't have access to.
+  - With subtype polymorphism we lose type information that might have otherwise been useful. For example, if we pass in
+  a list of `Baguette`s to our `needsReplacing` function, we get back a list of `Perishable`s. In other words we lose
+  context about the type of baked goods that expired and we no longer know if we need to get rid of the baguettes or the
+  croissants.
+  - We close our API to future extension for types that we don't control. For example, imagine that one day the bakery
+  enters into a partnership with an ice-cream shop and expands its menu with some of their ice-cream. As part of the
+  deal, the ice-cream shop provides the bakery's developers with a custom Scala library (compiled in a jar) for managing
+  their product which includes an `IceCream` type. By using subtype polymorphism to model perishable food, we would not
+  be able to calculate the expiration for ice-cream since `IceCream` belongs to source code that we don't have access
+  to.
   
-<h3>Adapter Pattern</h3>
+<h3>Adapter Pattern (ie. Parametric Polymorphism)</h3>
 
 Another option would be to use the adapter pattern. The adapter pattern is used to make existing types work with others
 by wrapping them in a new interface. 
 
 ```scala
-trait CostLike[A] {
-  def calculateCosts: Double
+trait PerishableLike[A] {
+  def expired: Boolean
 }
 
-case class CostLikeApple(a: Apple) extends CostLike[Apple] {
-  def calculateCosts: Double = ???
+case class PerishableLikeBaguette(b: Baguette) extends PerishableLike[Baguette] {
+  def expired: Boolean = ???
 }
 
-case class CostLikeTruck(t: Truck) extends CostLike[Truck] {
-  def calculateCosts: Double = ???
+case class PerishableLikeCroissant(c: Croissant) extends PerishableLike[Croissant] {
+  def expired: Boolean = ???
 }
 
-case class CostLikeStore(s: Store) extends CostLike[Store] {
-  def calculateCosts: Double = ???
+case class PerishableLikeIceCream(i: IceCream) extends PerishableLike[IceCream] {
+  def expired: Boolean = ???
 }
-
-def totalCosts[A](costs: List[CostLikeApple[A]]): Double = costs.map(_.calculateCosts).sum
 ```
 
-While this approach gives us full type safety and extensibility, it does come with its downsides:
+Then, we can parameterize our function on some type `A` and have it take a list of `PerishableLike[A]` as both its input
+parameter type and its return type:
 
-  - By wrapping each of our domain objects inside a `CostLike[A]` type, we incur the performance hit of having to
-  allocate extra memory. The larger the list of domain objects that we need to calculate costs for, the more adapter
+```scala
+def needsReplacing[A](perishables: List[PerishableLike[A]]): List[PerishableLike[A]] = {
+  perishables.filter(_.expired)
+}
+```
+
+While this approach gives us full type safety and extensibility (we can even use it with that `IceCream` type we got
+from the ice-cream shop), it does come with its downsides:
+
+  - By wrapping each of our domain objects inside a `PerishableLike[A]` type, we incur the performance hit of having to
+  allocate extra memory. The larger the list of domain objects that we need to find the expiration for, the more adapter
   instances we have to create.
-  - While our `CostLike` adapter currently meets our needs for calculating costs, it is possible that in the future, we
-  have to implement another set of cross-domain behaviors. For example, we might want to calculate the total amount of
-  taxes paid across the company. At this point we have 2 options:
-    - We can create a new adapter type for each cross-domain behavior we need to support and somehow deal with ever
-    increasing memory penalties.
-    - Or we can redefine `CostLike` into a more generic `AccountingLike` adapter where we define all of the common
+  - While our `PerishableLike` adapter currently meets our needs for calculating costs, it is possible that in the
+  future, we have to implement another set of cross-domain behaviors. For example, we might want to categorize our menu
+  by figuring out which items meet certain conditions such as being gluten free. At this point we have 2 options:
+    - We can create a new adapter type for each behavior that we need to support and deal with ever increasing memory
+    costs.
+    - Or we can redefine `PerishableLike` into a more generic `FoodLike` adapter where we define all of the common
     behaviors we need to support. This tight coupling, however, will lead to bloated adapters that make behaviors hard
     to compose, maintain, and test.
 

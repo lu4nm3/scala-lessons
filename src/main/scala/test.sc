@@ -1,3 +1,1 @@
-import cats.effect.IO
-
-IO(3)
+List(true, true, false).forall(item => item)

@@ -17,7 +17,7 @@ site which, in order of priority, roughly consists of:
 
 We can package type class instances in roughly 4 ways:
 
-  1. by placing them in an object like `Costs`
+  1. by placing them in an object like `Perishables`
   2. by placing them in a trait
   3. by placing them in the companion object of the type class
   4. by placing them in the companion object of the type parameter
@@ -26,8 +26,8 @@ To demonstrate the different ways we can package type class instances, let's sup
 method:
 
 ```scala
-def foo(truck: Truck)(implicit cost: Cost[Truck]): Double = {
-  cost.calculate(truck)
+def expired(baguette: Baguette)(implicit p: Perishable[Baguette]): Boolean = {
+  p.expired(baguette)
 }
 ```
 
@@ -36,19 +36,19 @@ def foo(truck: Truck)(implicit cost: Cost[Truck]): Double = {
 With option 1, we bring instances into scope by importing them like we have been doing so far:
 
 ```scala
-object Costs {
-  implicit val truckCost: Cost[Truck] = new Cost[Truck] {
-    def calculate(truck: Truck): Double = 180000.0
+object Perishables {
+  implicit val baguettePerishable: Perishable[Baguette] = new Perishable[Baguette] {
+    def expired(b: Baguette): Boolean = false // hard coded, in reality would use `b` to figure out if it expired
   }
 }
 ```
 
 ```scala
-@ import Costs._
-import Costs._
+@ import Perishables._
+import Perishables._
 
-@ foo(Truck())
-res0: Double = 180000.0
+@ expired(Baguette())
+res0: Boolean = false
 ```
 
 <h4>Inherit instances</h4>
@@ -56,21 +56,25 @@ res0: Double = 180000.0
 With option 2, we bring instances into scope through inheritance:
 
 ```scala
-trait TruckCost {
-  implicit val truckCost: Cost[Truck] = new Cost[Truck] {
-    def calculate(truck: Truck): Double = 180000.0
+trait BaguetteExpiration {
+  implicit val baguettePerishable: Perishable[Baguette] = new Perishable[Baguette] {
+    def expired(b: Baguette): Boolean = false
   }
 }
 ```
 
 ```scala
-@ object Service extends TruckCost {
-    def getCostOfTruck: Double = foo(Truck())
+@ object Service extends BaguetteExpiration {
+    private def expired(baguette: Baguette)(implicit p: Perishable[Baguette]): Boolean = {
+      p.expired(baguette)
+    }
+
+    def getBaguetteExpiration(baguette: Baguette): Boolean = expired(baguette)
   }
 defined object Service
 
-@ Service.getCostOfTruck
-res0: Double = 180000.0
+@ Service.getBaguetteExpiration(Baguette())
+res0: Boolean = false
 ```
 
 <h4>Define instances in companion objects</h4>
@@ -79,25 +83,26 @@ With options 3 and 4, instances are always in implicit scope:
 
 ```scala
 // You can define type class instances in the companion object of the type class itself
-object Cost {
-  implicit val truckCost: Cost[Truck] = new Cost[Truck] {
-    def calculate(truck: Truck): Double = 180000.0
+object Perishable {
+  implicit val baguettePerishable: Perishable[Baguette] = new Perishable[Baguette] {
+    def expired(b: Baguette): Boolean = false
   }
 }
 
 // Or alternatively, you can define type class instances in the companion object of the
 // particular type that you want to provide a type class instance for
-object Truck {
-  implicit val truckCost: Cost[Truck] = new Cost[Truck] {
-    def calculate(truck: Truck): Double = 180000.0
+object Baguette {
+  implicit val baguettePerishable: Perishable[Baguette] = new Perishable[Baguette] {
+    def expired(b: Baguette): Boolean = false
   }
 }
 ```
 
 No explicit imports required:
+
 ```scala
-@ foo(Truck())
-res0: Double = 180000.0
+@ expired(Baguette())
+res0: Boolean = false
 ```
 
 <h3>Default instances</h3>
@@ -111,45 +116,48 @@ then put it in the companion object of the type if possible. This allows users t
 in the local scope while still providing sensible default behavior.
 
 ```scala
-object Truck {
-  // default cost calculation for a truck
-  implicit val truckCost: Cost[Truck] = new Cost[Truck] {
-    def calculate(truck: Truck): Double = 180000.0
+object IceCream {
+  implicit val iceCreamPerishable: Perishable[IceCream] = new Perishable[IceCream] {
+    def expired(i: IceCream): Boolean = true
   }
 }
 ```
 
 Otherwise, we can place different type class instances into their own objects and require the users to explicitly import 
-them based on what they need.
+them based on what they need. For example, we might want to differentiate between water-based ice cream like sorbets and
+ice cream made with milk as they will have different shelf lives. To do this, we can create 2 separate objects to
+contain different expiration behaviors:
 
 ```scala
-object CostToBuyTruck {
-  implicit val truckCost: Cost[Truck] = new Cost[Truck] {
-    def calculate(truck: Truck): Double = 180000.0
+object WaterBasedIceCream {
+  implicit val iceCreamPerishable: Perishable[IceCream] = new Perishable[IceCream] {
+    def expired(i: IceCream): Boolean = false
   }
 }
 
-object CostToMaintainTruck {
-  implicit val truckCost: Cost[Truck] = new Cost[Truck] {
-    def calculate(truck: Truck): Double = 5000.0
+object MilkBasedIceCream {
+  implicit val iceCreamPerishable: Perishable[IceCream] = new Perishable[IceCream] {
+    def expired(i: IceCream): Boolean = true
   }
 }
 ```
 
-```scala
-@ import CostToBuyTruck._
-import CostToBuyTruck._
+And then simply import the specific implementation that we're interested in when we need it:
 
-@ Cost[Truck].calculate(Truck())
-res0: Double = 180000.0
+```scala
+@ import WaterBasedIceCream._
+import WaterBasedIceCream._
+
+@ Perishable[IceCream].expired(IceCream())
+res0: Boolean = false
 ```
 
 ```scala
-@ import CostToMaintainTruck._
-import CostToMaintainTruck._
+@ import MilkBasedIceCream._
+import MilkBasedIceCream._
 
-@ Cost[Truck].calculate(Truck())
-res1: Double = 5000.0
+@ Perishable[IceCream].expired(IceCream())
+res1: Boolean = true
 ```
 
 <h4 align="right">

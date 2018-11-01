@@ -15,29 +15,29 @@ keyword.
 Using some of the types from our supermarket domain:
 
 ```scala
-case class Apple()
-case class Truck()
-case class Store()
+case class Baguette()
+case class Croissant()
+case class IceCream()
 ```
 
-We can define instances for our `Cost` type class:
+We can define instances for our `Perishable` type class:
 
 ```scala
-trait Cost[T] {
-  def calculate(thing: T): Double
+trait Perishable[T] {
+  def expired(item: T): Boolean
 }
 
-object Costs {
-  implicit val appleCost: Cost[Apple] = new Cost[Apple] {
-    def calculate(apple: Apple): Double = 0.25
+object Perishables {
+  implicit val baguettePerishable: Perishable[Baguette] = new Perishable[Baguette] {
+    def expired(b: Baguette): Boolean = false // hard coded, in reality would use `b` to figure out if it expired
   }
 
-  implicit val truckCost: Cost[Truck] = new Cost[Truck] {
-    def calculate(truck: Truck): Double = 180000.0
+  implicit val croissantPerishable: Perishable[Croissant] = new Perishable[Croissant] {
+    def expired(c: Croissant): Boolean = false
   }
   
-  implicit val storeCost: Cost[Store] = new Cost[Store] {
-    def calculate(store: Store): Double = 10000000.0
+  implicit val iceCreamPerishable: Perishable[IceCream] = new Perishable[IceCream] {
+    def expired(i: IceCream): Boolean = true
   }
 }
 ```
