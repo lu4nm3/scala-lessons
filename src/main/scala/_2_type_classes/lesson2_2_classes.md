@@ -17,7 +17,8 @@ There are 3 main components to the type class pattern:
 
 A type class is an interface that represents some behavior or functionality we want to implement. 
 
-Continuing with our bakery example, `Perishable` will be our type class:
+Continuing with our bakery example, we can create a type class called `Perishable` whose behavior will be to calculate
+the expiration of our baked goods:
 
 ```scala
 trait Perishable[T] {

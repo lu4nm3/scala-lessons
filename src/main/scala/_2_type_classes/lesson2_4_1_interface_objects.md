@@ -12,7 +12,7 @@ The simplest way of creating an interface to a type class is to create methods i
 functionality from your type class:
 
 ```scala
-object BakeryService {
+object DailyOrderService {
   def expired[T](thing: T)(implicit perishable: Perishable[T]): Boolean = {
     perishable.expired(perishable)
   }
@@ -25,7 +25,7 @@ To use this object, we import any type class instances we care about and call th
 @ import Perishables._
 import Perishables._
 
-@ BakeryService.expired(Baguette())
+@ DailyOrderService.expired(Baguette())
 res0: Boolean = false
 ```
 
@@ -33,7 +33,7 @@ Here the compiler notices that we called the `expired` method without providing 
 the implicit scope for a type class instance for the `Baguette` type and it inserts it at the call site:
 
 ```scala
-BakeryService.expired(Baguette())(baguettePerishable)
+DailyOrderService.expired(Baguette())(baguettePerishable)
 ```
 
 <h3>Summoner method</h3>

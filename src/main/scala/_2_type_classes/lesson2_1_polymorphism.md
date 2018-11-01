@@ -164,11 +164,11 @@ case class Croissant() extends Perishable {
 }
 ```
 
-Then in one of the services in our application, we could use this top-level `Perishable` type to find all of the bread
+Then from one of the services in our application, we could use this top-level `Perishable` type to find all of the bread
 that has expired so that it can be replaced:
 
 ```scala
-trait BakeryService {
+trait DailyOrderService {
   def needsReplacing(perishables: List[Perishable]): List[Perishable] = {
     perishables.filter(_.expired)
   }
@@ -211,7 +211,7 @@ case class PerishableLikeIceCream(i: IceCream) extends PerishableLike[IceCream] 
 }
 ```
 
-Then, we can parameterize our function on some type `A` and have it take a list of `PerishableLike[A]` as both its input
+Then, we can parameterize our function on some type `A` and use a list of `PerishableLike[A]` as both its input
 parameter type and its return type:
 
 ```scala

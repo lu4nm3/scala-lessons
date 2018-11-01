@@ -10,9 +10,9 @@ The instances of a type class provide implementations for the types that we care
 your own custom types but also types from the Scala standard library as well as types defined in 3rd-party libraries.
 
 In Scala we define instances by creating concrete implementations of the type class and tagging them with the `implicit` 
-keyword.
+keyword in order for them to become implicitly available when we need them.
 
-Using some of the types from our supermarket domain:
+Using some of the types from our bakery domain:
 
 ```scala
 case class Baguette()
