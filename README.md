@@ -1,7 +1,7 @@
 # Scala Lessons
 
 These are a series of short lessons that cover various topics of the Scala programming language, especially as it
-relates to functional programming. The lessons are based in part of the open source books by underscore.io along with
+relates to functional programming. The lessons are based in part on the open source books by underscore.io along with
 additional material and examples. They are by no means meant to provide an exhaustive overview the entirety of Scala but
 rather on what I felt were some of the more practical aspects of the language and of functional programming that you
 might use your real-world, day-to-day work.
