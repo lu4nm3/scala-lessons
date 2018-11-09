@@ -101,10 +101,10 @@ scala>
         <ol>
             <li><h4>Basics</h4>
                 <ol>
-                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_1_monoids.md">Monoids</a></li>
-                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_2_semigroups.md">Semigroups</a></li>
-                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_3_functors.md">Functors</a></li>
-                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_4_higher_kinded_types.md">Higher-Kinded Types</a></li>
+                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_1_higher_kinded_types.md">Higher-Kinded Types</a></li>
+                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_2_monoids.md">Monoids</a></li>
+                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_3_semigroups.md">Semigroups</a></li>
+                    <li><a href="src/main/scala/_3_functional_programming_basics/lesson3_4_functors.md">Functors</a></li>
                 </ol>
             </li>
             <li><h4>Monads</h4>

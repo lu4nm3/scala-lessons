@@ -1,7 +1,7 @@
 <h4 align="right">
-    <a href="lesson3_1_monoids.md">← Previous</a> |
+    <a href="lesson3_2_monoids.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson3_3_functors.md">Next →</a>
+    <a href="lesson3_4_functors.md">Next →</a>
 </h4>
 
 <h1>Semigroups</h1>
@@ -28,7 +28,7 @@ example, Cats has a `NonEmptyList` data type which is a list that by definition 
 implementation of `Semigroup` but no implementation of `Monoid`.
 
 <h4 align="right">
-    <a href="lesson3_1_monoids.md">← Previous</a> |
+    <a href="lesson3_2_monoids.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson3_3_functors.md">Next →</a>
+    <a href="lesson3_4_functors.md">Next →</a>
 </h4>

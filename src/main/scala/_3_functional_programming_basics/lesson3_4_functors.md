@@ -1,7 +1,7 @@
 <h4 align="right">
-    <a href="lesson3_2_semigroups.md">← Previous</a> |
+    <a href="lesson3_3_semigroups.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson3_4_higher_kinded_types.md">Next →</a>
+    <a href="../_4_functional_programming_monads/lesson4.md">Next →</a>
 </h4>
 
 <h1>Functors</h1>
@@ -71,7 +71,7 @@ res1: Option[Int] = None
 ```
 
 <h4 align="right">
-    <a href="lesson3_2_semigroups.md">← Previous</a> |
+    <a href="lesson3_3_semigroups.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson3_4_higher_kinded_types.md">Next →</a>
+    <a href="../_4_functional_programming_monads/lesson4.md">Next →</a>
 </h4>

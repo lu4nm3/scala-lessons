@@ -1,7 +1,7 @@
 <h4 align="right">
-    <a href="../_2_type_classes/lesson2.md">← Previous</a> |
+    <a href="lesson3_1_higher_kinded_types.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson3_2_semigroups.md">Next →</a>
+    <a href="lesson3_3_semigroups.md">Next →</a>
 </h4>
 
 <h1>Monoids</h1>
@@ -157,7 +157,7 @@ res11: String = three
 ```
 
 <h4 align="right">
-    <a href="../_2_type_classes/lesson2.md">← Previous</a> |
+    <a href="lesson3_1_higher_kinded_types.md">← Previous</a> |
     <a href="../../../../README.md">Menu</a> |
-    <a href="lesson3_2_semigroups.md">Next →</a>
+    <a href="lesson3_3_semigroups.md">Next →</a>
 </h4>
