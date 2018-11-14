@@ -19,9 +19,9 @@ Notice how the following print statement is only executed once regardless of how
 
 ```scala
 @ val x = {
-     |   println("computing x...")
-     |   3
-     | }
+    println("computing x...")
+    3
+  }
 computing x...
 x: Int = 3
 
@@ -41,9 +41,9 @@ Notice how the print statement is re-run on every access of
 
 ```scala
 @ def y = {
-     |   println("computing y...")
-     |   3
-     | }
+    println("computing y...")
+    3
+  }
 y: Int
 
 @ y
@@ -64,9 +64,9 @@ the print and memoize the resulting value:
 
 ```scala
 @ lazy val z = {
-     |   println("computing z...")
-     |   3
-     | }
+    println("computing z...")
+    3
+  }
 z: Int = <lazy>
 
 @ z
@@ -96,9 +96,9 @@ Cats' `Eval` data type has 3 subtypes: `Now`, `Later`, and `Always`.
 import cats.Eval
 
 @ val x = Eval.now {
-     |   println("computing x...")
-     |   3
-     | }
+    println("computing x...")
+    3
+  }
 computing x...
 x: cats.Eval[Int] = Now(3)
 
@@ -115,9 +115,9 @@ res1: Int = 3
 
 ```scala
 @ val y = Eval.always {
-     |   println("computing y...")
-     |   3
-     | }
+    println("computing y...")
+    3
+  }
 y: cats.Eval[Int] = cats.Always@59eae87c
 
 @ y.value
@@ -135,13 +135,13 @@ res3: Int = 3
 
 ```scala
 @ val z = Eval.later {
-     |   println("computing y...")
-     |   3
-     | }
+    println("computing z...")
+    3
+  }
 z: cats.Eval[cats.Eval[Int]] = cats.Later@292f4ca9
 
 @ z.value
-computing y...
+computing z...
 res4: cats.Eval[Int] = Now(3)
 
 @ z.value
@@ -156,12 +156,12 @@ demand:
 
 ```scala
 @ val result = for {
-     |   a <- Eval.now { println("calculating a..."); 3 }
-     |   b <- Eval.always { println("calculating b..."); 2 }
-     | } yield {
-     |   println("multiplying a and b...")
-     |   a * b
-     | }
+    a <- Eval.now { println("calculating a..."); 3 }
+    b <- Eval.always {println("calculating b..."); 2 }
+  } yield {
+    println("multiplying a and b...")
+    a * b
+  }
 calculating a...
 result: cats.Eval[Int] = cats.Eval$$anon$9@6413cd8d
 

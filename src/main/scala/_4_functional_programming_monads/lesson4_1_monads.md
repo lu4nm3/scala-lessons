@@ -62,11 +62,11 @@ Earlier we learned about `Functor`s and how they let you `map` values that exist
 use `map` to solve our issue:
 
 ```scala
-@ parseInt("6").map { num1 =>      
-     |   parseInt("2").map { num2 =>    
-     |     divide(num1, num2)           
-     |   }
-     | }
+@ parseInt("6").map { num1 =>
+    parseInt("2").map { num2 =>
+      divide(num1, num2)
+    }
+  }
 res2: Option[Option[Option[Int]]] = Some(Some(Some(3)))
 ```
 
@@ -86,10 +86,10 @@ Here, we can use the `flatten` method from `Option` after every call to `map` in
 
 ```scala
 @ parseInt("6").map { num1 =>
-     |   parseInt("2").map { num2 =>
-     |     divide(num1, num2)
-     |   }.flatten
-     | }.flatten
+    parseInt("2").map { num2 =>
+      divide(num1, num2)
+    }.flatten
+  }.flatten
 res3: Option[Int] = Some(3)
 ```
 
@@ -110,10 +110,10 @@ The use of `map` and `flatten` one after the other can be replaced with the `fla
 
 ```scala
 @ parseInt("6").flatMap { num1 =>
-     |   parseInt("2").flatMap { num2 =>
-     |     divide(num1, num2)
-     |   }
-     | }
+    parseInt("2").flatMap { num2 =>
+      divide(num1, num2)
+    }
+  }
 res23: Option[Int] = Some(3)
 ```
 
@@ -151,10 +151,10 @@ Using the example from the previous section, let's suppose that parsing our seco
 
 ```scala
 @ for {
-     |   num1 <- parseInt("6")
-     |   num2 <- parseInt("a") // a is not an integer!!!
-     |   result <- divide(num1, num2)
-     | } yield result
+    num1 <- parseInt("6")
+    num2 <- parseInt("a")
+    result <- divide(num1, num2)
+  } yield result
 res26: Option[Int] = None
 ```
 
