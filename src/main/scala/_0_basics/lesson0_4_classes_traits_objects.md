@@ -281,7 +281,7 @@ Companion objects are objects that are normally defined side-by-side with anothe
 name. They are used to define things like constants and methods that are related to the type in question but that do not
 need to belong to an instance of said type.
 
-For example, if we had a `Shape` trait, we could define a companion object with helpful methods for working on shapes:
+For example, if we had a `Circle` trait, we could define a companion object with helpful constants for working on circles:
 
 ```scala
 case class Circle(radius: Int)
